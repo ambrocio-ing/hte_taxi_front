@@ -1,0 +1,36 @@
+<div class="stilo-modal" *ngIf="estoDetalle">
+    <div class="wrapper">
+        <div class="contenedor">
+            <app-ranking *ngIf="smtaxistaSelec" [smtaxista]="smtaxistaSelec" [estadoCali]="estadoCalificacion"
+                (cerrarCali)="estadoCalificacion = $event">
+            </app-ranking>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4>Datos del conductor(a):</h4>
+                    <span (click)="cerrar()"
+                        style="margin-left: 90%;margin-right: 1px;color: red; font-weight: bold; font-size: 20px; cursor: pointer;">
+                        X
+                    </span>
+                </div>
+                <div *ngIf="taxista" class="card-body">
+                    <div>
+                        <h6><span style="color: blue;">DNI : </span> {{taxista.dni}}</h6>
+                        <h6><span style="color: blue;">Nombre : </span> {{taxista.nombre}}, {{taxista.apellidos}}</h6>
+                        <h6><span style="color: blue;">Placa de vehículo : </span> {{taxista.vehiculo.placa}} </h6>
+                        <h6><span style="color: blue;">Detalle del vehículo:</span> {{taxista.vehiculo.descripcion}}
+                        </h6>
+                        <div *ngIf="taxista.vehiculo?.fotoVehiculo">
+                            <img style="width: 300px; height: 200px; margin: 2px;"
+                                src="{{url_backend}}/obtener/imagen/{{taxista.vehiculo.fotoVehiculo}}" alt="">
+                        </div>
+                    </div>
+                    <div class="wrapper" style="margin-top: 5px;">
+                        <button [disabled]="!estadoReclamo" (click)="reportar()" class="btn btn-outline-danger">Reportar</button>
+                        <button style="margin-left: 10px;" (click)="calificar()" class="btn btn-outline-primary">Calificar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

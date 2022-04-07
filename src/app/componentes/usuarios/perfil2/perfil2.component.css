@@ -1,0 +1,101 @@
+.perfil {
+  margin-top: 50px;
+  margin-left: 5px;
+  width: 90%;
+  height: 70%;
+  overflow: auto;
+  padding-bottom: 1rem;
+  background: white;
+}
+
+.wrapper{
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+}
+  
+.encabezado{
+  background: rgba(0, 0, 0, 0.986);
+  width: 100%;
+  display: grid;
+  text-align: center;
+  height: 10rem;
+  align-items: center;
+  color: white;
+}
+
+.encabezado h5{
+  margin-top: -1rem;
+}
+
+.encabezado img{    
+  margin-top: 0.4rem;
+  width: 5rem;
+  height: 5rem;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  border-radius: 100%;
+  border: 5px solid rgb(141, 140, 140);
+
+}
+
+.encabezado span{
+  display:block;
+  margin-left:auto ;
+  margin-right:auto;
+  position: relative;
+  width: 1rem;
+  border-radius: 50%;
+  height: 1rem;
+  background: rgb(1, 255, 1);
+}
+
+.misdatos{
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (minmax(1rem, 1fr))[auto-fit];
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 2fr));
+  gap: 1rem;
+}
+
+.datos{
+  margin-left: 1rem;
+  display: flex;
+  margin-bottom: -1rem;
+}
+
+h2{
+  padding-left: 1rem;
+}
+
+table {
+  border: 5px solid black;
+  width: 100%;
+    
+}
+  
+th {
+  height: 50px;
+}
+
+td {
+  text-align: center;
+}
+
+th, td {
+  border-bottom: 1px solid #ddd;
+}
+
+tr:hover {background-color: rgba(255, 0, 0, 0.267);}
+
+.stilo-modal{
+  background-color: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 99%;
+  height: 100%;
+  z-index: 1000;
+  padding: 5px;
+}

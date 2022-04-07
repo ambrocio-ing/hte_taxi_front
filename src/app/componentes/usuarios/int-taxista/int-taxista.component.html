@@ -1,0 +1,320 @@
+<div class="conductor">
+    <img class="img-perfil" *ngIf="!loginService.usuario?.fotoPerfil" src="../../../../assets/img/perfil.jpg" alt=""> 
+    <img class="img-perfil" *ngIf="loginService.usuario?.fotoPerfil" src="{{url_backend}}/obtener/imagen/{{loginService.usuario.fotoPerfil}}" alt="">
+    <!--<h4 (click)="irPerfil2()">Usuario: - 28192813</h4>-->
+    <div class="btn-group">
+        <button type="button" (click)="irPerfil2()" class="btn btn-danger">{{nombreUsuario}}</button>
+        <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <span class="visually-hidden">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" (click)="irPerfil2()">Ver perfil</a></li>
+            <li *ngIf="!loginService.isDisponible"><a class="dropdown-item" (click)="disponible()">Disponible</a></li>
+            <li *ngIf="loginService.isDisponible"><a class="dropdown-item" (click)="ocupado()">Ocupado</a></li>   
+            <li><a class="dropdown-item" (click)="pagar()">Ver pagos</a></li>          
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a (click)="cerrarSesion()" class="dropdown-item">Serrar Sesión</a></li>
+        </ul> 
+    </div>
+</div>
+<div class="wrapper">    
+    <h6>Un pedido de taxi solo estará disponible por 5 minutos desde que el cliente lo solicitó</h6>
+</div>
+<div class="wrapper">    
+    <h6>Lista de solicitudes</h6>
+</div> 
+<div>
+    <app-mapbox-model-taxista *ngIf="smservicioTaxiSeleccionado" 
+        [estadoMapatax]="estadoModalMapa" [smservicioTaxi]="smservicioTaxiSeleccionado" 
+        (cerrarMapaTaxi)="estadoModalMapa = $event" >
+    </app-mapbox-model-taxista>
+</div>
+<div>
+    <app-perfil2 *ngIf="estadoModalPerfil" [estadoModalPerfil]="estadoModalPerfil"
+        (cerrarPerfil)="estadoModalPerfil = $event">
+    </app-perfil2>
+</div>
+
+<div class="wrapper" *ngIf="!conectado">
+    <div>
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+    </div>
+</div>
+
+<div *ngIf="conectado">
+    <div  class="wrapper">        
+        <table style="width: 99%;" class="table table-hover">
+            <!--Cliente 1-->
+            <tr *ngIf="smservicioTaxi1?.idstaxi">
+                <td>
+                    <img class="img-perfil" *ngIf="!smservicioTaxi1.cliente?.fotoPerfil" src="../../../../assets/img/perfil.jpg" alt="">
+                    <img class="img-perfil" *ngIf="smservicioTaxi1.cliente?.fotoPerfil" src="{{url_backend_cli}}/{{smservicioTaxi1.cliente.fotoPerfil}}" alt="">
+                </td>
+                <td>
+                    {{smservicioTaxi1.cliente.nombre}}, {{smservicioTaxi1.cliente.apellidos}}
+                </td>                
+                <td>
+                    <button class="btn btn-outline-primary" (click)="verDetalle(smservicioTaxi1)">Detalle</button>                    
+                </td>
+                <td>
+                    <button [disabled]="enviar1" class="btn btn-outline-primary" (click)="aceptarPedido1()">Enviar</button>
+                </td>
+                <td>                        
+                    <button [disabled]="!enviar1"  class="btn btn-outline-danger" (click)="rechazarPedido1()">Rechazar</button>                
+                </td>
+                              
+            </tr>
+            <tr *ngIf="smservicioTaxi1?.idstaxi">  
+                <td colspan="5">
+                    <table #asTable1>
+                        <tr #asTr1>
+                            <td colspan="3">                                
+                                {{mensaje1}} <span style="color: blue; font-weight: bold;">0{{minuto1}} : {{segundo1}}</span>                    
+                            </td>  
+                            <td colspan="2" *ngIf="!estadoConfirmacion1">
+                                Precio: <input #asPrecio1 type="number" name="precio" [(ngModel)]="smservicioTaxi1.precio">
+                            </td> 
+                            <td colspan="2" *ngIf="estadoConfirmacion1">
+                                <button [disabled]="estadoAceptar" class="boton-aceptar" (click)="aceptarTaxi1()">
+                                    <img class="img-stilo"  src="../../../../assets/img/aceptar.png" alt="">
+                                </button>
+                                <button (click)="rechazarTaxi1()" class="boton-cancelar">
+                                    <img class="img-stilo" src="../../../../assets/img/cancelar.jpg" alt=""> 
+                                </button> 
+                            </td> 
+                        </tr>
+                    </table>
+                </td>                         
+                                                         
+            </tr>
+            <!--Cliente 2-->
+            <tr *ngIf="smservicioTaxi2?.idstaxi">
+                <td>
+                    <img class="img-perfil" *ngIf="!smservicioTaxi2.cliente?.fotoPerfil" src="../../../../assets/img/perfil.jpg" alt="">
+                    <img class="img-perfil" *ngIf="smservicioTaxi2.cliente?.fotoPerfil" src="{{url_backend_cli}}/{{smservicioTaxi2.cliente.fotoPerfil}}" alt="">
+                </td>
+                <td>
+                    {{smservicioTaxi2.cliente.nombre}}, {{smservicioTaxi2.cliente.apellidos}}
+                </td>                
+                <td>
+                    <button class="btn btn-outline-danger" (click)="verDetalle(smservicioTaxi2)">Detalle</button>                    
+                </td>
+                <td>
+                    <button [disabled]="enviar2"  class="btn btn-outline-primary" (click)="aceptarPedido2()">Aceptar</button>
+                </td>
+                <td>
+                        
+                    <button [disabled]="!enviar2"  class="btn btn-outline-danger" (click)="rechazarPedido2()">Rechazar</button>                
+                </td>
+                              
+            </tr>
+            <tr *ngIf="smservicioTaxi2?.idstaxi"> 
+                <td colspan="5">
+                    <table #asTable2>
+                        <tr #asTr2>
+                            <td colspan="3">                                
+                                {{mensaje2}}<span style="color: blue; font-weight: bold;">0{{minuto2}} : {{segundo2}}</span>
+                            </td>  
+                            <td *ngIf="!estadoConfirmacion2" colspan="2">
+                                Precio: <input #asPrecio2 type="number" name="precio" [(ngModel)]="smservicioTaxi2.precio">
+                            </td> 
+                            <td colspan="2" *ngIf="estadoConfirmacion2">
+                                <button [disabled]="estadoAceptar" class="boton-aceptar" (click)="aceptarTaxi2()">
+                                    <img class="img-stilo"  src="../../../../assets/img/aceptar.png" alt="">
+                                </button>
+                                <button (click)="rechazarTaxi2()" class="boton-cancelar">
+                                    <img class="img-stilo" src="../../../../assets/img/cancelar.jpg" alt=""> 
+                                </button> 
+                            </td>
+                        </tr>
+                    </table>
+                </td>                                   
+            </tr>
+            <!--Cliente 3-->
+            <tr *ngIf="smservicioTaxi3?.idstaxi">
+                <td>
+                    <img class="img-perfil" *ngIf="!smservicioTaxi3.cliente?.fotoPerfil" src="../../../../assets/img/perfil.jpg" alt="">
+                    <img class="img-perfil" *ngIf="smservicioTaxi3.cliente?.fotoPerfil" src="{{url_backend_cli}}/{{smservicioTaxi3.cliente.fotoPerfil}}" alt="">
+                </td>
+                <td>
+                    {{smservicioTaxi3.cliente.nombre}}, {{smservicioTaxi3.cliente.apellidos}}
+                </td>                
+                <td>
+                    <button class="btn btn-outline-danger" (click)="verDetalle(smservicioTaxi3)">Detalle</button>                    
+                </td>
+                <td>
+                    <button [disabled]="enviar3" class="btn btn-outline-primary" (click)="aceptarPedido3()">Aceptar</button>
+                </td>
+                <td>
+                        
+                    <button [disabled]="!enviar3" class="btn btn-outline-danger" (click)="rechazarPedido3()">Rechazar</button>                
+                </td>
+                              
+            </tr>
+            <tr *ngIf="smservicioTaxi3?.idstaxi">   
+                <td colspan="5">
+                    <table #asTable3>
+                        <tr #asTr3>
+                            <td colspan="3">                                
+                                {{mensaje3}}<span style="color: blue; font-weight: bold;">0{{minuto3}} : {{segundo3}}</span>
+                            </td>  
+                            <td  colspan="2" *ngIf="!estadoConfirmacion3">
+                                Precio: <input #asPrecio3 type="number" name="precio" [(ngModel)]="smservicioTaxi3.precio">
+                            </td> 
+                            <td colspan="2" *ngIf="estadoConfirmacion3">
+                                <button [disabled]="estadoAceptar" class="boton-aceptar" (click)="aceptarTaxi3()">
+                                    <img class="img-stilo"  src="../../../../assets/img/aceptar.png" alt="">
+                                </button>
+                                <button (click)="rechazarTaxi3()" class="boton-cancelar">
+                                    <img class="img-stilo" src="../../../../assets/img/cancelar.jpg" alt=""> 
+                                </button> 
+                            </td>
+                        </tr>
+                    </table>
+                </td>                  
+            </tr>
+            <!--Cliente 4-->
+            <tr *ngIf="smservicioTaxi4?.idstaxi">
+                <td>
+                    <img class="img-perfil" *ngIf="!smservicioTaxi4.cliente?.fotoPerfil" src="../../../../assets/img/perfil.jpg" alt="">
+                    <img class="img-perfil" *ngIf="smservicioTaxi4.cliente?.fotoPerfil" src="{{url_backend_cli}}/{{smservicioTaxi4.cliente.fotoPerfil}}" alt="">
+                </td>
+                <td>
+                    {{smservicioTaxi4.cliente.nombre}}, {{smservicioTaxi4.cliente.apellidos}}
+                </td>                
+                <td>
+                    <button class="btn btn-outline-danger" (click)="verDetalle(smservicioTaxi4)">Detalle</button>                    
+                </td>
+                <td>
+                    <button [disabled]="enviar4" class="btn btn-outline-primary" (click)="aceptarPedido4()">Aceptar</button>
+                </td>
+                <td>
+                        
+                    <button [disabled]="!enviar4" class="btn btn-outline-danger" (click)="rechazarPedido4()">Rechazar</button>                
+                </td>
+                              
+            </tr>
+            <tr *ngIf="smservicioTaxi4?.idstaxi">   
+                <td colspan="5">
+                    <table #asTable4>
+                        <tr #asTr4>
+                            <td colspan="3">                                
+                                {{mensaje4}}<span style="color: blue; font-weight: bold;">0{{minuto4}} : {{segundo4}}</span>
+                            </td>  
+                            <td  colspan="2" *ngIf="!estadoConfirmacion4">
+                                Precio: <input #asPrecio4 type="number" name="precio" [(ngModel)]="smservicioTaxi4.precio">
+                            </td> 
+                            <td colspan="2" *ngIf="estadoConfirmacion4">
+                                <button [disabled]="estadoAceptar" class="boton-aceptar" (click)="aceptarTaxi4()">
+                                    <img class="img-stilo"  src="../../../../assets/img/aceptar.png" alt="">
+                                </button>
+                                <button (click)="rechazarTaxi4()" class="boton-cancelar">
+                                    <img class="img-stilo" src="../../../../assets/img/cancelar.jpg" alt=""> 
+                                </button> 
+                            </td>
+                        </tr>
+                    </table>
+                </td>                
+            </tr>
+            <!--Cliente 5-->
+            <tr *ngIf="smservicioTaxi5?.idstaxi">
+                <td>
+                    <img class="img-perfil" *ngIf="!smservicioTaxi5.cliente?.fotoPerfil" src="../../../../assets/img/perfil.jpg" alt="">
+                    <img class="img-perfil" *ngIf="smservicioTaxi5.cliente?.fotoPerfil" src="{{url_backend_cli}}/{{smservicioTaxi5.cliente.fotoPerfil}}" alt="">
+                </td>
+                <td>
+                    {{smservicioTaxi5.cliente.nombre}}, {{smservicioTaxi5.cliente.apellidos}}
+                </td>                
+                <td>
+                    <button class="btn btn-outline-danger" (click)="verDetalle(smservicioTaxi1)">Detalle</button>                    
+                </td>
+                <td>
+                    <button [disabled]="enviar5" class="btn btn-outline-primary" (click)="aceptarPedido5()">Aceptar</button>
+                </td>
+                <td>                        
+                    <button [disabled]="!enviar5" class="btn btn-outline-danger" (click)="rechazarPedido5()">Rechazar</button>                
+                </td>                              
+            </tr>
+            <tr *ngIf="smservicioTaxi5?.idstaxi">   
+                <td colspan="5">
+                    <table #asTable5>
+                        <tr #asTr5>
+                            <td colspan="3">                                
+                                {{mensaje5}}<span style="color: blue; font-weight: bold;">0{{minuto5}} : {{segundo5}}</span>
+                            </td>  
+                            <td  colspan="2" *ngIf="!estadoConfirmacion5">
+                                Precio: <input #asPrecio5 type="number" name="precio" [(ngModel)]="smservicioTaxi5.precio">
+                            </td> 
+                            <td colspan="2" *ngIf="estadoConfirmacion5">
+                                <button [disabled]="estadoAceptar" class="boton-aceptar" (click)="aceptarTaxi5()">
+                                    <img class="img-stilo"  src="../../../../assets/img/aceptar.png" alt="">
+                                </button>
+                                <button (click)="rechazarTaxi5()" class="boton-cancelar">
+                                    <img class="img-stilo" src="../../../../assets/img/cancelar.jpg" alt=""> 
+                                </button> 
+                            </td>
+                        </tr>
+                    </table>
+                </td>                                   
+            </tr>
+        </table>        
+    </div>    
+</div>
+
+<div class="wrapper">
+    <div>
+        <h2>Historial:</h2>
+        <table style="width: 98%;" class="table table-striped">
+            <tr class="text-center">
+                <th>Detalle</th>          
+                <th>Día</th>
+                <th>Estado</th>
+                <th>Acción</th>
+            </tr>
+            <tr *ngFor="let servicios of smservicioTaxis">
+                <td>
+                    <table>
+                        <tr>
+                            <td><span style="font-weight: bold;">Origen: </span> {{servicios.ubicacion.origen}}</td>
+                        </tr>
+                        <tr>
+                            <td><span style="font-weight: bold;">Destino: </span> {{servicios.ubicacion.destino}}</td>
+                        </tr>
+                    </table>
+                </td>                
+                <td>
+                    {{servicios.fecha | date: 'dd/MM'}}
+                    
+                </td>
+                <td>
+                    {{servicios.estado}}
+                    
+                </td>
+                <td>
+                    <table>
+                        <tr class="text-center">
+                            <td>
+                                <button (click)="ver(servicios)" class="btn btn-outline-primary">Ver</button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="servicios.estado == 'Iniciado'">
+                            <td>
+                                <button (click)="finalizar(servicios)" class="btn btn-outline-primary">Finalizar</button>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>            
+        </table>
+        <div>
+            <span style="color: red;" *ngIf="mensajeServicios">{{mensajeServicios}}</span>
+        </div>
+    </div>
+</div>

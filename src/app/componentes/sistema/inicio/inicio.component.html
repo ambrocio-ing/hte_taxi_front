@@ -1,0 +1,182 @@
+
+<header class="header">
+    s
+    <a href="#home" class="logo"> Transporte <span>Seguro</span> P </a>
+
+    <nav class="navbar">
+        <div id="nav-close">
+            <a (click)="navbarcerrar()" >  <svg width="25" height="25">
+                <use xlink:href="#cerrar" />
+            </svg></a>
+          
+        </div>
+        
+        <!--<a (click)="irAdministracion()">Administracion</a>-->
+    </nav>
+
+    <div class="icons">
+        <div id="menu-btn">
+            <a  (click)="navbarabrir()"><svg width="25" height="25">
+                <use xlink:href="#menu" />
+            </svg></a>
+            
+        </div>
+       
+    </div>
+
+</header>
+
+<section class="home" id="home">
+
+    <h1>¡Registrate como conductor o cliente <br> y pertenece a nuestra comunidad!</h1>
+    <a (click)="irRegistro()"><button class="btn">Registrate</button></a>
+    <a (click)="irIniciosesion()"><button class="btn">Iniciar sesion</button></a>
+</section>
+
+<section class="category" id="nservicio">
+    
+    <h1 class="heading">Servicios para el Cliente</h1>
+
+    <div class="box-container">
+
+        <div class="box">
+            <img src="../../../../assets/img/ser1.jpg" alt="">
+            <h3>Transporte</h3>
+            <p>Encuentre una unidad disponible segun sus necesidades.</p>
+            <a (click)="irRegistro()" class="btn">Mas informacion</a>
+        </div>
+
+        <div class="box">
+            <img src="../../../../assets/img/ser2.jpg" alt="">
+            <h3>Envio de productos</h3>
+            <p>Envie su producto con una unidad disponible segun la caracterizticas que requiera.</p>
+            <a (click)="irRegistro()" class="btn">Mas informacion</a>
+        </div>
+           
+
+    </div>
+</section>
+<section class="category" id="nservicio" style="background: rgb(206, 205, 205);">
+    <h1 class="heading">Servicios para el Conductor</h1>
+
+    <div class="box-container" >
+
+        <div class="box">
+            <img src="../../../../assets/img/ser1.jpg" alt="">
+            <h3>Transporta pasajeros</h3>
+            <p>Encuentre una unidad disponible segun sus necesidades.</p>
+            <a (click)="irRegistro()" class="btn">Mas informacion</a>
+        </div>
+
+        <div class="box">
+            <img src="../../../../assets/img/ser2.jpg" alt="">
+            <h3>Entrega productos</h3>
+            <p>Envie su producto con una unidad disponible segun la caracterizticas que requiera.</p>
+            <a (click)="irRegistro()" class="btn">Mas informacion</a>
+        </div>
+    </div>
+
+</section>
+
+
+<section class="icons-container">
+
+    <div class="icons">
+        <img src="../../../../assets/img/icon1.svg" alt="">
+        
+        <div class="info">
+            <h3>Conduce y realiza entregas.</h3>
+            <p>En el momento que desees, brindando el mejor servicio para tus clientes.</p>
+        </div>
+    </div>
+
+    <div class="icons">
+        <img src="../../../../assets/img/icon2.svg" alt="">
+        <div class="info">
+            <h3>Genera Ingresos</h3>
+            <p>Realizando el servicio, reduciendo tiempo de espera y combustible en el proceso de busqueda de un cliente.</p>
+        </div>
+    </div>
+
+    <div class="icons">
+        <img src="../../../../assets/img/icon3.svg" alt="">
+        <div class="info">
+            <h3>Cumple nuestras normas</h3>
+            <p>Nuestro sistema considera altos estandares de seguridad para los usuarios.</p>
+        </div>
+    </div>
+
+    <div class="icons">
+        <img src="../../../../assets/img/icon4.svg" alt="">
+        <div class="info">
+            <h3>Paga una suscripcion</h3>
+            <p>Al realizar el servicio en nuestro sistema se calculara un porcentaje el cual sera una suscripcion quincenal para continuar utilizando nuestra tecnologia.</p>
+        </div>
+    </div>
+
+</section>
+
+<section class="service" id="service">
+
+    <h1 class="heading">Nosotros</h1>
+    <p class="description"> TSP es un sistema creado por la empresa Herramientas Tecnologicas Empresariales con el objetivo de mejorar la calidad de vida de nuestros ciudadanos brindando la seguridad que requiere, buscamos transformar el servicio  de taxi que conocemos, implementando la tecnologia necesaria para el crecimento de nuestro pais.</p>
+    <p class="description">Consideramos que la seguridad es lo más importante, tanto si eres conductor como pasajero. Nuesto compromiso con los usuarios motiva el crecimiento tecnologico siendo el eje de todo. Seguimos desarrollando mejoras en el sistema con la finalidad de integrar protocolos de seguridad en el desplazamiento de nuestros usuarios.</p>
+    <p class="description"> Si se produce alguna incidencia, positiva o negativa desde el punto de vista cliente o conductor, podra informarnos fácilmente antes de finalizar o calificar el servicio brindado mediante nuestro sistema. Se recopilara los incidentes continuamente y realizara sanciones establecidas a los usuarios. Tus comentarios y califiaciones son importantes porque nos permiten mejorar y aprobar los estandares del sistema.</p>
+   
+    <div class="box-container">
+   
+       <div class="box">
+           <img src="../../../../assets/img/icon1.svg" alt="">
+           <h3>Conduce y entrega productos</h3>
+           <p>Utilice nuestro sistema para buscar clientes el cual reducira el tiempo de espera y busqueda fisica de pasajeros, el cual incrementa la inversion del combustible, el uso de nuestra tecnologia optimiza los procesos y reduce los costos.</p>
+           <a (click)="irRegistro()" class="btn">Mas informacion</a>
+       </div>
+   
+       <div class="box">
+           <img src="../../../../assets/img/icon4.svg" alt="">
+           <h3>Paga una suscripcion</h3>
+           <p>Nuestros sistemas por oferta de lanzamiento calculara el 2,5% de cada monto cobrado en el servicio que brinde, al finalizar el periodo de 15 dias se solicitara el pago de la suscripcion para poder continuar usando el sistema.En el periodo comun del sistema su taza de suscripcion sera calculado en base a 3,5% por cada taxi realizado y un 3% para los mejores conductores en base a la calificacion de sus clientes. Si no llega a realizar o concretar algun servicio no se cobrara alguna comision.</p>
+           <a (click)="irRegistro()" class="btn">Mas informacion</a>
+       </div>
+   
+       <div class="box">
+           <img src="../../../../assets/img/icon3.svg" alt="">
+           <h3>Cumple las normas del sistema</h3>
+           <p>Los usuarios deberan cumplir con las normas establecidas en el sistema, las cuales iran perfeccionandose e incluyendo nuevas mediante las sugerencia de los usuarios tanto de los pasajeros como de los conductores, el uso indebido del sistema traera una sancion de bloqueo temporal o definitivamente en base a la gravedad de la situacion se brindara recomendaciones legales a los usuarios.</p>
+           <a (click)="irRegistro()" class="btn">Mas informacion</a>
+       </div>
+   
+    </div>
+   
+   </section>
+   
+<section class="process" id="process">
+
+    <h1 class="heading">Obten el servicio que deseas en 3 sencillos pasos:</h1>
+    <p class="description">Reducimos el tiempo de espera optimizando tu horario y gastos.</p>
+   
+    <div class="box-container">
+
+        <div class="box">
+            <span>1</span>
+            <h3>Registrate</h3>
+            <p>Registrate como pasajero o conductor brindando tus datos verdaderos, los cuales estaran protejidos en nuestro sistema.</p>
+        </div>
+
+        <div class="box">
+            <span>2</span>
+            <h3>Solicita el servicio</h3>
+            <p>Como pasajero podras solicitar el servicio que requieras, desde transportarte a un punto indicado tanto como el envio de algun producto.</p>
+        </div>
+
+        <div class="box">
+            <span>3</span>
+            <h3>Clasifica el servicio</h3>
+            <p>Brinda una valoracion al momento de finalizar el servicio solicitado, asi mejoraremos la comunidad que estamos construyendo contigo, manteniendo los altos estandares de seguridad.</p>
+        </div>
+
+    </div>
+
+    <a (click)="irRegistro()" class="btn">¡Empieza ahora!</a>
+
+</section>

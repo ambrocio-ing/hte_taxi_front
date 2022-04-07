@@ -1,0 +1,63 @@
+<div class="stilo-modal" *ngIf="estadoCali">
+    <div class="wrapper">
+        <div class="contenedor">
+            <div class="card">
+                <div class="card-header">
+                    <h6>Califica un conductor</h6>
+                    <span (click)="cerrarPagina()" class="cerrar">X</span>
+                </div>
+                <div class="card-body">
+                    <span>Nota: Califique con una puntuacion de 1 a 5 estrellas, donde uno es muy malo y 5 muy bueno</span>
+                    <div class="row">
+                        <div class="col-sm">
+                            <ngb-rating [max]="5" [(rate)]="currenRate" [readonly]="false">
+    
+                            </ngb-rating>
+                        </div>                    
+                        <div class="col-sm">
+                            <button (click)="guardar()" class="btn btn-outline-primary">Guardar</button>
+                        </div>                    
+                    </div>
+                    <hr>
+                    <h4>Calificación actual</h4>
+                    <div class="row mt-2">
+                        <div class="col-sm">
+                            <ngb-rating [max]="5" [(rate)]="uno" [readonly]="true">                                
+                            </ngb-rating>
+                            <span>{{smtaxista.calificacion.uno}}</span>
+                        </div>                    
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-sm">
+                            <ngb-rating [max]="5" [(rate)]="dos" [readonly]="true">                                
+                            </ngb-rating>
+                            <span>{{smtaxista.calificacion.dos}}</span>
+                        </div>                    
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-sm">
+                            <ngb-rating [max]="5" [(rate)]="tres" [readonly]="true">                                
+                            </ngb-rating>
+                            <span>{{smtaxista.calificacion.tres}}</span>
+                        </div>                    
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-sm">
+                            <ngb-rating [max]="5" [(rate)]="cuatro" [readonly]="true">                                
+                            </ngb-rating>
+                            <span>{{smtaxista.calificacion.cuatro}}</span>
+                        </div>                    
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-sm">
+                            <ngb-rating [max]="5" [(rate)]="cinco" [readonly]="true">                                
+                            </ngb-rating>
+                            <span>{{smtaxista.calificacion.cinco}}</span>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>   
+</div>

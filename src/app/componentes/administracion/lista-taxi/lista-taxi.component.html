@@ -1,0 +1,62 @@
+<app-detalle-taxista *ngIf="taxistaSeleccionado" [taxista]="taxistaSeleccionado"
+    [estadoModal]="estadoDetalle" (cerrar)="estadoDetalle = $event">
+</app-detalle-taxista>
+
+<div class="wrapper">
+    <div class="contenedor">
+        <div class="row">
+            <h5>Lista de taxistas</h5>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>Buscar</td>
+                        <td>
+                            <input type="text" name="nombres" (keyup)="limpiar()" [(ngModel)]="data.nombres"
+                                placeholder="Ingrese nombres">
+                        </td>
+                        <td>
+                            <input type="text" name="dni" (keyup)="limpiar2()" [(ngModel)]="data.dni" 
+                                placeholder="Ingrese documento">
+                        </td>
+                        <td>
+                            <button (click)="buscar()" class="btn btn-outline-success">Buscar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"></td>
+                        <td>
+                            <button (click)="listar()" class="btn btn-outline-primary">Refrescar</button>
+                        </td>
+                    </tr>
+                    <tr bgcolor="skyblue" class="text-center">
+                        <th scope="col">Foto</th>
+                        <th scope="col">Datos</th>
+                        <th scope="col">Estado</th>                       
+                        <th scope="col">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let taxista of taxistas">
+                        <td>
+                            <img class="perfil" src="{{url_backend}}/obtener/imagen/{{taxista.persona.fotoPerfil}}" alt="">
+                        </td>
+                        <td>
+                            {{taxista.persona.nombre}}, {{taxista.persona.apellidos}}
+                        </td>
+                        <td>
+                            {{taxista.estado}}
+                        </td>
+                        <td>
+                            <a (click)="eliminar(taxista)" class="aaccion">
+                                <img class="img-accion" src="../../../../assets/img/eliminar.png" alt="">
+                            </a>
+                            <a (click)="ver(taxista)" class="aaccion" style="margin-left: 10px;">
+                                <img class="img-ver" src="../../../../assets/img/ver.png" alt="">
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

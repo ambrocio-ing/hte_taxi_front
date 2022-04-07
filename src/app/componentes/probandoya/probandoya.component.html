@@ -1,0 +1,88 @@
+
+<p>probandoya works!</p>
+<input type="file" (change)="capturarArchivo1($event)">
+<input type="file" (change)="capturarArchivo2($event)">
+<input type="file" (change)="capturarArchivo3($event)">
+<input type="file" (change)="capturarArchivo4($event)">
+<input type="file" (change)="capturarArchivo5($event)">
+
+<button type="button" (click)="enviar()" >Enviar</button>
+<button type="button" (click)="fijarTimer1()">Fijar</button>
+<div>
+    {{minuto1}}:{{segundo1}}
+</div>
+<button type="button" (click)="crear()">Crear</button>
+<button type="button" (click)="remover()">Eliminar</button>
+<button type="button" (click)="agregarTexto()">Eliminar</button>
+<div #asContainer>
+    <span #asSpan></span>
+</div>
+<table>
+    <tr>
+        <td>
+            HOla HOla
+        </td>
+        <td>
+            HOla HOla
+        </td>
+        <td>
+            HOla HOla
+        </td>
+        <td>
+            HOla HOla
+        </td>
+    </tr>
+    <tr>
+        <td>
+            HOla HOla
+            <div >
+                <div >
+                    
+                </div>
+            </div>
+        </td>
+        <td>
+            HOla HOla
+            <table #asTable>
+                <tr #asTr>
+                    <span>Cargando...</span>
+                </tr>
+            </table>
+        </td>
+        <td>
+            HOla HOla
+        </td>
+        <td>
+            HOla HOla
+        </td>
+    </tr>
+    <tr>
+        <td>
+            HOla HOla
+        </td>
+        <td>
+            HOla HOla
+        </td>
+        <td>
+            HOla HOla
+        </td>
+        <td>
+            HOla HOla
+        </td>
+    </tr>
+</table>
+
+<button (click)="mostrar()" style="border-color: green; border-style: solid; border-radius: 50%; padding: 1px;">
+    <img style="width: 30px; height: 30px; border-radius: 50%;" src="../../../../assets/img/aceptar.png" alt="">
+</button>
+<button style="border-color: red; border-style: solid; border-radius: 50%; padding: 1px;">
+    <img style="width: 30px; height: 30px; border-radius: 50%;" src="../../../../assets/img/cancelar.jpg" alt="">
+</button>
+<input [disabled]="false" type="image" src="../../../../assets/img/cancelar.jpg" style="border-radius: 50%; border: solid 1px red;" height="30" width="30">
+
+<div>
+    <ngb-rating [max]="5" [(rate)]="currenRate" [readonly]="false">
+
+    </ngb-rating>
+    <button (click)="mos()">Mostrar</button>
+</div>

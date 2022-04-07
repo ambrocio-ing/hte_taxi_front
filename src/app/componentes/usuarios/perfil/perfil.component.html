@@ -1,0 +1,74 @@
+<div *ngIf="estadoPerfil" class="stilo-modal">
+    <div class="perfil">
+        <div style="background: black;">
+            <span (click)="cerrar_perfil()" style="margin-left: 90%; font-weight: bold; font-size: 20px; color: red; cursor: pointer;">X</span>
+        </div>    
+        <div class="encabezado">          
+            <img *ngIf="cliente.persona?.fotoPerfil"  src="{{url_backend}}/obtener/imagen/{{cliente.persona.fotoPerfil}}" alt="">       
+            <img *ngIf="!cliente.persona?.fotoPerfil"  src="../../../../assets/img/perfil.jpg" alt="">
+            <span> </span>            
+            <h5>Conectado(a)</h5>  
+            <!--<div class="btn-group">
+                <button type="button" class="btn btn-danger">{{nombreUsuario}}</button>
+                <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <span class="visually-hidden">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" (click)="solicitartaxi()">Solicitar taxi</a></li>            
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a (click)="serrarSesion()" class="dropdown-item">Serrar Sesión</a></li>
+                </ul> 
+            </div> -->     
+        </div>       
+        
+        <div style="margin-top: 10px;" *ngIf="cliente?.persona">       
+            <div class="datos">
+                <h2>Mis Datos</h2>
+            </div>
+            <div class="datos">
+                <h4>Documento:</h4>
+                <h5 style="color: blue;">{{cliente.persona.dni}}</h5>
+            </div>
+            <div class="datos">
+                <h4>Nombres:</h4>
+                <h5 style="color: blue;"> --> {{cliente.persona.nombre}}</h5>
+            </div>
+    
+            <div class="datos">
+                <h4>Apellidos:</h4>
+                <h5 style="color: blue;"> --> {{cliente.persona.apellidos}}</h5>
+            </div>       
+    
+            <div class="datos">
+                <h4>Email:</h4>
+                <h5 style="color: blue;"> --> {{cliente.persona.email}}</h5>
+            </div>
+    
+        </div>
+        <div style="margin-top: 15px;">
+            <span style="color: red;" *ngIf="mensajeCliente">{{mensajeCliente}}</span>
+        </div>
+        <!--<div>
+            <h2>Historial:</h2>
+            <table>
+                <tr>
+                    <th>Origen</th>
+                    <th>Destino</th>
+                    <th>Dia</th>
+                </tr>
+                <tr *ngFor="let servicios of servicio_taxis">
+                    <td>{{servicios.ubicacion.origen}}</td>
+                    <td>{{servicios.ubicacion.destino}}</td>
+                    <td>{{servicios.fecha | date: 'dd/MM/yyyy'}}</td>
+                </tr>            
+            </table>
+            <div>
+                <span style="color: red;" *ngIf="mensajeServicios">{{mensajeServicios}}</span>
+            </div>
+        </div>-->
+        
+    </div>
+</div>

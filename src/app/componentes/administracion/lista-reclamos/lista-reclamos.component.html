@@ -1,0 +1,108 @@
+<div class="wrapper">
+    <div class="contenedor">
+        <h5>Lista de reclamos</h5>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td colspan="4">
+                        Busque reclamos por fecha
+                    </td> 
+                    <td>
+                        <input type="date" name="fecha" [(ngModel)]="data.fecha" class="form-control">
+                    </td>
+                    <td>
+                        <button (click)="buscar()" class="btn btn-outline-success form-control">Buscar</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+
+                    </td>
+                    <td>
+                        <button (click)="refrescar()" class="btn btn-outline-primary">Refrescar</button>
+                    </td>
+                </tr>
+                <tr bgcolor="skyblue" class="text-center">
+                    <th scope="col">#</th>
+                    <th scope="col">Detalle</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Pasajero</th>                    
+                    <th scope="col">Conductor</th>
+                    <th scope="col">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let reclamo of reclamos">
+                    <th>{{reclamo.idreclamo}}</th>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    <span style="color: blue;">Fecha :</span>
+                                    {{reclamo.fecha | date: 'dd/MM'}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span style="color: blue;">Tipo :</span>
+                                    {{reclamo.tipo}}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        {{reclamo.descripcion}}
+                    </td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    <span style="color: blue;">DNI :</span>
+                                    {{reclamo.cliente.dni}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span style="color: blue;">Nombres :</span>
+                                    {{reclamo.cliente.nombre}} {{reclamo.cliente.apellidos}}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    <span style="color: blue;">DNI :</span>
+                                    {{reclamo.taxista.dni}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span style="color: blue;">Nombres :</span>
+                                    {{reclamo.taxista.nombre}} {{reclamo.taxista.apellidos}}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table>
+                            <tr class="text-center">
+                                <td>
+                                    <button (click)="eliminar(reclamo)" type="button" class="btn btn-outline-danger">Eliminar</button>
+                                </td>
+                            </tr>
+                            <tr class="text-center">
+                                <td>
+                                    <button (click)="ver(reclamo)" type="button" class="btn btn-outline-primary">Ver</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>                    
+                </tr>
+            </tbody>
+        </table>
+        <span style="color: red;" *ngIf="mensajeLista">{{mensajeLista}}</span>
+    </div>    
+</div>
+

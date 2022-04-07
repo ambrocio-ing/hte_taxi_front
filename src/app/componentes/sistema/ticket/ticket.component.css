@@ -1,0 +1,272 @@
+:root{
+    red: #d92f49;
+    red-d: #a62035;
+    grey: #666;
+    grey-l: lighten(grey, 30%);
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	max-height: 100%;
+	overflow: scroll;
+}
+
+body {
+	background-color: red-d;
+	position: relative;
+	font-size: 9px;
+}
+
+h1 {
+	margin: 5px 0;
+	font-size: 26px;
+	color: grey;
+}
+
+h2 {
+	margin: 3px 0 0;
+	font-size: 16px;
+	font-weight: normal;
+	color: grey;
+}
+
+/* container*/
+
+.imprimir {
+	position: absolute;
+	left: 20px;
+	width: 350px;
+	
+	color: grey-l;
+	background-color: rgba(white, 2);
+}
+
+.ticket-top{
+	top: 20px;
+	left: 20px;
+}
+
+/* top*/
+
+.ticket-header {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 20px 20px;
+	border-radius: 10px 10px 0 0;
+	color: white;
+	background-color:  #10221b;
+}
+
+.head-logo {
+	font-size: 20px;
+	font-weight: 700;
+}
+
+.head-flight {
+	font-size: 11px;
+	text-align: right;
+	text-transform: none;
+}
+
+/* body*/
+
+.ticket-body {
+	position: relative;
+	border-bottom: 1px dashed lighten(grey-l, 15%);
+	background-color: white;
+	border: 0.4rem solid #10221b;
+}
+
+.ticket-body::before,
+.ticket-body::after {
+	content: '';
+	position: absolute;
+	top: 100%;
+	width: 16px;
+	height: 16px;
+	border-radius: 8px;
+	background-color: red-d;
+}
+
+.ticket-body::before {
+	right: 100%;
+	transform: translate(8px, -8px);
+}
+
+.ticket-body::after {
+	left: 100%;
+	transform: translate(-8px, -8px);
+}
+
+.locations,
+.info,
+.flight {
+	display: flex;
+	align-items: center;
+}
+
+.body-info {
+	padding: 0px 35px;
+}
+
+.locations {
+	padding: 20px 35px;
+	border-bottom: 1px solid lighten(grey-l, 15%);
+}
+
+.loc-depart,
+.loc-direction,
+.loc-arrive {
+	flex-grow: 1;
+	flex-shrink: 0;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.loc-arrive	h1 {
+	font-weight: 300;
+	color: grey;
+}
+
+.arrow	{
+	position: relative;
+	display: inline-block;
+	width: 20px;
+	height: 2px;
+	background-color: #10221b;
+}
+
+.arrow::before,
+.arrow::after {
+	content: '';
+	position: absolute;
+	width: 15px;
+	height: 2px;
+	background-color: #10221b;
+}
+
+.arrow::before {
+	transform: rotate(45deg);
+	transform-origin: 12px -5px;
+}
+
+.arrow::after {
+	transform: rotate(-45deg);
+	transform-origin: 12px 7px;
+}
+
+.info {
+	margin-bottom: 30px;
+	justify-content: space-between;
+}
+
+.info-name,
+.info-seat {
+	text-transform: uppercase;
+}
+
+.info	h2 {
+	text-transform: none;
+}
+
+.info-seat {
+	text-align: left;
+}
+
+.info-seat ul {
+	text-align: left;
+}
+
+.info-seat h2{
+	text-align: left;
+}
+
+.flight {
+	
+	justify-content: space-between;
+	text-transform: uppercase;
+}
+	
+.flight h2 {
+	text-transform: none;
+}
+
+.btn {
+	margin-top: 1rem;
+	display: inline-block;
+	border: 0.2rem solid #ffffff;
+	color: #ffffff;
+	cursor: pointer;
+	background: none;
+	font-size: 1.7rem;
+	padding: 1rem 3rem;
+}
+		  
+.btn:hover {
+	background: #ffffff;
+	color: #10221b;
+}
+		  
+/* bottom*/
+
+.ticket-bottom {
+	border-radius: 0 0 10px 10px;
+	background-color: white;
+}
+
+.bottom-info {
+	padding: 20px 35px;
+}
+
+.depart {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 20px;
+	text-transform: uppercase;
+}
+
+.depart	h2 {
+	text-transform: none;
+}
+    
+.depart-barcode { 
+	width: 100%;
+	height: 45px;
+	background: linear-gradient(
+			to right,
+			#000 0%, #000 20%,
+			#fff 20%, #fff 40%,
+			#000 40%, #000 50%,
+			#fff 50%, #fff 70%,
+			#000 70%, #000 90%,
+			#fff 90%, #fff 100%
+		);
+
+	background-size: 7.5% 100%;
+}
+
+.botones{
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+	margin-bottom: .5rem;
+}
+
+.btn {
+	margin-top: 1rem;
+	display: inline-block;
+	border: 0.2rem solid #10221b;
+	color: #10221b;
+	cursor: pointer;
+	background: none;
+	font-size: 1rem;
+	padding: 1rem 3rem;
+}
+
+.btn:hover {
+	background: #10221b;
+	color: #fff;
+}
+  

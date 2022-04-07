@@ -1,0 +1,22 @@
+<h3>Iniciar sesion</h3>
+
+<div>
+  <form (ngSubmit)="enviar($event)">
+    <label for="fname">Usuario</label>
+    <input type="text" id="fname" name="firstname" placeholder="Your name..">
+
+    <label for="lname">Contraseña</label>
+    <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+
+    <label for="tipo">Tipo de usuario</label>
+    <select name="tipo" [(ngModel)]="data.tipo">
+      <option value="">Seleccione</option>
+      <option value="cliente">Cliente</option>
+      <option value="taxista">Taxista</option>
+      <option value="admin">Administrativo</option>
+    </select> 
+
+    <input type="submit" value="Iniciar Sesión">
+  </form> 
+ 
+</div>

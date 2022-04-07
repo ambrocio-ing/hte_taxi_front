@@ -1,0 +1,77 @@
+<div class="imprimir" style="margin-top: 1rem;">
+	<div class="ticket-top" #imprimir>
+		<!-- head -->
+		<div class="ticket-header">
+			<div class="head-logo">
+				TICKET
+			</div>
+			<div *ngIf="codigo" class="head-flight">
+				{{codigo}}
+			</div>
+		</div>
+		<!-- /head -->
+
+		<!-- body -->
+		<div class="ticket-body">
+			<span *ngIf="!pago?.idpago" style="color: red;">No se pudo recuperar datos del comprobante</span>
+			<div *ngIf="pago?.idpago" class="body-info">
+				<!-- name/seat -->
+				<div class="info">
+					<div class="info-name">
+						USUARIO(A):
+						<h2>
+							{{pago.taxista.nombre}}, {{pago.taxista.apellidos}}
+						</h2>
+					</div>
+					<div class="info-seat">
+						DNI:
+						<h2>
+							{{pago.taxista.dni}}
+						</h2>
+					</div>
+				</div>
+                <div class="info">
+                    CODIGO:
+                    <h2>{{pago.codigo}}</h2>
+                </div>
+				<div class="info">
+					ESTADO:
+					<h2>{{pago.estado}}</h2>
+				</div>
+				<!-- /name/seat -->
+				<!-- flight -->
+				<div class="flight">
+					<div class="flight-info">
+						FECHA:
+						<h2>{{pago.fecha | date: 'dd/MM'}}</h2>
+					</div>					
+                    
+					<div class="flight-depart-time">
+						MONTO TOTAL:
+						<h2>S/. {{pago.total}}</h2>
+					</div>
+				</div>
+				<!-- /flight -->
+			</div>			
+			
+		</div>
+		<div class="ticket-header" style="border-radius: 0px 0px 10px 10px;">
+
+		</div>
+	</div>
+	
+	<div class="botones">
+		<div class="head-logo">
+			<abbr title="Descargar ticket">
+				<a (click)="imprimirya()" class="btn" style="padding: 0.3rem; cursor: pointer;">
+					<img style="width: 50px; height: 50px; " src="./assets/img/descargar.png">
+				</a>
+			</abbr>
+		</div>
+		<div class="head-logo">
+			<a (click)="inicio()" class="btn" style="cursor: pointer; text-align: right;">Finalizar</a>
+		</div>
+		
+	</div>
+	<h6>Por favor no olvidar descargar su ticket, en caso de que no aparezca los datos completos recargar la pagina.</h6>
+</div>

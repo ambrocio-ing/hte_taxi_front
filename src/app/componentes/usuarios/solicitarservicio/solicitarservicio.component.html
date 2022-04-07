@@ -1,0 +1,21 @@
+<div class="contenedor">
+    <h2>SOLICITAR SERVICIO</h2>
+    <form>
+        <label>TIPO DE SERVICIO:</label>
+        <select class="form-control" required>
+            <option value="">--Selecionar Tipo--</option>
+            <option value="">Transporte</option>
+            <option value="">Envio de Prducto</option>
+        </select> 
+        <label for="">Origen:</label>
+        <input type="text" class="form-control">
+        <p *ngIf=""> Datos requeridos</p>
+        <label for="">Destino:</label>
+        <input type="text" class="form-control">
+        <p *ngIf=""> Datos requeridos</p>
+        <label for="detalle">Referencia:</label>
+        <textarea rows="4" type="text" class="form-control"></textarea>
+        <p *ngIf=""> Especifique si tiene algun anteceden policial</p>
+    </form>
+    <button>Solicitar</button>
+</div>

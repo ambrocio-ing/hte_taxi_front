@@ -1,0 +1,109 @@
+<div class="wrapper">
+    <div class="conductor">
+        <img class="img-perfil" *ngIf="!loginService.usuario?.fotoPerfil" src="../../../../assets/img/perfil.jpg"
+            alt="">
+        <img class="img-perfil" *ngIf="loginService.usuario?.fotoPerfil"
+            src="{{url_backend}}/obtener/imagen/{{loginService.usuario.fotoPerfil}}" alt="">
+        <!--<h4 (click)="irPerfil2()">Usuario: - 28192813</h4>-->
+        <div class="btn-group">
+            <button type="button" class="btn btn-danger">{{nombreUsuario}}</button>
+            <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" (click)="verSolicitudes()">Ver solicitudes</a></li>
+                <li><a class="dropdown-item"></a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a (click)="cerrarSesion()" class="dropdown-item">Serrar Sesión</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="wrapper">
+    <div class="card">
+        <div class="card-header">
+            <h4 *ngIf="!estadoPago">Su facturación estará disponible al transcurso de los 15 días desde el último día de
+                pago</h4>
+            <h4 *ngIf="estadoPago">Efectuar pago</h4>
+        </div>
+        <div class="card-body" *ngIf="estadoPago">
+            <div class="row" *ngIf="pago?.idpago">    
+                <div class="col-sm">
+                    <ul class="list-group">
+                        <li class="list-group active">
+                            Nueva facturación
+                        </li>
+                        <li class="list-group-item">
+                            <span style="color: blue;">Fecha de creación : </span> {{pago.fecha}}
+                        </li>
+                        <li class="list-group-item">
+                            <span style="color: blue;">Estado : </span> {{pago.estado}}
+                        </li>
+                        <li class="list-group-item"><span style="color: blue;">
+                            Sub total : </span>s/. {{pago.subtotal}}
+                        </li>
+                        <li class="list-group-item">
+                            <span style="color: blue;">Nota : </span><span>La comisión solo se te cargará si pagas con alguna targeta</span>
+                            <span style="color: blue;">Comisión 4.20% + $ 0.30 + IGV : </span> {{comision}}
+                        </li>
+                        <li class="list-group-item">
+                            <span style="color: blue;">Total : </span> s/. {{pago.total}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="wrapper">
+                    <div class="form-group">
+                        <label>Forma de pago</label>
+                        <select (change)="seleccionFormaPago($event)" class="form-control">
+                            <option value="">--Seleccione--</option>
+                            <option value="Visa">Visa / Master Card</option>
+                            <option value="American">American Express</option>
+                            <option value="Diners">Diners Club</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="wrapper">
+                    <button (click)="continuar()" class="btn btn-outline-primary">Continuar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="wrapper">
+    <div>
+        <h5>Historial de pagos</h5>
+        <table style="width: 100%;" class="table table-striped">
+            <thead>
+                <tr>
+                    <td colspan="2">Busqueda</td>
+                    <td>
+                        <input type="date" name="fecha" [(ngModel)]="data.fecha">
+                    </td>
+                    <td>
+                        <button (click)="buscar()" class="btn btn-outline-green">Buscar</button>
+                    </td>
+                </tr>
+                <tr bgcolor="skyblue">
+                    <th scope="col">#</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Codigo</th>
+                    <th scope="col">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pago of pagos">
+                    <td>{{pago.idpago}}</td>
+                    <td>{{pago.fecha | date: 'dd/MM'}}</td>
+                    <td>{{pago.codigo}}</td>
+                    <td>{{pago.total}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

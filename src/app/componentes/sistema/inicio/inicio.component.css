@@ -1,0 +1,363 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    text-transform: capitalize;
+    -webkit-transition: .2s linear;
+    transition: .2s linear;
+    
+  }
+  
+section {
+    padding: 0.5rem 5%;
+  }
+  
+  .btn {
+    margin-top: 2rem;
+    display: inline-block;
+    border: 0.2rem solid red;
+    color: black;
+    cursor: pointer;
+    background: none;
+    font-size: 1rem;
+    padding: 1rem 3rem;
+  }
+  
+  .btn:hover {
+    background: #ff0000;
+    color: #fff;
+  }
+  
+  
+  .heading {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-size: 2rem;
+    color: red;
+  }
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0.5rem 2%;
+    z-index: 1000;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    background: rgb(0, 0, 0);
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  
+  .header.active {
+    background: #fff;
+    -webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  }
+  
+  .header .logo {
+    margin-right: auto;
+    font-size: 2rem;
+    color: #ff0000;
+    font-weight: bolder;
+  }
+  .header .logo span{
+    color: white;
+  }
+  
+
+  
+  .header .navbar a {
+    margin-left: 2rem;
+    font-size: 1.2rem;
+    color: #ffffff;
+    cursor: pointer;
+  }
+  
+  .header .navbar a:hover {
+    color: #219150;
+  }
+  
+  .header .navbar #nav-close {
+    font-size: 2rem;
+    cursor: pointer;
+    color: #10221b;
+    display: none;
+  }
+  
+  .header .icons a,
+  .header .icons div {
+    font-size: 2rem;
+    margin-left: 2rem;
+    cursor: pointer;
+    color: #10221b;
+  }
+  
+  .header .icons a:hover,
+  .header .icons div:hover {
+    color: #219150;
+  }
+  
+  .header #menu-btn {
+    display: none;
+  }
+  .home{
+      min-height: 100vh;
+      background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)), url(../../../../assets/img/portal.png) no-repeat;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-flow: column;
+      clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+  }
+  
+  .home h1{
+      font-size: 3rem;
+      color:#fff;
+      text-align: center;
+      text-shadow: 0 .3rem .5rem #000;
+      padding:0 1rem;
+      text-transform: none;
+  }
+  
+  .home .btn{
+      box-shadow: 0 .3rem .5rem #000;
+      color:#fff;
+  }
+  
+.category .heading{
+    font-size: 3rem;
+    padding-top: 2rem;
+    color: red;
+    text-transform: uppercase;
+  }
+  .category .box-container {
+    display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: auto;
+      grid-template-columns: auto;
+  gap: 1.5rem;
+    
+  }
+  
+  .category .box-container .box {
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  .category .box-container .box img {
+    height: 15rem;
+    width: 15rem;
+    background-size: cover;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+  }
+  
+  .category .box-container .box h3 {
+    font-size: 2rem;
+    color: red;
+    text-transform: uppercase;
+
+  }
+  
+  .category .box-container .box p {
+    font-size: 2rem;
+    color: black;
+    padding: 0.5rem;
+    line-height: 2;
+    text-transform: none;
+  }
+  
+.icons-container{
+  min-height: auto;
+  padding-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.icons-container .icons{
+  display: flex;
+  align-items: center;
+  margin:2rem;
+  width:23rem;
+}
+
+.icons-container .icons img{
+width: 4rem;
+height: 4rem;
+}
+
+.icons-container .icons .info{
+  padding-left: 1rem;
+}
+
+.icons-container .icons .info h3{
+  font-size: 2rem;
+  text-transform: none;
+  color:red;
+}
+
+.icons-container .icons .info p{
+  font-size: 1.2rem;
+  color:#666;
+  text-transform: none;
+}
+
+.service{
+  background: #f0f0f0;
+  
+}
+.service .heading{
+  font-size: 4rem;
+  padding-top: 1rem;
+  text-transform: uppercase;
+}
+.service .description {
+  padding-top: 1rem;
+  font-size: 2rem;
+  text-transform: none;
+  justify-content: baseline;
+  
+}
+
+.service .box-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding:2rem 0;
+}
+
+.service .box-container .box{
+  background:#fff;
+  border:.1rem solid rgba(0,0,0,.1);
+  padding:3rem;
+  margin:1.5rem;
+  width:32rem;
+}
+
+.service .box-container .box:hover{
+  box-shadow: 0 1rem 2rem rgba(0,0,0,.1);
+}
+
+.service .box-container .box img{
+  width:7rem;
+  margin:2rem 0;
+}
+
+.service .box-container .box h3{
+  font-size: 2rem;
+  color:red;
+  text-transform: none;
+}
+
+.service .box-container .box p{
+  font-size: 1.4rem;
+  color:#999;
+  padding:1rem 0;
+  text-transform: none;
+}
+
+.process{
+  background:#f9f9f9;
+  text-align: center;
+  text-transform: uppercase;
+}
+.process .heading{
+  font-size: 4rem;
+  padding-top: 1rem;
+  text-transform: uppercase;
+}
+.process .description {
+  padding-top: 1rem;
+  font-size: 2rem;
+  text-transform: none;
+  justify-content: baseline;
+  
+}
+
+.process .box-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding:2rem 0;
+}
+
+.process .box-container .box{
+  margin:1.5rem;
+  padding:3rem;
+  background:#fff;
+  border:.1rem solid rgba(0,0,0,.1);
+  margin-top: 5rem;
+  width:32rem;
+}
+
+.process .box-container .box span{
+  color:white;
+  border:.2rem solid rgb(0, 0, 0);
+  display: block;
+  height:6rem;
+  width:6rem;
+  line-height: 6rem;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 2.5rem;
+  background:#ff0000c7;
+  margin:0 auto;
+  margin-top: -6rem;
+}
+
+.process .box-container .box h3{
+  color:var(--blue);
+  font-size: 2rem;
+  margin-top: 1rem;
+  text-transform: none;
+}
+
+.process .box-container .box p{
+  color:#999;
+  font-size: 1.2rem;
+  padding:1rem;
+  text-transform: none;
+}
+
+@media (max-width: 376px) {
+  
+  .home h1{
+
+    padding-top: 1rem;
+    font-size: 2.3rem;
+
+  }
+  .category .heading{
+    font-size: 1.8rem;
+    padding-top: 1rem;
+    color: #219150;
+    text-transform: uppercase;
+  }
+ 
+  .service .heading{
+    font-size: 1.8rem;
+    padding-top: 1rem;
+    padding-left: 0;
+    text-transform: uppercase;
+  }
+  .process .heading{
+    font-size: 2rem;
+    padding-top: 1rem;
+    text-transform: uppercase;
+  }
+}

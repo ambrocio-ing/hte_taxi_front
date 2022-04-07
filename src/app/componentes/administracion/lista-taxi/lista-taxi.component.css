@@ -1,0 +1,28 @@
+.contenedor{
+    width: 100%;
+    margin: 2px 2px 2px 2px;
+    
+}
+
+.perfil{
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: green solid 2px;
+}
+
+.aaccion{
+    cursor: pointer;    
+}
+
+.img-accion{
+    width: 25px;
+    height: 25px;    
+}
+
+.img-ver{
+    width: 25px;
+    height: 25px;   
+    border: blue solid 2px; 
+    border-radius: 3px;
+}

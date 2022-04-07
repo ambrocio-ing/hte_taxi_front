@@ -1,0 +1,73 @@
+<div class="wrapper">
+    <div class="cabecera">
+        <img (click)="solicitar()" class="img-flecha" src="../../../../assets/img/flecha.png" alt="">
+        <img class="img-perfil" *ngIf="!loginService.usuario?.fotoPerfil" src="../../../../assets/img/perfil.jpg" alt="">
+        
+        <img class="img-perfil" *ngIf="loginService.usuario?.fotoPerfil && reclamoCliente"
+            src="{{url_cliente}}/obtener/imagen/{{loginService.usuario.fotoPerfil}}" alt="">
+
+        <img class="img-perfil" *ngIf="loginService.usuario?.fotoPerfil && reclamoTaxista"
+            src="{{url_taxista}}/obtener/imagen/{{loginService.usuario.fotoPerfil}}" alt="">
+        <!-- Example split danger button <a (click)="irPerfil()"></a> -->
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-danger">{{nombreUsuario}}</button>
+            <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                <li *ngIf="reclamoCliente"><a class="dropdown-item" (click)="solicitar()">Solicitar taxi</a></li>
+                <li *ngIf="reclamoTaxista"><a class="dropdown-item" (click)="versolicitudes()">Ver solicitudes</a></li>
+                
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a (click)="cerrarSesion()" class="dropdown-item">Serrar Sesión</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="wrapper">    
+    <div class="card">
+        <div class="card-header">
+            <h6>Fundamente su reclamo</h6>
+        </div>
+        <div class="card-body">
+            <form (ngSubmit)="enviar()" #asForm="ngForm">
+                <div *ngIf="reclamoCliente">
+                    <div class="form-group">
+                        <span style="color:blue">Reportar a: </span>
+                        <span> {{reclamo.taxista.nombre}}, {{reclamo.taxista.apellidos}}</span>                        
+                    </div>               
+                </div>
+                <div *ngIf="reclamoTaxista">
+                    <div class="form-group">
+                        <span style="color:blue">Reportar a: </span>
+                        <span>{{reclamo.cliente.nombre}}, {{reclamo.cliente.apellidos}}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Fundamento</label>
+                    <textarea rows="5" name="descripcion" [(ngModel)]="reclamo.descripcion" required="true"
+                        maxlength="255" #asDescripcion="ngModel" class="form-control"></textarea>
+                    <div *ngIf="asDescripcion.invalid && (asDescripcion.touched || asDescripcion.dirty)">
+                        <div *ngIf="asDescripcion.errors?.['required']">
+                            <span style="color: red;">
+                                Campo requerido
+                            </span>
+                        </div>
+                        <div *ngIf="asDescripcion.errors?.['maxlength']">
+                            <span style="color: red;">
+                                No supere 255 letras
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group wrapper">
+                    <input [disabled]="!asForm.form.valid" type="submit" class="btn btn-outline-primary" value="Enviar">
+                </div>
+            </form>  
+        </div>
+    </div>
+</div>

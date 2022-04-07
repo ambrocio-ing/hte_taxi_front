@@ -1,0 +1,32 @@
+.wrapper{
+    padding: .5rem;
+    display: flex;    
+    justify-content: center;
+}
+
+.cabecera{
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: (minmax(1rem, 1fr))[auto-fit];
+    grid-template-columns: repeat(auto-fit, minmax(1rem, 1fr));
+    gap: 1rem;
+    width: 100%;
+    background: rgb(248, 117, 117);
+    color: white;
+}
+
+.img-perfil{
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: auto;
+    border-radius: 50% ;
+    border: 2.5px solid rgb(0, 253, 0);
+}
+
+.img-flecha{
+    width: 30px;
+    height: 30px;
+    margin: auto;
+    border-radius: 50% ;
+    cursor: pointer;
+}

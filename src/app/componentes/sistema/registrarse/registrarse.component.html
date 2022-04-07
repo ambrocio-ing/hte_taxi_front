@@ -1,0 +1,771 @@
+<div class="contenedor div_style">
+    <h2>SOLICITAR REGISTRO</h2>
+
+    <label>Tipo de usuario:</label>
+    <select class="form-control" (change)="tipoUsuario($event)">
+        <option value="">--Selecionar Tipo--</option>
+        <option value="cliente">Cliente</option>
+        <option value="taxista">Conductor</option>
+    </select>
+</div>
+
+<div *ngIf="estadoCliente" class="contenedor div_style">
+    <h2>FORMULARIO PARA USUARIO</h2>
+    <form (ngSubmit)="enviarCliente()" #asFPersona="ngForm">
+
+        <label>Documento:</label>
+        <select class="form-control" (change)="tipoDocumentoCliente($event)">
+            <option value="">--Selecionar Tipo--</option>
+            <option value="dni">DNI</option>
+            <option value="carnet">Carnet de Extranjeria</option>
+        </select>
+
+        <div *ngIf="estadoDni">
+            <label for="">N° de Documento</label>
+            <input type="text" name="dni" [(ngModel)]="cliente.persona.dni" required pattern="^[0-9]\d{7,7}$"
+                #asDni="ngModel" class="form-control">
+            <div *ngIf="asDni.invalid && (asDni.dirty || asDni.touched)">
+                <div *ngIf="asDni.errors?.['required']">
+                    <span>
+                        Campo requerido
+                    </span>
+                </div>
+                <div *ngIf="asDni.errors?.['pattern']">
+                    <span>
+                        Ingrese número de 8 dígitos
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="estadoCarnet">
+            <label for="">N° de carnet</label>
+            <input type="text" name="dni" [(ngModel)]="cliente.persona.dni" required pattern="^[0-9]\d{11,11}$"
+                #asDni="ngModel" class="form-control">
+            <div *ngIf="asDni.invalid && (asDni.dirty || asDni.touched)">
+                <div *ngIf="asDni.errors?.['required']">
+                    <span>
+                        Campo requerido
+                    </span>
+                </div>
+                <div *ngIf="asDni.errors?.['pattern']">
+                    <span>
+                        Ingrese número de 12 dígitos
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="nombre">Nombres:</label>
+            <input type="text" name="nombre" [(ngModel)]="cliente.persona.nombre" #asNombre="ngModel" required
+                class="form-control">
+            <div *ngIf="asNombre.invalid && asNombre.touched">
+                <div *ngIf="asNombre.errors?.['required']">
+                    <span>
+                        Campo requerido
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="apellidos">Apellidos:</label>
+            <input type="text" name="apellidos" [(ngModel)]="cliente.persona.apellidos" #asApellidos="ngModel" required
+                class="form-control">
+            <div *ngIf="asApellidos.invalid && asApellidos.touched">
+                <div *ngIf="asApellidos.errors?.['required']">
+                    <span>
+                        Campo requerido
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="text" name="email" [(ngModel)]="cliente.persona.email" #asEmail="ngModel" required
+                pattern='^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
+                class="form-control">
+            <div *ngIf="asEmail.invalid && (asEmail.touched || asEmail.dirty)">
+                <div *ngIf="asEmail.errors?.['required']">
+                    <span>
+                        Campo requerido
+                    </span>
+                </div>
+                <div *ngIf="asEmail.errors?.['pattern']">
+                    <span>
+                        Debe ser un email válido
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="genero">Género:</label>
+            <select name="genero" [(ngModel)]="cliente.persona.genero" #asGenero="ngModel" required
+                class="form-control">
+                <option value="">--Selecionar--</option>
+                <option value="F">Femenino</option>
+                <option value="M">Masculino</option>
+                <option value="O">No definido</option>
+            </select>
+            <div *ngIf="asGenero.invalid && asGenero.touched">
+                <div *ngIf="asGenero.errors?.['required']">
+                    <span>
+                        Campo requerido
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="edad">Edad:</label>
+            <input type="number" name="edad" [(ngModel)]="cliente.persona.edad" #asEdad="ngModel" required min="15"
+                max="80" class="form-control">
+            <div *ngIf="asEdad.invalid && (asEdad.touched || asEdad.dirty)">
+                <div *ngIf="asEdad.errors?.['required']">
+                    <span>
+                        Campo requerido
+                    </span>
+                </div>
+                <div *ngIf="asEdad.errors?.['min']">
+                    <span>
+                        Edad mínimo 15
+                    </span>
+                </div>
+                <div *ngIf="asEdad.errors?.['max']">
+                    <span>
+                        Edad máximo 80
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="celular">Celular:</label>
+            <input type="tel" name="telefono" [(ngModel)]="cliente.persona.telefono" #asTelefono="ngModel" required
+                class="form-control" pattern="^[0-9]\d{8,8}$">
+            <div *ngIf="asTelefono.invalid && (asTelefono.touched || asTelefono.dirty)">
+                <div *ngIf="asTelefono.errors?.['required']">
+                    <span>
+                        Campo requerido
+                    </span>
+                </div>
+                <div *ngIf="asTelefono.errors?.['pattern']">
+                    <span>
+                        Ingrese número de 9 dígitos
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="direccion">Dirección(Opcional):</label>
+            <input type="text" name="direccion" [(ngModel)]="cliente.persona.direccion" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="fotoPerfil">Foto de Perfil(Puede actualizar luego):</label>
+            <!--<input type="hidden" name="fotoPerfil" [(ngModel)]="cliente.persona.fotoPerfil">-->
+            <input type="file" (change)="capturarFotoPerfil($event)" class="form-control">
+            <span *ngIf="foto_perfil_error">
+                {{foto_perfil_error}}
+            </span>
+        </div>
+
+        <div class="form-group">
+            <!--Foto del documento no necesario-->
+            <input type="hidden" name="fotoDni" [(ngModel)]="cliente.persona.fotoDni" class="form-control">
+        </div>
+
+        <div class="from-group">
+            <label for="username">Nombre de Usuario</label>
+            <input type="text" name="username" [(ngModel)]="cliente.usuario.username" #asUsername="ngModel" required
+                minlength="4" maxlength="15" class="from-control">
+            <div *ngIf="asUsername.invalid && (asUsername.touched || asUsername.dirty)">
+                <div *ngIf="asUsername.errors?.['required']">
+                    <span>
+                        Campo requerido
+                    </span>
+                </div>
+                <div *ngIf="asUsername.errors?.['minlength']">
+                    <span>
+                        4 carácteres como mínimo
+                    </span>
+                </div>
+                <div *ngIf="asUsername.errors?.['maxlength']">
+                    <span>
+                        15 carácteres como máximo
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="from-group">
+            <label for="password">Contraseña</label>
+            <input type="password" name="password" [(ngModel)]="cliente.usuario.password" #asPassword="ngModel" required
+                minlength="8" maxlength="15" class="form-control">
+            <div *ngIf="asPassword.invalid && (asPassword.touched || asPassword.dirty)">
+                <div *ngIf="asPassword.errors?.['required']">
+                    <span>
+                        Campo requerido
+                    </span>
+                </div>
+                <div *ngIf="asPassword.errors?.['minlength']">
+                    <span>
+                        8 carácteres como mínimo
+                    </span>
+                </div>
+                <div *ngIf="asPassword.errors?.['maxlength']">
+                    <span>
+                        15 carácteres como máximo
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <button [disabled]="!asFPersona.form.valid || validarImagen" class="btn btn-primary" type="submit">Registrar</button>
+
+    </form>
+
+</div>
+
+
+<div *ngIf="estadoTaxista">
+
+    <form (ngSubmit)="enviarTaxista()" #asFTaxista="ngForm">
+        <div class="contenedor div_style">
+
+            <h2>FORMULARIO PARA CONDUCTOR</h2>
+
+            <label>Documento:</label>
+            <select class="form-control" (change)="tipoDocumentoTaxista($event)">
+                <option value="">--Selecionar Tipo--</option>
+                <option value="dni">DNI</option>
+                <option value="carnet">Carnet de Extranjeria</option>
+            </select>
+
+            <div *ngIf="estadoDniT">
+                <label for="">N° de Documento</label>
+                <input type="text" name="dni" [(ngModel)]="taxista.persona.dni" required pattern="^[0-9]\d{7,7}$"
+                    #asDni="ngModel" class="form-control">
+                <div *ngIf="asDni.invalid && (asDni.dirty || asDni.touched)">
+                    <div *ngIf="asDni.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                    <div *ngIf="asDni.errors?.['pattern']">
+                        <span>
+                            Ingrese número de 8 dígitos
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="estadoCarnetT">
+                <label for="">N° de carnet</label>
+                <input type="text" name="dni" [(ngModel)]="taxista.persona.dni" required pattern="^[0-9]\d{11,11}$"
+                    #asDni="ngModel" class="form-control">
+                <div *ngIf="asDni.invalid && (asDni.dirty || asDni.touched)">
+                    <div *ngIf="asDni.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                    <div *ngIf="asDni.errors?.['pattern']">
+                        <span>
+                            Ingrese número de 12 dígitos
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="nombre">Nombres:</label>
+                <input type="text" name="nombre" [(ngModel)]="taxista.persona.nombre" #asNombre="ngModel" required
+                    class="form-control">
+                <div *ngIf="asNombre.invalid && asNombre.touched">
+                    <div *ngIf="asNombre.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="apellidos">Apellidos:</label>
+                <input type="text" name="apellidos" [(ngModel)]="taxista.persona.apellidos" #asApellidos="ngModel"
+                    required class="form-control">
+                <div *ngIf="asApellidos.invalid && asApellidos.touched">
+                    <div *ngIf="asApellidos.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="text" name="email" [(ngModel)]="taxista.persona.email" #asEmail="ngModel" required
+                    pattern='^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
+                    class="form-control">
+                <div *ngIf="asEmail.invalid && (asEmail.touched || asEmail.dirty)">
+                    <div *ngIf="asEmail.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                    <div *ngIf="asEmail.errors?.['pattern']">
+                        <span>
+                            Debe ser un email válido
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="genero">Género:</label>
+                <select name="genero" [(ngModel)]="taxista.persona.genero" #asGenero="ngModel" required
+                    class="form-control">
+                    <option value="">--Selecionar--</option>
+                    <option value="F">Femenino</option>
+                    <option value="M">Masculino</option>
+                    <option value="O">No definido</option>
+                </select>
+                <div *ngIf="asGenero.invalid && asGenero.touched">
+                    <div *ngIf="asGenero.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="edad">Edad:</label>
+                <input type="number" name="edad" [(ngModel)]="taxista.persona.edad" #asEdad="ngModel" required min="15"
+                    max="80" class="form-control">
+                <div *ngIf="asEdad.invalid && (asEdad.touched || asEdad.dirty)">
+                    <div *ngIf="asEdad.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                    <div *ngIf="asEdad.errors?.['min']">
+                        <span>
+                            Edad mínimo 15
+                        </span>
+                    </div>
+                    <div *ngIf="asEdad.errors?.['max']">
+                        <span>
+                            Edad máximo 80
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="celular">Celular:</label>
+                <input type="tel" name="telefono" [(ngModel)]="taxista.persona.telefono" #asTelefono="ngModel" required
+                    class="form-control" pattern="^[0-9]\d{8,8}$">
+                <div *ngIf="asTelefono.invalid && (asTelefono.touched || asTelefono.dirty)">
+                    <div *ngIf="asTelefono.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                    <div *ngIf="asTelefono.errors?.['pattern']">
+                        <span>
+                            Ingrese número de 9 dígitos
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="direccion">Direccion(Opcional):</label>
+                <input type="text" name="direccion" [(ngModel)]="taxista.persona.direccion" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="fotoPerfil">Foto de Perfil:</label>
+                <!--<input type="hidden" name="fotoPerfil" [(ngModel)]="taxista.persona.fotoPerfil">-->
+                <input type="file" (change)="capturarFoto_Perfil($event)" class="form-control">
+                <span *ngIf="perfilError">
+                    {{perfilError}}
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label for="fotoDni">Foto del DNI:</label>
+                <!--<input type="hidden" name="fotoDni" [(ngModel)]="taxista.persona.fotoDni">-->
+                <input type="file" (change)="capturarFoto_Dni($event)" class="form-control">
+                <span *ngIf="dniError">
+                    {{dniError}}
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label for="antecedentesPoliciales">Antecedentes Policiales</label>
+                <textarea rows="3" name="antecedentePolicial" [(ngModel)]="taxista.antecedentesPoliciales"
+                    #asAntecedentes="ngModel" required="true" maxlength="100" class="form-control"></textarea>
+                <div *ngIf="asAntecedentes.invalid && asAntecedentes.touched">
+                    <div *ngIf="asAntecedentes.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                    <div *ngIf="asAntecedentes.errors?.['maxlength']">
+                        <span>
+                            Máximo 100 letras
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="from-group">
+                <label for="username">Nombre de Usuario</label>
+                <input type="text" name="username" [(ngModel)]="taxista.usuario.username" #asUsername="ngModel" required
+                    minlength="4" maxlength="15" class="from-control">
+                <div *ngIf="asUsername.invalid && (asUsername.touched || asUsername.dirty)">
+                    <div *ngIf="asUsername.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                    <div *ngIf="asUsername.errors?.['minlength']">
+                        <span>
+                            4 carácteres como mínimo
+                        </span>
+                    </div>
+                    <div *ngIf="asUsername.errors?.['maxlength']">
+                        <span>
+                            15 carácteres como máximo
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="from-group">
+                <label for="password">Contraseña</label>
+                <input type="password" name="password" [(ngModel)]="taxista.usuario.password" #asPassword="ngModel"
+                    required minlength="8" maxlength="15" class="form-control">
+                <div *ngIf="asPassword.invalid && (asPassword.touched || asPassword.dirty)">
+                    <div *ngIf="asPassword.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                    <div *ngIf="asPassword.errors?.['minlength']">
+                        <span>
+                            8 carácteres como mínimo
+                        </span>
+                    </div>
+                    <div *ngIf="asPassword.errors?.['maxlength']">
+                        <span>
+                            15 carácteres como máximo
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="contenedor div_style">
+
+            <h2>Datos del Vehiculo:</h2>
+
+            <div class="form-group">
+                <label for="placa">Numero de placa:</label>
+                <input type="text" name="placa" [(ngModel)]="taxista.vehiculo.placa" #asPlaca="ngModel" required
+                    minlength="7" maxlength="7" class="form-control">
+                <div *ngIf="asPlaca.invalid && (asPlaca.touched || asPlaca.dirty)">
+                    <div *ngIf="asPlaca.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                    <div *ngIf="asPlaca.errors?.['minlength']">
+                        <span>
+                            Complete los 7 digitos
+                        </span>
+                    </div>
+                    <div *ngIf="asPlaca.errors?.['maxlength']">
+                        <span>
+                            Complete los 7 digitos
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <Label for="propiedad">Condición del vehiculo:</Label>
+                <select name="propiedad" (change)="validarPropietario($event)" [(ngModel)]="taxista.vehiculo.propiedad"
+                    #asPropiedad="ngModel" required class="form-control">
+                    <option value="">--Selecionar Tipo--</option>
+                    <option value="Propio">Propio</option>
+                    <option value="Alquilado">Alquilado</option>
+                </select>
+                <div *ngIf="asPropiedad.invalid && asPropiedad.touched">
+                    <div *ngIf="asPropiedad.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="codigoTargetaPropiedad">Codigo de tarjeta propiedad:</label>
+                <input type="text" name="codigoTargetaPropiedad" [(ngModel)]="taxista.vehiculo.codigoTargetaPropiedad"
+                    #asCodigoTP="ngModel" required minlength="6" maxlength="6" class="form-control">
+                <div *ngIf="asCodigoTP.invalid && (asCodigoTP.touched || asCodigoTP.dirty)">
+                    <div *ngIf="asCodigoTP.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                    <div *ngIf="asCodigoTP.errors?.['maxlength']">
+                        <span>
+                            Campo de 6 caracteres
+                        </span>
+                    </div>
+                    <div *ngIf="asCodigoTP.errors?.['minlength']">
+                        <span>
+                            Campo de 6 caracteres
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fotoTargetaPropiedad">Foto de tarjeta de propiedad:</label>
+                <input type="file" (change)="capturarFotoTargetaPropiedad($event)" class="form-control">
+                <span *ngIf="foto_targeta_propiedad_error">
+                    {{foto_targeta_propiedad_error}}
+                </span>
+            </div>
+
+            <div class="form-group">
+                <Label for="tipo">Tipo de vehiculo:</Label>
+                <select name="tipo" [(ngModel)]="taxista.vehiculo.tipo" #asTipo="ngModel" required class="form-control"
+                    required>
+                    <option value="">--Selecionar Tipo--</option>
+                    <option value="Mototaxi">Mototaxi</option>
+                    <option value="Automovil">Automovil</option>                   
+                </select>
+                <div *ngIf="asTipo.invalid && asTipo.touched">
+                    <div *ngIf="asTipo.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fotoVehiculo">Foto de vehiculo:</label>
+                <input type="file" (change)="capturarFotoVehiculo($event)" class="form-control">
+                <span *ngIf="foto_vehiculo_error">
+                    {{foto_vehiculo_error}}
+                </span>
+            </div>
+
+            <div class="form-group">
+                <label for="numeroSeguroVehiculo">Numero de seguro vehicular:</label>
+                <input type="text" name="numeroSeguroVehicular" [(ngModel)]="taxista.vehiculo.numeroSeguroVehicular"
+                    #asNumeroSV="ngModel" requird minlength="6" maxlength="6" class="form-control">
+                <div *ngIf="asNumeroSV.invalid && (asNumeroSV.touched || asNumeroSV.dirty)">
+                    <div *ngIf="asNumeroSV.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                    <div *ngIf="asNumeroSV.errors?.['minlength']">
+                        <span>
+                            Ingrese 6 caracteres
+                        </span>
+                    </div>
+                    <div *ngIf="asNumeroSV.errors?.['maxlength']">
+                        <span>
+                            Ingrese 6 caracteres
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="from-group">
+                <label for="companniaSeguro">Compañia del seguro:</label>
+                <input type="text" name="companniaSeguro" [(ngModel)]="taxista.vehiculo.companniaSeguro"
+                    #asCompanniaS="ngModel" require class="form-control">
+                <div *ngIf="asCompanniaS.invalid && asCompanniaS.touched">
+                    <div *ngIf="asCompanniaS.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="numeroPolicial">Numero policial:</label>
+                <input type="text" name="numeroPolicial" [(ngModel)]="taxista.vehiculo.numeroPolicial"
+                    #asNumeroP="ngModel" required minlength="6" maxlength="6" class="form-control">
+                <div *ngIf="asNumeroP.invalid && (asNumeroP.touched || asNumeroP.dirty)">
+                    <div *ngIf="asNumeroP.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                    <div *ngIf="asNumeroP.errors?.['minlength']">
+                        <span>
+                            Complete 6 caracteres
+                        </span>
+                    </div>
+                    <div *ngIf="asNumeroP.errors?.['maxlength']">
+                        <span>
+                            Complete 6 caracteres
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="codigoPermisoCirculacion">Codigo de permiso de circulacion:</label>
+                <input type="text" name="codigoPermisoCirculacion"
+                    [(ngModel)]="taxista.vehiculo.codigoPermisoCirculacion" #asCodigoPC="ngModel" required minlength="6"
+                    maxlength="6" class="form-control">
+                <div *ngIf="asCodigoPC.invalid && (asCodigoPC.touched || asCodigoPC.dirty)">
+                    <div *ngIf="asCodigoPC.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                    <div *ngIf="asCodigoPC.errors?.['minlength']">
+                        <span>
+                            Complete 6 dígitos
+                        </span>
+                    </div>
+                    <div *ngIf="asCodigoPC.errors?.['maxlength']">
+                        <span>
+                            Complete 6 dígitos
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion">Descripción</label>
+                <textarea name="descripcion" rows="3" [(ngModel)]="taxista.vehiculo.descripcion"
+                    #asDescripcion="ngModel" required maxlength="100"
+                    placeholder="Describa marca, color y otros detalles del vehiculo"></textarea>
+                <div *ngIf="asDescripcion.invalid && (asDescripcion.touched || asDescripcion.dirty)">
+                    <div *ngIf="asDescripcion.errors?.['required']">
+                        <span>
+                            Campo requerido
+                        </span>
+                    </div>
+                    <div *ngIf="asDescripcion.errors?.['maxlength']">
+                        <span>
+                            No supere las 100 letras
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="contenedor div_style">
+
+            <div *ngIf="estadoPropiedad" class="form-group">
+                <h2>Datos del Propietario del vehiculo:</h2>
+                <br>
+                <span>
+                    NOTA: En caso de que el propietario ya se encuentre registrado
+                    en el sistema solo ingrese su documento de identidad y el sistema
+                    se encargara de comparar datos y validar
+                </span>
+                <div class="form-group">
+                    <label>Documento:</label>
+                    <select (change)="tipoDocumentoPropiedad($event)" class="form-control">
+                        <option value="">--Selecionar Tipo--</option>
+                        <option value="dni">DNI</option>
+                        <option value="carnet">Carnet de Extranjeria</option>
+                    </select>
+                </div>
+
+                <div *ngIf="estadoDniP">
+                    <label for="documento">N° de Documento</label>
+                    <input type="text" name="documento" [(ngModel)]="taxista.vehiculo.vehiculoPropietario.documento"
+                        required pattern="^[0-9]\d{7,7}$" #asDocumento="ngModel" (keyup)="buscarDocumento($event)"
+                        class="form-control">
+                    <div *ngIf="asDocumento.invalid && (asDocumento.dirty || asDocumento.touched)">
+                        <div *ngIf="asDocumento.errors?.['required']">
+                            <span>
+                                Campo requerido
+                            </span>
+                        </div>
+                        <div *ngIf="asDocumento.errors?.['pattern']">
+                            <span>
+                                Ingrese número de 8 dígitos
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="estadoCarnetP">
+                    <label for="documento">N° de carnet</label>
+                    <input type="text" name="documento" [(ngModel)]="taxista.vehiculo.vehiculoPropietario.documento"
+                        required pattern="^[0-9]\d{11,11}$" #asDocumento="ngModel" (keyup)="buscarDocumento($event)"
+                        class="form-control">
+                    <div *ngIf="asDocumento.invalid && (asDocumento.dirty || asDocumento.touched)">
+                        <div *ngIf="asDocumento.errors?.['required']">
+                            <span>
+                                Campo requerido
+                            </span>
+                        </div>
+                        <div *ngIf="asDocumento.errors?.['pattern']">
+                            <span>
+                                Ingrese número de 12 dígitos
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nombres">Nombre y Apellidos:</label>
+                    <input type="text" name="nombres" [(ngModel)]="taxista.vehiculo.vehiculoPropietario.nombres"
+                        #asNombres="ngModel" required class="form-control">
+                    <div *ngIf="asNombres.invalid && asNombres.touched">
+                        <div *ngIf="asNombres.errors?.['required']">
+                            <span>
+                                Campo requerido
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="archivo">Foto del documento:</label>
+                    <input #asFotoDocumento type="file" (change)="capturarFotoDocumentoPropiedatario($event)"
+                        class="form-control">
+                    <span *ngIf="foto_documento_propietario_error">
+                        {{foto_documento_propietario_error}}
+                    </span>
+                </div>
+            </div>
+
+            <input type="checkbox" name="remember" (change)="cambiarya()"> <a style="color: white;">Acepto terminos y condiciones</a>
+
+            <button [disabled]="!asFTaxista.form.valid || activarOno()" class="btn btn-primary form-control"
+                type="submit">Registrar</button>
+
+        </div>
+
+    </form>
+
+</div>

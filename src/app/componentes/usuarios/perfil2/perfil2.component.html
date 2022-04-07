@@ -1,0 +1,50 @@
+<div class="stilo-modal">
+    <div class="">
+        <div class="perfil">
+            <div style="background: black;">
+                <span (click)="cerrar_perfil()" style="margin-left: 90%; font-weight: bold; font-size: 20px; color: red; cursor: pointer;">X</span>
+            </div>  
+            <div class="encabezado">
+
+                <img *ngIf="loginService.usuario?.fotoPerfil"
+                    src="{{url_backend}}/obtener/imagen/{{loginService.usuario.fotoPerfil}}" alt="">
+                <img *ngIf="!loginService.usuario?.fotoPerfil" src="../../../../assets/img/perfil.jpg" alt="">
+                <span> </span>                
+                <h6>Coenctado(a)</h6>
+               
+            </div>
+            <h2 style="margin-top: 15px;">Mis datos:</h2>
+            <div *ngIf="smtaxista?.idtaxista" class="misdatos">
+        
+                <div class="datos">
+                    <h4>Documento:</h4>
+                    <h5 style="color: blue;"> --> {{smtaxista.dni}}</h5>
+                </div>
+                <div class="datos">
+                    <h4>Nombres:</h4>
+                    <h5 style="color: blue;"> --> {{smtaxista.nombre}}</h5>
+                </div>
+        
+                <div class="datos">
+                    <h4>Apellidos:</h4>
+                    <h5 style="color: blue;"> --> {{smtaxista.apellidos}}</h5>
+                </div>
+                <!--<div class="datos">
+                    <h4>Celular:</h4>
+                    <h5 style="color: blue;">  {{smtaxista.telefono}}</h5>
+                </div>-->
+        
+                <div class="datos">
+                    <h4>Email:</h4>
+                    <h5 style="color: blue;"> --> {{loginService.usuario.email}}</h5>
+                </div>
+        
+            </div>
+            <div>
+                <span style="color: red;" *ngIf="mensajeTaxista">{{mensajeTaxista}}</span>
+            </div>            
+        
+        </div>
+    </div>
+    
+</div>

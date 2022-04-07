@@ -1,0 +1,63 @@
+<div class="stilo-modal" *ngIf="estadoModal">
+    <div class="wrapper">
+        <div class="card">
+            <div class="card-header">
+                <div class="cerrar">
+                    <h5>Detalle del taxista</h5>
+                    <span (click)="cerrarVentana()">X</span>
+                </div>
+            </div>
+            <div class="card-body">                
+                <ul *ngIf="taxista?.idtaxista" class="list-group">
+                    <li class="list-group-item active">
+                        DATOS PERSONALES
+                    </li>
+                    <li class="list-group-item"><span>DNI: </span> {{taxista.persona.dni}}</li>
+                    <li class="list-group-item"><span>NOMBRES: </span> {{taxista.persona.nombre}}, {{taxista.persona.apellidos}}</li>
+                    <li class="list-group-item"><span>EMAIL: </span>{{taxista.persona.email}}</li>
+                    <li class="list-group-item"><span>GENERO: </span>{{taxista.persona.genero}} <span>EDAD: </span> {{taxista.persona.edad}}</li>
+                    <li class="list-group-item"><span>TELEFONO: </span> {{taxista.persona.telefono}}</li>
+                    <li class="list-group-item"><span>DIRECCION: </span> {{taxista.persona.direccion}}</li>
+                    <li class="list-group-item">
+                        <img style="width: 300px; height: 250px;" src="{{url_backend}}/obtener/imagen/{{taxista.persona.fotoPerfil}}" alt="">
+                        <img style="width: 300px; height: 250px;" src="{{url_backend}}/obtener/imagen/{{taxista.persona.fotoDni}}" alt="">
+                    </li>
+                </ul>
+                <ul *ngIf="taxista?.idtaxista" class="list-group">
+                    <li class="list-group-item active">
+                        CONDICION
+                    </li>
+                    <li class="list-group-item"><span>ESTADO: </span> {{taxista.estado}}</li>
+                    <li class="list-group-item"><span>NOMBRES: </span> {{taxista.antecedentesPoliciales}}</li>                    
+                </ul>
+                <ul *ngIf="taxista?.idtaxista" class="list-group">
+                    <li class="list-group-item active">
+                        DATOS DEL VEHICULO
+                    </li>
+                    <li class="list-group-item"><span>PLACA: </span> {{taxista.vehiculo.placa}}</li>
+                    <li class="list-group-item"><span>PROPIETARIO: </span> {{taxista.vehiculo.propiedad}} <span>TIPO: </span> {{taxista.vehiculo.tipo}}</li>
+                    <li class="list-group-item"><span>CODIGO TARGETA PROPIEDAD: </span>{{taxista.vehiculo.codigoTargetaPropiedad}}</li>
+                    <li class="list-group-item"><span>NUMERO SEGURO VEHICULAR: </span> {{taxista.vehiculo.numeroSeguroVehicular}}</li>
+                    <li class="list-group-item"><span>SEGURO COMPAÑIA: </span> {{taxista.vehiculo.companniaSeguro}}</li>
+                    <li class="list-group-item"><span>NUMERO POLICIAL: </span> {{taxista.vehiculo.numeroPolicial}}</li>
+                    <li class="list-group-item"><span>CODIGO PERMISO CIRCULACION: </span> {{taxista.vehiculo.codigoPermisoCirculacion}}</li>
+                    <li class="list-group-item"><span>DESCRIPCION: </span> {{taxista.vehiculo.descripcion}}</li>
+                    <li class="list-group-item">
+                        <img style="width: 300px; height: 250px;" src="{{url_backend}}/obtener/imagen/{{taxista.vehiculo.fotoTargetaPropiedad}}" alt="">
+                        <img style="width: 300px; height: 250px;" src="{{url_backend}}/obtener/imagen/{{taxista.vehiculo.fotoVehiculo}}" alt="">
+                    </li>
+                </ul>
+                <ul *ngIf="taxista?.vehiculo?.propiedad == 'Alquilado'" class="list-group">
+                    <li class="list-group-item active">
+                        DATOS DEL PROPIETARIO DEL VEHICULO
+                    </li>
+                    <li class="list-group-item"><span>DOCUMENTO: </span> {{taxista.vehiculo.vehiculoPropietario.documento}}</li>
+                    <li class="list-group-item"><span>NOMBRES: </span> {{taxista.vehiculo.vehiculoPropietario.nombres}}</li>                    
+                    <li class="list-group-item">
+                        <img style="width: 300px; height: 250px;" src="{{url_backend}}/obtener/imagen/{{taxista.vehiculo.vehiculoPropietario.fotoDocumento}}" alt="">                        
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
