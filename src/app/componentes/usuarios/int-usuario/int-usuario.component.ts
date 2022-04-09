@@ -42,8 +42,8 @@ export class IntUsuarioComponent implements OnInit {
   smubicacion: SMUbicacion = new SMUbicacion();
   ubicacion: Ubicacion = new Ubicacion();
   idcliente!: number;
-  url_backend: string = URL_BACKEND + "/pcliente";
-  url_backend_taxista = URL_BACKEND + "/ptaxista/obtener/imagen";
+  url_backend: string = URL_BACKEND + "/cliente";
+  url_backend_taxista = URL_BACKEND + "/taxista/obtener/imagen";
   nombreUsuario!: string;
 
   smtaxistaSelecionado!: SMTaxista;
@@ -117,6 +117,17 @@ export class IntUsuarioComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    if(this.loginService.isAuthenticate()){
+      if(this.loginService.validarRol('ROLE_CLIENT') == false){
+        this.loginService.cerrarSesion();
+        this.router.navigate(['']);
+      }
+    }
+    else{
+      this.loginService.cerrarSesion();
+      this.router.navigate(['']);
+    }
 
     //this.smtaxistas.length = 0;
     this.client = new Client();

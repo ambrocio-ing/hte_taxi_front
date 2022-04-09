@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { ClienteService } from '../../servicio-conexion/cliente/cliente.service';
 import { Cliente } from '../../modelo/cliente/cliente';
 import { URL_BACKEND } from 'src/app/componentes/sistema/config/config';
-import { SMServicioTaxi } from '../../socket_modelo/smserviciotaxi/smserviciotaxi';
 import { LoginService } from '../../servicio-conexion/login/login.service';
 import Swal from 'sweetalert2';
  
@@ -17,7 +16,7 @@ export class PerfilComponent implements OnInit {
   @Input() estadoPerfil!:boolean;
   @Output() cerraPerfil : EventEmitter<boolean> = new EventEmitter();
 
-  public url_backend = URL_BACKEND+"/pcliente";
+  public url_backend = URL_BACKEND+"/cliente";
   nombreUsuario!:string;
 
   constructor(private router: Router, private cliService:ClienteService, 

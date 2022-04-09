@@ -13,8 +13,9 @@
             </button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" (click)="irPerfil()">Ver mis datos</a></li>
-                <li *ngIf="!loginService.isDisponible"><a class="dropdown-item" (click)="disponible()">Disponible</a></li>
-                <li *ngIf="loginService.isDisponible"><a class="dropdown-item" (click)="ocupado()">Ocupado</a></li>
+                <li *ngIf="!loginService.isDisponible"><a class="dropdown-item" (click)="disponible()">Marcar disponible</a>
+                </li>
+                <li *ngIf="loginService.isDisponible"><a class="dropdown-item" (click)="ocupado()">Marcar ocupado</a></li>
                 <li>
                     <hr class="dropdown-divider">
                 </li>
@@ -24,7 +25,8 @@
     </div>
 </div>
 
-<app-perfil *ngIf="estado_perfil" [estadoPerfil]="estado_perfil" (cerraPerfil)="estado_perfil = $event"></app-perfil>
+<app-perfil *ngIf="estado_perfil" [estadoPerfil]="estado_perfil" (cerraPerfil)="estado_perfil = $event">
+</app-perfil>
 
 <div class="wrapper">
     <div class="contenedor">
@@ -37,13 +39,15 @@
     </app-mapbox-model>
 </div>
 <div>
-    <app-det-taxista *ngIf="smtaxistaSelecionado" [taxista]="smtaxistaSelecionado" 
-        [estoDetalle]="estadoDetalle" [estadoReclamo]="estadoRe"
-        (cerrarDetalle)="estadoDetalle = $event">
+    <app-det-taxista *ngIf="smtaxistaSelecionado" [taxista]="smtaxistaSelecionado" [estoDetalle]="estadoDetalle"
+        [estadoReclamo]="estadoRe" (cerrarDetalle)="estadoDetalle = $event">
     </app-det-taxista>
 </div>
 <div class="wrapper">
-    <h2>Conductores disponibles:</h2>
+    <h2 style="font-weight: bold;">Conductores disponibles:</h2>
+</div>
+<div class="wrapper" *ngIf="!conectado">
+    <span>Iniciando servicio...</span>
 </div>
 <div *ngIf="conectado && loginService.isDisponible()">
     <div class="wrapper">
@@ -63,8 +67,7 @@
                     {{smservicioTaxiPedido1.taxista.calificacion.promedio}} es
                 </td>
                 <td>
-                    <button class="btn btn-outline-danger"
-                        (click)="verDetalle(smservicioTaxiPedido1.taxista)">
+                    <button class="btn btn-outline-danger" (click)="verDetalle(smservicioTaxiPedido1.taxista)">
                         Detalle
                     </button>
                 </td>
@@ -319,7 +322,7 @@
         <h2>Historial:</h2>
         <table style="width: 98%;" class="table table-striped">
             <tr class="text-center">
-                <th>Detalle</th>          
+                <th>Detalle</th>
                 <th>Día</th>
                 <th>Estado</th>
                 <th>Acción</th>
@@ -334,9 +337,9 @@
                             <td><span style="font-weight: bold;">Destino: </span> {{servicios.ubicacion.destino}}</td>
                         </tr>
                     </table>
-                </td>                
+                </td>
                 <td>
-                    {{servicios.fecha | date: 'dd/MM'}}                    
+                    {{servicios.fecha | date: 'dd/MM'}}
                 </td>
                 <td>
                     {{servicios.estado}}
@@ -350,12 +353,13 @@
                         </tr>
                         <tr *ngIf="servicios.estado == 'Iniciado'">
                             <td>
-                                <button (click)="finalizar(servicios)" class="btn btn-outline-primary">Finalizar</button>
+                                <button (click)="finalizar(servicios)"
+                                    class="btn btn-outline-primary">Finalizar</button>
                             </td>
                         </tr>
                     </table>
                 </td>
-            </tr>            
+            </tr>
         </table>
         <div>
             <span style="color: red;" *ngIf="mensajeServicios">{{mensajeServicios}}</span>

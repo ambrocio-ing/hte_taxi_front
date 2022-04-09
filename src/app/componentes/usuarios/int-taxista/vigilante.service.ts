@@ -29,6 +29,32 @@ export class VigilanteService {
 
   }
 
+  private esNoAutorizado(e:any) : boolean {
+    if(e.status == 401 || e.status == 403){
+      if(this.loginService.isAuthenticate()){
+        this.loginService.cerrarSesion();
+      }
+
+      this.router.navigate(['login']);
+      return true;
+
+    }
+    else{
+      return false;
+    }
+  }
+
+  private agregarAutorizacion() : HttpHeaders {
+    const token = this.loginService.token;
+    if(token != null && token != ""){
+      return this.httpHeaders.append('Authorization', 'Bearer '+token);
+
+    }
+    else{
+      return this.httpHeaders;
+    }
+  }
+
   public guardarEstadoServicio(numero: number, estado: string): void {
     sessionStorage.setItem("servicio" + numero, estado);
   }
@@ -43,7 +69,7 @@ export class VigilanteService {
   }
 
   public editarEstado(id: number): Observable<any> {
-    return this.http.put(this.url + "/steditar/" + id, { Headers: this.httpHeaders }).pipe(
+    return this.http.put(this.url + "/steditar/" + id, { Headers: this.agregarAutorizacion() }).pipe(
       map(resp => resp),
       catchError(e => {
         if (e.error.status == 404 || e.error.status == 500) {
@@ -60,21 +86,16 @@ export class VigilanteService {
             text: 'Es posible que el servidor este inactivo'
           });
         }
+
+        if(this.esNoAutorizado(e)){
+          return throwError(e);
+        }
+
         return throwError(() => e);
       })
     );
   }
-
-  public cantidadTaxis(id: number, f_echa: string): Observable<SMServicioTaxi[]> {
-    return this.http.get<SMServicioTaxi[]>(this.url + "/cotizar/" + id + "/" + f_echa, { headers: this.httpHeaders }).pipe(
-      catchError(e => {
-
-        return throwError(() => e);
-
-      })
-    );
-  }  
-
+ 
   public consultarPago() : void {
     this.pagoService.verificarPagoPendiente(this.loginService.usuario.id).subscribe(resp => {
       console.log('RESPUESTA PAGOS2',resp);

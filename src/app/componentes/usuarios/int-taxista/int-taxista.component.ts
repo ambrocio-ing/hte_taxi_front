@@ -50,8 +50,8 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
   //ranking_smservicios:SMServicioTaxi[] = [];
 
-  url_backend: string = URL_BACKEND + "/ptaxista";
-  url_backend_cli: string = URL_BACKEND + "/pcliente/obtener/imagen";
+  url_backend: string = URL_BACKEND + "/taxista";
+  url_backend_cli: string = URL_BACKEND + "/cliente/obtener/imagen";
 
   smservicioTaxi1: SMServicioTaxi = new SMServicioTaxi();
   smservicioTaxi2: SMServicioTaxi = new SMServicioTaxi();
@@ -118,7 +118,18 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     this.client.deactivate();
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
+
+    if(this.loginService.isAuthenticate()){
+      if(this.loginService.validarRol('ROLE_CABBIE') == false){
+        this.loginService.cerrarSesion();
+        this.router.navigate(['']);
+      }
+    }
+    else{
+      this.loginService.cerrarSesion();
+      this.router.navigate(['']);
+    }    
 
     this.client = new Client();
     this.client.webSocketFactory = () => {

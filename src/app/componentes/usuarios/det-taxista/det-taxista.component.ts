@@ -17,7 +17,7 @@ export class DetTaxistaComponent implements OnInit {
 
   @Input() estadoReclamo!:boolean;
 
-  url_backend:string = URL_BACKEND+"/ptaxista";  
+  url_backend:string = URL_BACKEND+"/taxista";  
 
   estadoCalificacion:boolean = false;
   smtaxistaSelec!:SMTaxista;

@@ -23,8 +23,8 @@ export class ReclamoComponent implements OnInit {
 
   nombreUsuario!:string;
 
-  url_cliente:string = URL_BACKEND+"/pcliente";
-  url_taxista:string = URL_BACKEND+"/ptaxista";
+  url_cliente:string = URL_BACKEND+"/cliente";
+  url_taxista:string = URL_BACKEND+"/taxista";
 
   constructor(private router: Router, private reclamoService:ReclamoService,
     private activatedRoute:ActivatedRoute, private taxistaService:TaxistaService,

@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { Cliente } from '../../modelo/cliente/cliente';
@@ -9,6 +9,7 @@ import { SMServicioTaxi } from '../../socket_modelo/smserviciotaxi/smserviciotax
 import { LoginService } from '../login/login.service';
 import { SMCliente } from '../../socket_modelo/smcliente/smcliente';
 import { SMTaxista } from '../../socket_modelo/smtaxista/smtaxista';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -20,13 +21,21 @@ export class ClienteService {
   private url:string = URL_BACKEND+"/cliente";
   private httpHeaders = new HttpHeaders({'Content-Type':'application/json'});
 
-  constructor(private http:HttpClient, private loginService:LoginService) { }
+  constructor(private http:HttpClient, private loginService:LoginService, private router:Router) { }
 
   private url_protegido = URL_BACKEND+"/pcliente";
   private http_headers = new HttpHeaders({'Content-Type':'application/json'});
 
-  public isAuthentication(): boolean{
-    if(this.loginService.usuario != null){
+
+
+  private esNoAutorizado(e:any): boolean{
+    if(e.status == 401 || e.status == 403){
+
+      if(this.loginService.isAuthenticate()){
+        this.loginService.cerrarSesion();
+      }
+
+      this.router.navigate(['login']);
       return true;
     }
     else {
@@ -34,9 +43,19 @@ export class ClienteService {
     }
   }
 
+  private agregarAutorizacion() : HttpHeaders {
+    const token = this.loginService.token;
+    if(token != null && token != ""){
+      return this.http_headers.append('Authorization', 'Bearer '+token);
+    }
+    else{
+      return this.http_headers;
+    }
+  }
+
   //lista general
   public clienteLista() : Observable<Cliente[]>{
-    return this.http.get(this.url+"/cllista").pipe(
+    return this.http.get(this.url+"/cllista", {headers : this.agregarAutorizacion()}).pipe(
       map((resp) => resp as Cliente[]),
       catchError(e => {
         return throwError(() => e);
@@ -46,12 +65,17 @@ export class ClienteService {
 
   //obtener datos del cliente
   public obtenerDatos(id:number): Observable<Cliente>{
-    return this.http.get(this.url_protegido+"/datos/"+id, {headers : this.http_headers}).pipe(
+    return this.http.get(this.url_protegido+"/datos/"+id, {headers : this.agregarAutorizacion()}).pipe(
       map(resp => {
         return resp as Cliente;
-      }),
+      }),     
 
       catchError(e => {
+
+        if(this.esNoAutorizado(e)){
+          return throwError(() => e);
+        }
+
         return throwError(() => e);
       })
 
@@ -59,12 +83,17 @@ export class ClienteService {
   }
 
   public smCliente(id:number): Observable<SMCliente>{
-    return this.http.get(this.url_protegido+"/smcli/obtener/"+id, {headers : this.http_headers}).pipe(
+    return this.http.get(this.url_protegido+"/smcli/obtener/"+id, {headers : this.agregarAutorizacion()}).pipe(
       map(resp => {
         return resp as SMCliente;
       }),
 
       catchError(e => {
+
+        if(this.esNoAutorizado(e)){
+          return throwError(e);
+        }
+
         return throwError(() => e);
       })
 
@@ -72,7 +101,7 @@ export class ClienteService {
   }
 
   public editarCalificacion(taxista:SMTaxista): Observable<any>{
-    return this.http.post(this.url_protegido+"/cali/editar",taxista, {headers : this.http_headers}).pipe(
+    return this.http.post(this.url_protegido+"/cali/editar",taxista, {headers : this.agregarAutorizacion()}).pipe(
       map(resp => resp),
       catchError(e => {
 
@@ -91,6 +120,10 @@ export class ClienteService {
           });
         } 
 
+        if(this.esNoAutorizado(e)){
+          return throwError(e);
+        }
+
         return throwError(() => e);
       })
 
@@ -99,8 +132,13 @@ export class ClienteService {
 
   //listar historial
   public historial(idcliente:number) : Observable<SMServicioTaxi[]> {
-    return this.http.get<SMServicioTaxi[]>(this.url_protegido+"/historial/"+idcliente, {headers : this.http_headers}).pipe(
+    return this.http.get<SMServicioTaxi[]>(this.url_protegido+"/historial/"+idcliente, {headers : this.agregarAutorizacion()}).pipe(
       catchError(e => {
+
+        if(this.esNoAutorizado(e)){
+          return throwError(e);
+        }
+
         return throwError(() => e);
       })
     );

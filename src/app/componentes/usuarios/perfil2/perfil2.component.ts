@@ -18,7 +18,7 @@ export class Perfil2Component implements OnInit {
   @Output() cerrarPerfil : EventEmitter<boolean> = new EventEmitter();
 
   nombreUsuario!:string;
-  url_backend:string = URL_BACKEND+"/ptaxista";
+  url_backend:string = URL_BACKEND+"/taxista";
 
   constructor(private router: Router, private taxService:TaxistaService,
     public loginService:LoginService) {

@@ -5,9 +5,6 @@ export class JwtDto {
     dni!:string;
     nombre!:string;
     apellidos!:string;
-    fotoPerfil!:string;
-    username!:string;
-    email!:string;
-    roles!:String[];
-
+    fotoPerfil!:string;   
+    email!:string;    
 }

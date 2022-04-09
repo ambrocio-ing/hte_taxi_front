@@ -7,6 +7,7 @@ import { LoginService } from '../../servicio-conexion/login/login.service';
   templateUrl: './administrador.component.html',
   styleUrls: ['./administrador.component.css']
 })
+
 export class AdministradorComponent implements OnInit {
 
   @ViewChild('asAdmin') asadmin!:ElementRef;
@@ -23,7 +24,29 @@ export class AdministradorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //this.mostrarAdmin();
+    
+    if(this.loginService.isAuthenticate()){
+      let estdo:boolean = false;
+
+      if(this.loginService.validarRol("ROLE_ADMIN")){
+        estdo = true;
+      }
+      
+      if(this.loginService.validarRol("ROLE_USER")){
+        estdo = true;
+      }
+
+      if(estdo == false){
+        this.loginService.cerrarSesion();
+        this.router.navigate(['']);
+      }
+
+    }
+    else{
+      this.loginService.cerrarSesion();
+      this.router.navigate(['']);
+    }
+
     this.admin = true;
   }
 

@@ -16,7 +16,7 @@ import { SMTaxista } from '../../socket_modelo/smtaxista/smtaxista';
 })
 export class SuscripcionComponent implements OnInit {
 
-  url_backend:string = URL_BACKEND+"/ptaxista";
+  url_backend:string = URL_BACKEND+"/taxista";
   nombreUsuario!:string;
   pagos:Pago[] = [];
   mensajeHistorial!:string;
@@ -132,7 +132,7 @@ export class SuscripcionComponent implements OnInit {
     if(this.pago.idpago > 1 && this.formaPago != null && 
       this.formaPago != "" && this.pago.total > 0){      
       //continuar aqui
-      this.pagoService.pagoCrear(this.pago).subscribe(resp => {
+      this.pagoService.pagoEditar(this.pago).subscribe(resp => {
         sessionStorage.setItem("idp", resp.id);
         sessionStorage.setItem("fp", this.formaPago);
         this.router.navigate(['pasarela']);

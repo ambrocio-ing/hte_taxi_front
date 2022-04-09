@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
@@ -8,6 +9,7 @@ import { VehiculoPropietario } from '../../modelo/vehiculoPropietario/vehiculo-p
 import { URL_BACKEND } from '../../sistema/config/config';
 import { SMServicioTaxi } from '../../socket_modelo/smserviciotaxi/smserviciotaxi';
 import { SMTaxista } from '../../socket_modelo/smtaxista/smtaxista';
+import { LoginService } from '../login/login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +22,36 @@ export class TaxistaService {
   private url_protegido: string = URL_BACKEND + "/ptaxista";
   private http_headers = new HttpHeaders({'Content-Type': 'application/json'});
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private loginService:LoginService, private router:Router) { }
+
+  private esNoAutorizado(e:any) : boolean {
+    if(e.status == 401 || e.status == 403){
+      if(this.loginService.isAuthenticate()){
+        this.loginService.cerrarSesion();
+      }
+
+      this.router.navigate(['login']);
+      return true;
+
+    }
+    else{
+      return false;
+    }
+  }
+
+  private agregarAutorizacion() : HttpHeaders {
+    const token = this.loginService.token;
+    if(token != null && token != ""){
+      return this.http_headers.append('Authorization', 'Bearer '+token);
+
+    }
+    else{
+      return this.http_headers;
+    }
+  }
 
   public taxistaLista(): Observable<Taxista[]> {
-    return this.http.get<Taxista[]>(this.url_protegido + "/talista", { headers: this.http_headers }).pipe(
+    return this.http.get<Taxista[]>(this.url_protegido + "/talista", { headers: this.agregarAutorizacion()}).pipe(
       catchError(e => {
         return throwError(() => e)
       })      
@@ -34,8 +62,13 @@ export class TaxistaService {
 
   public buscarPorDni(dni:string): Observable<Taxista[]> {
 
-    return this.http.get<Taxista[]>(this.url_protegido + "/bdni/"+dni, { headers: this.http_headers }).pipe(
+    return this.http.get<Taxista[]>(this.url_protegido + "/bdni/"+dni, { headers: this.agregarAutorizacion()}).pipe(
       catchError(e => {
+
+        if(this.esNoAutorizado(e)){
+          return throwError(e);
+        }
+
         return throwError(() => e)
       })
       
@@ -45,8 +78,13 @@ export class TaxistaService {
 
   public buscarPorNombres(nombres:string): Observable<Taxista[]> {
 
-    return this.http.get<Taxista[]>(this.url_protegido + "/bnombre/"+nombres, { headers: this.http_headers }).pipe(
+    return this.http.get<Taxista[]>(this.url_protegido + "/bnombre/"+nombres, { headers: this.agregarAutorizacion()}).pipe(
       catchError(e => {
+
+        if(this.esNoAutorizado(e)){
+          return throwError(e);
+        }
+
         return throwError(() => e)
       })
       
@@ -67,12 +105,17 @@ export class TaxistaService {
   }*/
 
   public smTaxista(id:number) : Observable<SMTaxista> {
-    return this.http.get(this.url_protegido+"/smt/obtener/"+id, {headers : this.http_headers}).pipe(
+    return this.http.get(this.url_protegido+"/smt/obtener/"+id, {headers : this.agregarAutorizacion()}).pipe(
       map(resp => {
         return resp as SMTaxista;
       }),
 
       catchError(e => {
+
+        if(this.esNoAutorizado(e)){
+          return throwError(e);
+        }
+
         return throwError(() => e);
       })
     );
@@ -80,7 +123,7 @@ export class TaxistaService {
 
   public eliminar_Taxista(id:number) : Observable<any> {
 
-    return this.http.delete(this.url_protegido+"/taeliminar/"+id, {headers : this.http_headers}).pipe(
+    return this.http.delete(this.url_protegido+"/taeliminar/"+id, {headers : this.agregarAutorizacion()}).pipe(
       map(resp => {
         return resp;
       }),
@@ -101,6 +144,10 @@ export class TaxistaService {
           });
         }
 
+        if(this.esNoAutorizado(e)){
+          return throwError(e);
+        }
+
         return throwError(() => e);
       })
     );
@@ -108,7 +155,11 @@ export class TaxistaService {
   }
   
   public historial(id:number): Observable<SMServicioTaxi[]> {
-    return this.http.get<SMServicioTaxi[]>(this.url_protegido+"/historial/"+id, {headers : this.http_headers});
+    return this.http.get<SMServicioTaxi[]>(this.url_protegido+"/historial/"+id, {headers : this.agregarAutorizacion()}).pipe(
+      catchError(e => {
+        return throwError(() => e);
+      })
+    );
   }
 
   //acceso sin permiso
