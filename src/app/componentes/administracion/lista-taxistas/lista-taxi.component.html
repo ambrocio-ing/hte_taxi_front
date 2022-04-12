@@ -2,6 +2,14 @@
     [estadoModal]="estadoDetalle" (cerrar)="estadoDetalle = $event">
 </app-detalle-taxista>
 
+<app-lista-servicios-taxi *ngIf="idtaxista && mostrarHistorial" [estadoModal]="mostrarHistorial"
+    [idtaxista]="idtaxista" (cerraModal)="mostrarHistorial = $event">
+</app-lista-servicios-taxi>
+
+<app-lista-pagos *ngIf="idtaxista && mostrarPagos" [estado_modal]="mostrarPagos"
+    [idtaxista]="idtaxista" (cerrarModal)="mostrarPagos = $event">    
+</app-lista-pagos>
+
 <div class="wrapper">
     <div class="contenedor">
         <div class="row">
@@ -44,7 +52,18 @@
                             {{taxista.persona.nombre}}, {{taxista.persona.apellidos}}
                         </td>
                         <td>
-                            {{taxista.estado}}
+                            <table>
+                                <tr>
+                                    <td>
+                                        <a style="cursor: pointer; color: blue;" (click)="historialPagos(taxista)" href="">Historial de pagos</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a style="cursor: pointer; color: blue;" (click)="historialTaxis(taxista)" href="">Historial de servicios</a>
+                                    </td>
+                                </tr>
+                            </table>                            
                         </td>
                         <td>
                             <a (click)="eliminar(taxista)" class="aaccion">
@@ -57,6 +76,7 @@
                     </tr>
                 </tbody>
             </table>
+            <span style="color: red;" *ngIf="mensajeLista">{{mensajeLista}}</span>
         </div>
     </div>
 </div>

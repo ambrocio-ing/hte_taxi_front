@@ -14,12 +14,14 @@ import { LoginService } from '../login/login.service';
 @Injectable({
   providedIn: 'root'
 })
+
 export class TaxistaService {
 
   private url: string = URL_BACKEND + "/taxista";
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   private url_protegido: string = URL_BACKEND + "/ptaxista";
+  private url_protegido2: string = URL_BACKEND + "/st";
   private http_headers = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(private http: HttpClient, private loginService:LoginService, private router:Router) { }
@@ -154,6 +156,7 @@ export class TaxistaService {
 
   }
   
+  //historial los 5 ultimos servicios
   public historial(id:number): Observable<SMServicioTaxi[]> {
     return this.http.get<SMServicioTaxi[]>(this.url_protegido+"/historial/"+id, {headers : this.agregarAutorizacion()}).pipe(
       catchError(e => {
@@ -162,7 +165,15 @@ export class TaxistaService {
     );
   }
 
-  //acceso sin permiso
+  public buscarSmsPorFecha(id:number, fecha:string): Observable<SMServicioTaxi[]> {
+    return this.http.get<SMServicioTaxi[]>(this.url_protegido2+"/buscar/"+id+"/"+fecha, {headers : this.agregarAutorizacion()}).pipe(
+      catchError(e => {
+        return throwError(() => e);
+      })
+    );
+  }
+
+  //acceso sin permiso ========================================
   public taxistaGuardar(taxista: Taxista): Observable<any> {
 
     return this.http.post(this.url + "/tacrear", taxista, { headers: this.httpHeaders }).pipe(

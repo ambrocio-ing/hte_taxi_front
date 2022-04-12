@@ -49,8 +49,9 @@ export class TicketComponent implements OnInit {
         this.pago.taxista.dni = this.loginService.usuario.dni;
 
         if(this.pago.codigo == "Sin codigo" || this.pago.codigo == null){
+          this.pago.estado = "Cancelado";
           this.pago.codigo = sessionStorage.getItem("codigo") || 'sin codigo';
-          this.pagoService.pagoCrear(this.pago).subscribe(resp => {
+          this.pagoService.pagoEditar(this.pago).subscribe(resp => {
 
           });
         }

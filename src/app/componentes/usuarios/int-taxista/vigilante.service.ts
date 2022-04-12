@@ -7,8 +7,8 @@ import { URL_BACKEND } from '../../sistema/config/config';
 import { formatDate } from '@angular/common'
 import { PagoService } from '../../servicio-conexion/pago/pago.service';
 import { LoginService } from '../../servicio-conexion/login/login.service';
-import { SMServicioTaxi } from '../../socket_modelo/smserviciotaxi/smserviciotaxi';
 import { Router } from '@angular/router'
+import { SMServicioTaxi } from '../../socket_modelo/smserviciotaxi/smserviciotaxi';
 
 @Injectable({
   providedIn: 'root'
@@ -68,8 +68,8 @@ export class VigilanteService {
     }
   }
 
-  public editarEstado(id: number): Observable<any> {
-    return this.http.put(this.url + "/steditar/" + id, { Headers: this.agregarAutorizacion() }).pipe(
+  public editarEstado(smservicioTaxi:SMServicioTaxi): Observable<any> {
+    return this.http.post(this.url + "/steditar",smservicioTaxi, {headers: this.agregarAutorizacion()}).pipe(
       map(resp => resp),
       catchError(e => {
         if (e.error.status == 404 || e.error.status == 500) {

@@ -91,7 +91,7 @@ export class LoginService {
           Swal.fire({
             icon:'error',
             title:'Autenticación Fallida',
-            text:e.mensaje
+            text:e.error.mensaje
           });
         }
         else{

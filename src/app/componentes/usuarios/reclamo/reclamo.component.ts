@@ -26,6 +26,12 @@ export class ReclamoComponent implements OnInit {
   url_cliente:string = URL_BACKEND+"/cliente";
   url_taxista:string = URL_BACKEND+"/taxista";
 
+  mensajeImagen!:string;
+  esImagen!:boolean;
+  archivo!:File;
+
+  isCheket:boolean = false;
+
   constructor(private router: Router, private reclamoService:ReclamoService,
     private activatedRoute:ActivatedRoute, private taxistaService:TaxistaService,
     public loginService:LoginService, private clienteService:ClienteService) { 
@@ -85,8 +91,39 @@ export class ReclamoComponent implements OnInit {
     this.reclamo.fecha = new Date(Date.now());
     if(this.reclamo.cliente.idcliente > 0 && this.reclamo.taxista.idtaxista > 0 && 
       this.reclamo.tipo != null && this.reclamo.descripcion.length > 0){
+      if(this.isCheket){
+        this.enviarConImagen();
+      }
+      else{
+        this.enviarSinImagen();
+      }     
 
-      this.reclamoService.reclamoGuardar(this.reclamo).subscribe(resp => {
+    }
+    else{
+      Swal.fire({
+        icon:'info',
+        title:'Atención',
+        text: 'Datos incompletos'
+      });
+    }
+  }
+
+  enviarSinImagen() : void {
+    this.reclamoService.reclamo_Guardar(this.reclamo).subscribe(resp => {
+      Swal.fire({
+        icon:'success',
+        title:'Reclamo enviado',
+        text: resp.mensaje
+      });
+
+      this.reclamo.descripcion = "";
+
+    });
+  }
+
+  enviarConImagen() : void {
+    if(this.archivo != null  && this.esImagen == true){
+      this.reclamoService.reclamoGuardar(this.reclamo, this.archivo).subscribe(resp => {
         Swal.fire({
           icon:'success',
           title:'Reclamo enviado',
@@ -96,14 +133,34 @@ export class ReclamoComponent implements OnInit {
         this.reclamo.descripcion = "";
 
       });
-
     }
     else{
       Swal.fire({
         icon:'info',
-        title:'Atención',
-        text: 'Datos incompletos'
+        title:'Datos incompletos',
+        text: 'Seleccione una imagen como evidencia'
       });
+    }
+  }
+
+  capturarEstado(event:any) : void {
+    if(event.target.checked){
+      this.isCheket = true;
+    }
+    else{
+      this.isCheket = false;
+    }
+  }
+
+  capturarImagen(event:any) : void {
+    const imagen = event.target.files[0];
+    if(imagen.indexOf('image') < 0){
+      this.mensajeImagen = "No es una imagen";
+      this.esImagen = false;
+    }
+    else{
+      this.esImagen = true;
+      this.archivo = imagen;
     }
   }
 

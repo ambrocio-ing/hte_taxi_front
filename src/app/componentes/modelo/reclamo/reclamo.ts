@@ -7,6 +7,7 @@ export class Reclamo {
     fecha!:Date;
     tipo!:string;
     descripcion!:string;
+    evidencia!:string;
     cliente!:SMCliente;
     taxista!:SMTaxista;
 }

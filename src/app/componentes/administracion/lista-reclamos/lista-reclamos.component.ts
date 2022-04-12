@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import { Reclamo } from '../../modelo/reclamo/reclamo';
 import { LoginService } from '../../servicio-conexion/login/login.service';
 import { ReclamoService } from '../../servicio-conexion/reclamo/reclamo.service';
+import { URL_BACKEND } from '../../sistema/config/config';
 
 @Component({
   selector: 'app-lista-reclamos',
@@ -12,8 +13,13 @@ import { ReclamoService } from '../../servicio-conexion/reclamo/reclamo.service'
 })
 export class ListaReclamosComponent implements OnInit {
 
+  url_backend:string = URL_BACKEND+"/cliente";
+
   reclamos:Reclamo[] = [];
   mensajeLista!:string;
+
+  nombreImagen!:string;
+  mostrarImagen:boolean = false;
 
   data:any = {};
 
@@ -64,9 +70,10 @@ export class ListaReclamosComponent implements OnInit {
     });
   }
 
-  ver(reclamo:Reclamo) : void {
-
-  }
+  visualizar(reclamo:Reclamo) : void {
+    this.nombreImagen = reclamo.evidencia;
+    this.mostrarImagen = true;
+  }  
 
   refrescar() : void {
     this.ngOnInit();

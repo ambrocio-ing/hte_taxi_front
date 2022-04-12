@@ -16,6 +16,7 @@ import { Calificacion } from '../../modelo/calificacion/calificacion';
   templateUrl: './registrarse.component.html',
   styleUrls: ['./registrarse.component.css']
 })
+
 export class RegistrarseComponent implements OnInit {
 
   @ViewChild('asFotoDocumento') foto_documento!: ElementRef;
@@ -37,20 +38,6 @@ export class RegistrarseComponent implements OnInit {
 
   cliente: Cliente = new Cliente();
   taxista: Taxista = new Taxista();
-
-  constructor(private router: Router, private renderer: Renderer2,
-    private cliService: ClienteService, private taxService: TaxistaService) {
-
-    this.cliente.persona = new Persona();
-    this.cliente.usuario = new Usuario();
-
-    this.taxista.persona = new Persona();
-    this.taxista.usuario = new Usuario();
-    this.taxista.vehiculo = new Vehiculo();
-    this.taxista.vehiculo.vehiculoPropietario = new VehiculoPropietario();
-    this.taxista.calificacion = new Calificacion();
-
-  }
 
   //lista general para los archivos
   archivos: File[] = [];
@@ -81,6 +68,20 @@ export class RegistrarseComponent implements OnInit {
   foto_vehiculo_estado: boolean = true;
   foto_documento_propietario_estado: boolean = true;
   estado_chekbox: boolean = true;
+
+  constructor(private router: Router, private renderer: Renderer2,
+    private cliService: ClienteService, private taxService: TaxistaService) {
+
+    this.cliente.persona = new Persona();
+    this.cliente.usuario = new Usuario();
+
+    this.taxista.persona = new Persona();
+    this.taxista.usuario = new Usuario();
+    this.taxista.vehiculo = new Vehiculo();
+    this.taxista.vehiculo.vehiculoPropietario = new VehiculoPropietario();
+    this.taxista.calificacion = new Calificacion();
+
+  }  
 
   ngOnInit(): void {
 
@@ -346,7 +347,7 @@ export class RegistrarseComponent implements OnInit {
   enviarCliente(): void {
 
     if (this.cliente != null) {
-
+      this.cliente.usuario.email = this.cliente.persona.email;
       this.cliService.clienteGuardar(this.cliente, this.foto_perfil).subscribe(resp => {
 
         this.cliente = new Cliente();
@@ -422,8 +423,9 @@ export class RegistrarseComponent implements OnInit {
       }
     }
 
-    this.taxista.estado = "Pendiente";
-    this.taxista.disponibilidad = "No disponible";
+    this.taxista.estado = "Activo";
+    this.taxista.disponibilidad = "Disponible";
+    this.taxista.usuario.email = this.taxista.persona.email;
     this.taxista.calificacion.uno = 0;
     this.taxista.calificacion.dos = 0;
     this.taxista.calificacion.tres = 0;

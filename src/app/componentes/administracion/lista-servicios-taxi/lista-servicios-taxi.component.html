@@ -1,0 +1,81 @@
+<div class="stilo-modal" *ngIf="estadoModal">
+    <div class="wrapper">
+        <div class="contenedor">
+            <div class="row">
+                <h5>Lista de taxis</h5>
+                <span class="sspan" (click)="cerrar()">X</span>
+            </div>
+            <div class="row">
+                
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <td colspan="2">Buscar</td>                            
+                            <td>
+                                <input type="date" name="fecha" class="form-control" [(ngModel)]="data.fecha">
+                            </td>
+                            <td>
+                                <button (click)="buscar()" class="btn btn-outline-success">Buscar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"></td>
+                            <td>
+                                <button (click)="listar()" class="btn btn-outline-primary">Refrescar</button>
+                            </td>
+                        </tr>
+                        <tr bgcolor="skyblue" class="text-center">
+                            <th>Detalle</th>
+                            <th>Pasajero</th>
+                            <th>Día</th>
+                            <th>Estado</th>                            
+                        </tr>                       
+                    </thead>
+                    <tbody>                        
+                        <tr *ngFor="let servicio of smservicios">
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <span style="font-weight: bold;">Origen: </span>
+                                             {{servicio.ubicacion.origen}}
+                                            </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span style="font-weight: bold;">Destino: </span> 
+                                            {{servicio.ubicacion.destino}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <span style="font-weight: bold;">Nombre: </span>
+                                            {{servicio.cliente.nombre}}, {{servicio.cliente.apellidos}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span style="font-weight: bold;">Dni: </span>
+                                            {{servicio.cliente.dni}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>
+                                {{servicio.fecha | date: 'dd/MM'}}            
+                            </td>
+                            <td>
+                                {{servicio.estado}}            
+                            </td>                            
+                        </tr>
+                    </tbody>
+                </table>
+                <span style="color: red;" *ngIf="mensajeLista">{{mensajeLista}}</span>
+            </div>
+        </div>
+    </div>
+</div>

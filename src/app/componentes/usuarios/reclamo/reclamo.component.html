@@ -1,6 +1,7 @@
 <div class="wrapper">
     <div class="cabecera">
-        <img (click)="solicitar()" class="img-flecha" src="../../../../assets/img/flecha.png" alt="">
+        <img  *ngIf="reclamoCliente" (click)="solicitar()" class="img-flecha" src="../../../../assets/img/flecha.png" alt="">
+        <img *ngIf="reclamoTaxista" (click)="versolicitudes()" class="img-flecha" src="../../../../assets/img/flecha.png" alt="">
         <img class="img-perfil" *ngIf="!loginService.usuario?.fotoPerfil" src="../../../../assets/img/perfil.jpg" alt="">
         
         <img class="img-perfil" *ngIf="loginService.usuario?.fotoPerfil && reclamoCliente"
@@ -23,7 +24,7 @@
                 <li>
                     <hr class="dropdown-divider">
                 </li>
-                <li><a (click)="cerrarSesion()" class="dropdown-item">Serrar Sesión</a></li>
+                <li><a (click)="cerrarSesion()" class="dropdown-item">Cerrar Sesión</a></li>
             </ul>
         </div>
     </div>
@@ -62,6 +63,18 @@
                                 No supere 255 letras
                             </span>
                         </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="">Adjuntar Evidencia</label>
+                    <input type="checkbox" style="width: 15px; height: 15px;" (change)="capturarEstado($event)">
+                    <span>Activar o desactivar</span>
+                </div>
+                <div class="form-group" *ngIf="isCheket">
+                    <label for="evidencia">Evidencia(Imagen)</label>
+                    <input type="file" name="evidencia" (change)="capturarImagen($event)" class="form-control">
+                    <div>
+                        <span style="color: red;" *ngIf="mensajeImagen">{{mensajeImagen}}</span>
                     </div>
                 </div>
                 <div class="form-group wrapper">

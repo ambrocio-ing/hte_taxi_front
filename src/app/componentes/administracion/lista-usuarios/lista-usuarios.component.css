@@ -12,6 +12,7 @@
 }
 
 .aaccion{
+    margin-left: 20px;
     cursor: pointer;    
 }
 
@@ -25,4 +26,10 @@
     height: 25px;   
     border: blue solid 2px; 
     border-radius: 3px;
+}
+
+.wrapper{
+    padding: .5rem;
+    display: flex;
+    justify-content: center;
 }

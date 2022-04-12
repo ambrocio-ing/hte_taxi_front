@@ -26,8 +26,6 @@ export class ClienteService {
   private url_protegido = URL_BACKEND+"/pcliente";
   private http_headers = new HttpHeaders({'Content-Type':'application/json'});
 
-
-
   private esNoAutorizado(e:any): boolean{
     if(e.status == 401 || e.status == 403){
 
@@ -55,7 +53,7 @@ export class ClienteService {
 
   //lista general
   public clienteLista() : Observable<Cliente[]>{
-    return this.http.get(this.url+"/cllista", {headers : this.agregarAutorizacion()}).pipe(
+    return this.http.get(this.url_protegido+"/cllista", {headers : this.agregarAutorizacion()}).pipe(
       map((resp) => resp as Cliente[]),
       catchError(e => {
         return throwError(() => e);
@@ -143,9 +141,49 @@ export class ClienteService {
       })
     );
   }
-  
 
-  //ingreso libre
+  public clienteEliminar(idcliente:number) : Observable<any> {
+    return this.http.delete(this.url_protegido+"/cleliminar/"+idcliente, {headers : this.agregarAutorizacion()}).pipe(
+      map(resp => resp),
+
+      catchError(e => {
+
+        if(this.esNoAutorizado(e)){
+          return throwError(e);
+        }
+
+        return throwError(() => e);
+      })
+    );
+  }
+
+  public buscarPorNombres(nombres:string) : Observable<Cliente[]> {
+    return this.http.get<Cliente[]>(this.url_protegido+"/nombre/"+nombres, {headers : this.agregarAutorizacion()}).pipe(
+      catchError(e => {
+
+        if(this.esNoAutorizado(e)){
+          return throwError(e);
+        }
+
+        return throwError(() => e);
+      })
+    );
+  }
+
+  public buscarPorDni(dni:string) : Observable<Cliente[]> {
+    return this.http.get<Cliente[]>(this.url_protegido+"/dnis/"+dni, {headers : this.agregarAutorizacion()}).pipe(
+      catchError(e => {
+
+        if(this.esNoAutorizado(e)){
+          return throwError(e);
+        }
+
+        return throwError(() => e);
+      })
+    );
+  }
+
+  //ingreso libre ===================================
   public clienteGuardar(cliente:Cliente, archivo:File):Observable<any>{
     
     return this.http.post(this.url+"/clcrear", cliente, {headers : this.httpHeaders}).pipe(

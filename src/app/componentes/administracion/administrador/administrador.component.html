@@ -10,7 +10,10 @@
                 </li>
                 <li class="nav-item">
                     <a #asReclamos (click)="mostrarReclamos()" class="btn btn-outline-success">Ver reclamos</a>
-                </li>               
+                </li>
+                <li class="nav-item">
+                    <a #asUsuarios (click)="mostrarUsuarios()" class="btn btn-outline-success">Ver usuarios</a>
+                </li>                  
             </ul>
             <div class="d-flex">
                 <ul class="nav" style="margin-right: 3px;">
@@ -33,4 +36,7 @@
 </div>
 <div *ngIf="reclamos" class="wrapper">
     <app-lista-reclamos></app-lista-reclamos>
+</div>
+<div *ngIf="usuarios" class="wrapper">
+    <app-lista-usuarios></app-lista-usuarios>
 </div>

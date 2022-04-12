@@ -22,7 +22,7 @@ import { ClienteService } from '../../servicio-conexion/cliente/cliente.service'
 
 export class IntUsuarioComponent implements OnInit {
 
-  @ViewChild('asTable1') astable1!: ElementRef;
+  /*@ViewChild('asTable1') astable1!: ElementRef;
   @ViewChild('asTr1') astr1!: ElementRef;
 
   @ViewChild('asTable2') astable2!: ElementRef;
@@ -35,7 +35,7 @@ export class IntUsuarioComponent implements OnInit {
   @ViewChild('asTr4') astr4!: ElementRef;
 
   @ViewChild('asTable5') astable5!: ElementRef;
-  @ViewChild('asTr5') astr5!: ElementRef;
+  @ViewChild('asTr5') astr5!: ElementRef;*/
 
   private client!: Client;
   conectado: boolean = false;
@@ -96,6 +96,12 @@ export class IntUsuarioComponent implements OnInit {
   mensaje4!: string;
   mensaje5!: string;
 
+  resaltar1!: string;
+  resaltar2!: string;
+  resaltar3!: string;
+  resaltar4!: string;
+  resaltar5!: string;
+
   estado_perfil: boolean = false;
   estadoAceptar: boolean = false;
 
@@ -118,7 +124,7 @@ export class IntUsuarioComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if(this.loginService.isAuthenticate()){
+    /*if(this.loginService.isAuthenticate()){
       if(this.loginService.validarRol('ROLE_CLIENT') == false){
         this.loginService.cerrarSesion();
         this.router.navigate(['']);
@@ -127,7 +133,7 @@ export class IntUsuarioComponent implements OnInit {
     else{
       this.loginService.cerrarSesion();
       this.router.navigate(['']);
-    }
+    }*/
 
     //this.smtaxistas.length = 0;
     this.client = new Client();
@@ -261,7 +267,7 @@ export class IntUsuarioComponent implements OnInit {
         
         this.errorDeServidor(smservicioTaxi);
 
-      });
+      }); 
 
       //solicita las ubicaciones de los taxistas mas cercanos
       this.smubicacion.idcliente = this.loginService.usuario.id;
@@ -283,6 +289,12 @@ export class IntUsuarioComponent implements OnInit {
     this.cliService.historial(this.idcliente).subscribe(datos => {
       this.smservicioTaxis = datos;
       this.mensajeServicios = "";
+      if(this.verificarEstadoTaxi() == false){
+        this.loginService.estado("Disponible");
+      }
+      else{
+        this.loginService.estado("Ocupado");
+      }
     }, err => {
       this.mensajeServicios = "Sin datos que mostrar";
     });
@@ -565,11 +577,12 @@ export class IntUsuarioComponent implements OnInit {
       this.vigilante.guardarPedido(1, "Aceptado");
       this.fijarTimer111(this.smservicioTaxiPedido1.taxista.idtaxista);
 
-      const table = this.astable1.nativeElement;
+      this.resaltar1 = "si";
+      /*const table = this.astable1.nativeElement;
       const tr = this.astr1.nativeElement;
 
       this.renderer.addClass(table, 'stilo-modal');
-      this.renderer.addClass(tr, 'wrapper2');
+      this.renderer.addClass(tr, 'wrapper2');*/
     }
 
   }
@@ -588,12 +601,12 @@ export class IntUsuarioComponent implements OnInit {
         this.smservicioTaxiPedido1.estado = "Cancelado";
         this.client.publish({ destination: '/app/taxi_aceptado', body: JSON.stringify(this.smservicioTaxiPedido1) });
         this.renovar1();
-
-        const table = this.astable1.nativeElement;
+        this.resaltar1 = "no";
+        /*const table = this.astable1.nativeElement;
         const tr = this.astr1.nativeElement;
 
         this.renderer.removeClass(table, 'stilo-modal');
-        this.renderer.removeClass(tr, 'wrapper2');
+        this.renderer.removeClass(tr, 'wrapper2');*/
       }
       else {
 
@@ -679,12 +692,12 @@ export class IntUsuarioComponent implements OnInit {
       this.mensaje2 = "Confirmación enviada";
       this.vigilante.guardarPedido(2, "Aceptado");
       this.fijarTimer222(this.smservicioTaxiPedido2.taxista.idtaxista);
-
-      const table = this.astable2.nativeElement;
+      this.resaltar2 = "si";
+      /*const table = this.astable2.nativeElement;
       const tr = this.astr2.nativeElement;
 
       this.renderer.addClass(table, 'stilo-modal');
-      this.renderer.addClass(tr, 'wrapper2');
+      this.renderer.addClass(tr, 'wrapper2');*/
 
     }
   }
@@ -703,12 +716,12 @@ export class IntUsuarioComponent implements OnInit {
         this.smservicioTaxiPedido2.estado = "Cancelado";
         this.client.publish({ destination: '/app/taxi_aceptado', body: JSON.stringify(this.smservicioTaxiPedido2) });
         this.renovar2();
-
-        const table = this.astable2.nativeElement;
+        this.resaltar2 = "no";
+        /*const table = this.astable2.nativeElement;
         const tr = this.astr2.nativeElement;
 
         this.renderer.removeClass(table, 'stilo-modal');
-        this.renderer.removeClass(tr, 'wrapper2');
+        this.renderer.removeClass(tr, 'wrapper2');*/
       }
       else {
 
@@ -792,12 +805,12 @@ export class IntUsuarioComponent implements OnInit {
       this.mensaje3 = "Confirmación enviada";
       this.vigilante.guardarPedido(3, "Aceptado");
       this.fijarTimer333(this.smservicioTaxiPedido3.taxista.idtaxista);
-
-      const table = this.astable3.nativeElement;
+      this.resaltar3 = "si";
+      /*const table = this.astable3.nativeElement;
       const tr = this.astr3.nativeElement;
 
       this.renderer.addClass(table, 'stilo-modal');
-      this.renderer.addClass(tr, 'wrapper2');
+      this.renderer.addClass(tr, 'wrapper2');*/
     }
   }
 
@@ -815,12 +828,12 @@ export class IntUsuarioComponent implements OnInit {
         this.smservicioTaxiPedido3.estado = "Cancelado";
         this.client.publish({ destination: '/app/taxi_aceptado', body: JSON.stringify(this.smservicioTaxiPedido3) });
         this.renovar3();
-
-        const table = this.astable3.nativeElement;
+        this.resaltar3 = "no";
+        /*const table = this.astable3.nativeElement;
         const tr = this.astr3.nativeElement;
 
         this.renderer.removeClass(table, 'stilo-modal');
-        this.renderer.removeClass(tr, 'wrapper2');
+        this.renderer.removeClass(tr, 'wrapper2');*/
       }
       else {
 
@@ -904,12 +917,12 @@ export class IntUsuarioComponent implements OnInit {
       this.mensaje4 = "Confirmación enviada";
       this.vigilante.guardarPedido(4, "Aceptado");
       this.fijarTimer444(this.smservicioTaxiPedido4.taxista.idtaxista);
-
-      const table = this.astable4.nativeElement;
+      this.resaltar4 = "si";
+      /*const table = this.astable4.nativeElement;
       const tr = this.astr4.nativeElement;
 
       this.renderer.addClass(table, 'stilo-modal');
-      this.renderer.addClass(tr, 'wrapper2');
+      this.renderer.addClass(tr, 'wrapper2');*/
     }
   }
 
@@ -927,12 +940,12 @@ export class IntUsuarioComponent implements OnInit {
         this.smservicioTaxiPedido4.estado = "Cancelado";
         this.client.publish({ destination: '/app/taxi_aceptado', body: JSON.stringify(this.smservicioTaxiPedido4) });
         this.renovar4();
-
-        const table = this.astable4.nativeElement;
+        this.resaltar4 = "no";
+        /*const table = this.astable4.nativeElement;
         const tr = this.astr4.nativeElement;
 
         this.renderer.removeClass(table, 'stilo-modal');
-        this.renderer.removeClass(tr, 'wrapper2');
+        this.renderer.removeClass(tr, 'wrapper2');*/
       }
       else {
 
@@ -1016,12 +1029,12 @@ export class IntUsuarioComponent implements OnInit {
       this.mensaje5 = "Confirmación enviada";
       this.vigilante.guardarPedido(5, "Aceptado");
       this.fijarTimer444(this.smservicioTaxiPedido5.taxista.idtaxista);
-
-      const table = this.astable5.nativeElement;
+      this.resaltar5 = "si";
+      /*const table = this.astable5.nativeElement;
       const tr = this.astr5.nativeElement;
 
       this.renderer.addClass(table, 'stilo-modal');
-      this.renderer.addClass(tr, 'wrapper2');
+      this.renderer.addClass(tr, 'wrapper2');*/
     }
   }
 
@@ -1039,12 +1052,12 @@ export class IntUsuarioComponent implements OnInit {
         this.smservicioTaxiPedido5.estado = "Cancelado";
         this.client.publish({ destination: '/app/taxi_aceptado', body: JSON.stringify(this.smservicioTaxiPedido5) });
         this.renovar5();
-
-        const table = this.astable5.nativeElement;
+        this.resaltar5 = "no";
+        /*const table = this.astable5.nativeElement;
         const tr = this.astr5.nativeElement;
 
         this.renderer.removeClass(table, 'stilo-modal');
-        this.renderer.removeClass(tr, 'wrapper2');
+        this.renderer.removeClass(tr, 'wrapper2');*/
       }
       else {
 
@@ -1130,30 +1143,53 @@ export class IntUsuarioComponent implements OnInit {
     this.visibleMapa = true;
   }
 
+  verificarTaxista(id:number) : boolean {
+    if(this.smservicioTaxiPedido1.taxista.idtaxista == id ||
+      this.smservicioTaxiPedido2.taxista.idtaxista == id ||
+      this.smservicioTaxiPedido3.taxista.idtaxista == id ||
+      this.smservicioTaxiPedido4.taxista.idtaxista == id ||
+      this.smservicioTaxiPedido5.taxista.idtaxista == id){
+
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
   asignarTaxistas(smtaxista: SMTaxista): void {
     if (this.smservicioTaxiPedido1.taxista.idtaxista == null || this.smservicioTaxiPedido1.taxista.idtaxista == undefined) {
-
-      this.smservicioTaxiPedido1.taxista = smtaxista;
+      if(this.verificarTaxista(smtaxista.idtaxista) == false){
+        this.smservicioTaxiPedido1.taxista = smtaxista;
+      }     
 
     }
     else if (this.smservicioTaxiPedido2.taxista.idtaxista == null || this.smservicioTaxiPedido2.taxista.idtaxista == undefined) {
 
-      this.smservicioTaxiPedido2.taxista = smtaxista;
+      if(this.verificarTaxista(smtaxista.idtaxista) == false){
+        this.smservicioTaxiPedido2.taxista = smtaxista;
+      }
 
     }
     else if (this.smservicioTaxiPedido3.taxista.idtaxista == null || this.smservicioTaxiPedido3.taxista.idtaxista == undefined) {
 
-      this.smservicioTaxiPedido3.taxista = smtaxista;
+      if(this.verificarTaxista(smtaxista.idtaxista) == false){
+        this.smservicioTaxiPedido3.taxista = smtaxista;
+      }
 
     }
     else if (this.smservicioTaxiPedido4.taxista.idtaxista == null || this.smservicioTaxiPedido4.taxista.idtaxista == undefined) {
 
-      this.smservicioTaxiPedido4.taxista = smtaxista;
+      if(this.verificarTaxista(smtaxista.idtaxista) == false){
+        this.smservicioTaxiPedido4.taxista = smtaxista;
+      }
 
     }
     else if (this.smservicioTaxiPedido5.taxista.idtaxista == null || this.smservicioTaxiPedido5.taxista.idtaxista == undefined) {
 
-      this.smservicioTaxiPedido5.taxista = smtaxista;
+      if(this.verificarTaxista(smtaxista.idtaxista) == false){
+        this.smservicioTaxiPedido5.taxista = smtaxista;
+      }
 
     }
     else {
@@ -1583,13 +1619,7 @@ export class IntUsuarioComponent implements OnInit {
       if (this.vigilante.obtenerPedido(1) == "Aceptado" &&
         id == this.smservicioTaxiPedido1.taxista.idtaxista) {
 
-        this.mensaje1 = "Sin respuesta, cancelando...";
-
-        const table = this.astable1.nativeElement;
-        const tr = this.astr1.nativeElement;
-        this.renderer.removeClass(table, 'stilo-modal');
-        this.renderer.removeClass(tr, 'wrapper2');
-
+        this.mensaje1 = "Sin respuesta, cancelando...";        
         this.renovar1();
 
       }
@@ -1737,12 +1767,8 @@ export class IntUsuarioComponent implements OnInit {
 
   }
 
-  renovar1(): void {
-    const table = this.astable1.nativeElement;
-    const tr = this.astr1.nativeElement;
-    this.renderer.removeClass(table, 'stilo-modal');
-    this.renderer.removeClass(tr, 'wrapper2');
-
+  renovar1(): void {   
+    this.resaltar1 = "no";
     this.smservicioTaxiPedido1 = new SMServicioTaxi();
     this.smservicioTaxiPedido1.taxista = new SMTaxista();
     this.smservicioTaxiPedido1.cliente = new SMCliente();
@@ -1754,13 +1780,8 @@ export class IntUsuarioComponent implements OnInit {
 
   }
 
-  renovar2(): void {
-
-    const table = this.astable2.nativeElement;
-    const tr = this.astr2.nativeElement;
-    this.renderer.removeClass(table, 'stilo-modal');
-    this.renderer.removeClass(tr, 'wrapper2');
-
+  renovar2(): void {  
+    this.resaltar2 = "no";
     this.smservicioTaxiPedido2 = new SMServicioTaxi();
     this.smservicioTaxiPedido2.taxista = new SMTaxista();
     this.smservicioTaxiPedido2.cliente = new SMCliente();
@@ -1771,13 +1792,8 @@ export class IntUsuarioComponent implements OnInit {
     this.estadoAceptar = false;
   }
 
-  renovar3(): void {
-
-    const table = this.astable3.nativeElement;
-    const tr = this.astr3.nativeElement;
-    this.renderer.removeClass(table, 'stilo-modal');
-    this.renderer.removeClass(tr, 'wrapper2');
-
+  renovar3(): void {    
+    this.resaltar3 = "no";
     this.smservicioTaxiPedido3 = new SMServicioTaxi();
     this.smservicioTaxiPedido3.taxista = new SMTaxista();
     this.smservicioTaxiPedido3.cliente = new SMCliente();
@@ -1788,13 +1804,8 @@ export class IntUsuarioComponent implements OnInit {
     this.estadoAceptar = false;
   }
 
-  renovar4(): void {
-
-    const table = this.astable4.nativeElement;
-    const tr = this.astr4.nativeElement;
-    this.renderer.removeClass(table, 'stilo-modal');
-    this.renderer.removeClass(tr, 'wrapper2');
-
+  renovar4(): void { 
+    this.resaltar4 = "no";
     this.smservicioTaxiPedido4 = new SMServicioTaxi();
     this.smservicioTaxiPedido4.taxista = new SMTaxista();
     this.smservicioTaxiPedido4.cliente = new SMCliente();
@@ -1803,15 +1814,11 @@ export class IntUsuarioComponent implements OnInit {
     this.estadoTaxista4 = false;
     this.estadoRespuesta4 = false;
     this.estadoAceptar = false;
+
   }
 
-  renovar5(): void {
-
-    const table = this.astable5.nativeElement;
-    const tr = this.astr5.nativeElement;
-    this.renderer.removeClass(table, 'stilo-modal');
-    this.renderer.removeClass(tr, 'wrapper2');
-
+  renovar5(): void {    
+    this.resaltar5 = "no";
     this.smservicioTaxiPedido5 = new SMServicioTaxi();
     this.smservicioTaxiPedido5.taxista = new SMTaxista();
     this.smservicioTaxiPedido5.cliente = new SMCliente();
@@ -1820,10 +1827,12 @@ export class IntUsuarioComponent implements OnInit {
     this.estadoSolicitar5 = true;
     this.estadoRespuesta5 = false;
     this.estadoAceptar = false;
+
   }
 
   finalizar(servicios:SMServicioTaxi) : void {
-    this.vigilante.editarEstado(servicios.idstaxi).subscribe((resp) => {
+    this.vigilante.editarEstado(servicios).subscribe((resp) => {
+      this.loginService.estado("Disponible");
       Swal.fire({
         icon:'success',
         title:'Servicio finalizado',
@@ -1852,7 +1861,26 @@ export class IntUsuarioComponent implements OnInit {
 
   disponible(): void {
     this.client.activate();
-    this.loginService.estado("Disponible");
+    if(this.verificarEstadoTaxi() == false){
+      this.loginService.estado("Disponible");
+    }
+    else{
+      Swal.fire({
+        icon:'info',
+        text:'Tienes un servicio de taxi en proceso'
+      });
+    }
+    
+  }
+
+  verificarEstadoTaxi() : boolean{
+    const indice = this.smservicioTaxis.find(x => x.estado == "Iniciado");
+    if(indice != null && indice != undefined){
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
 }

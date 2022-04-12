@@ -181,8 +181,8 @@ export class PagoService {
     );
   }  
 
-  public obtenerEntreFechas(idtaxista: number, finicio: string, ffin: string): Observable<Pago> {
-    return this.http.get<Pago>(this.url + "/entre/fechas/" + idtaxista + "/" + finicio + "/" + ffin, { headers: this.agregarAutorizacion()}).pipe(
+  public buscarEntreFechas(idtaxista: number, finicio: string, ffin: string): Observable<Pago[]> {
+    return this.http.get<Pago[]>(this.url + "/buscar/" + idtaxista + "/" + finicio + "/" + ffin, { headers: this.agregarAutorizacion()}).pipe(
 
       catchError(e => {
 
@@ -190,7 +190,7 @@ export class PagoService {
           Swal.fire({
             icon: 'error',
             title: 'Operación fallida',
-            text: e.mensaje
+            text: e.error.mensaje
           });
         }
         else {

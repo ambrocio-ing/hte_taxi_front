@@ -347,7 +347,7 @@
 
             <div class="form-group">
                 <label for="edad">Edad:</label>
-                <input type="number" name="edad" [(ngModel)]="taxista.persona.edad" #asEdad="ngModel" required min="15"
+                <input type="number" name="edad" [(ngModel)]="taxista.persona.edad" #asEdad="ngModel" required min="18"
                     max="80" class="form-control">
                 <div *ngIf="asEdad.invalid && (asEdad.touched || asEdad.dirty)">
                     <div *ngIf="asEdad.errors?.['required']">
@@ -357,7 +357,7 @@
                     </div>
                     <div *ngIf="asEdad.errors?.['min']">
                         <span>
-                            Edad mínimo 15
+                            Edad mínimo 18
                         </span>
                     </div>
                     <div *ngIf="asEdad.errors?.['max']">

@@ -11,7 +11,7 @@ import { URL_BACKEND } from '../../sistema/config/config';
 })
 export class ListaTaxiComponent implements OnInit {
 
-  url_backend:string = URL_BACKEND+"/ptaxista";
+  url_backend:string = URL_BACKEND+"/taxista";
 
   data:any = {nombres:null,dni:null};
 
@@ -20,6 +20,10 @@ export class ListaTaxiComponent implements OnInit {
 
   estadoDetalle:boolean = false;
   taxistaSeleccionado:Taxista = new Taxista();
+
+  idtaxista!:number;
+  mostrarHistorial:boolean = false;
+  mostrarPagos:boolean = false;
 
   constructor(private taxistaService:TaxistaService) { }
 
@@ -92,6 +96,16 @@ export class ListaTaxiComponent implements OnInit {
     if(this.data.nombres.length != 0){
       this.data.nombres = "";
     }
+  }
+
+  historialPagos(taxista:Taxista) : void {
+    this.idtaxista = taxista.idtaxista;
+    this.mostrarPagos = true;
+  }
+
+  historialTaxis(taxista:Taxista) : void {
+    this.idtaxista = taxista.idtaxista;
+    this.mostrarHistorial = true;
   }
 
 }

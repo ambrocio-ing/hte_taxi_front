@@ -19,7 +19,7 @@
                 <li>
                     <hr class="dropdown-divider">
                 </li>
-                <li><a (click)="cerrarSesion()" class="dropdown-item">Serrar Sesión</a></li>
+                <li><a (click)="cerrarSesion()" class="dropdown-item">Cerrar Sesión</a></li>
             </ul>
         </div>
     </div>
@@ -46,8 +46,18 @@
 <div class="wrapper">
     <h2 style="font-weight: bold;">Conductores disponibles:</h2>
 </div>
-<div class="wrapper" *ngIf="!conectado">
-    <span>Iniciando servicio...</span>
+<div class="wrapper" *ngIf="!conectado">   
+    <div>
+        <span>Iniciando servicio...</span>
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrapper" *ngIf="!conectado && !loginService.isDisponible()">
+    <span style="color: red;">Servicio de taxi en proceso (Para realizar nuevas solicitudes finalize primero el taxi)</span>
 </div>
 <div *ngIf="conectado && loginService.isDisponible()">
     <div class="wrapper">
@@ -84,8 +94,8 @@
                     {{mensaje1}} <span style="color: blue; font-weight: bold;">0{{minuto1}} : {{segundo1}}</span>
                 </td>
                 <td *ngIf="estadoRespuesta1" colspan="5">
-                    <table #asTable1>
-                        <tr #asTr1>
+                    <table #asTable1 [ngClass]="{'stilo-modal': resaltar1 === 'si'}">
+                        <tr #asTr1 [ngClass]="{'wrapper2': resaltar1 === 'si'}">
                             <td colspan="3">
                                 {{mensaje1}} <span style="color: blue; font-weight: bold;">0{{minuto1}} :
                                     {{segundo1}}</span>
@@ -136,8 +146,8 @@
                     {{mensaje2}} <span style="color: blue; font-weight: bold;">{{minuto2}} : {{segundo2}}</span>
                 </td>
                 <td *ngIf="estadoRespuesta2" colspan="5">
-                    <table #asTable2>
-                        <tr #asTr2>
+                    <table #asTable2 [ngClass]="{'stilo-modal': resaltar2 === 'si'}">
+                        <tr #asTr2 [ngClass]="{'wrapper2': resaltar2 === 'si'}">
                             <td colspan="3">
                                 {{mensaje2}} <span style="color: blue; font-weight: bold;">0{{minuto2}} :
                                     {{segundo2}}</span>
@@ -187,8 +197,8 @@
                     {{mensaje3}} <span style="color: blue; font-weight: bold;">{{minuto3}} : {{segundo3}}</span>
                 </td>
                 <td *ngIf="estadoRespuesta3" colspan="5">
-                    <table #asTable3>
-                        <tr #asTr3>
+                    <table #asTable3 [ngClass]="{'stilo-modal': resaltar3 === 'si'}">
+                        <tr #asTr3 [ngClass]="{'wrapper2': resaltar3 === 'si'}">
                             <td colspan="3">
                                 {{mensaje3}} <span style="color: blue; font-weight: bold;">0{{minuto3}} :
                                     {{segundo3}}</span>
@@ -239,8 +249,8 @@
                     {{mensaje4}} <span style="color: blue; font-weight: bold;">{{minuto4}} : {{segundo4}}</span>
                 </td>
                 <td *ngIf="estadoRespuesta4" colspan="5">
-                    <table #asTable4>
-                        <tr #asTr4>
+                    <table #asTable4 [ngClass]="{'stilo-modal' : resaltar4 === 'si'}">
+                        <tr #asTr4 [ngClass]="{'wrapper2' : resaltar4 === 'si'}">
                             <td colspan="3">
                                 {{mensaje4}} <span style="color: blue; font-weight: bold;">0{{minuto4}} :
                                     {{segundo4}}</span>
@@ -291,8 +301,8 @@
                     {{mensaje5}} <span style="color: blue; font-weight: bold;">{{minuto5}} : {{segundo5}}</span>
                 </td>
                 <td *ngIf="estadoRespuesta5" colspan="5">
-                    <table #asTable5>
-                        <tr #asTr5>
+                    <table #asTable5 [ngClass]="{'stilo-modal' : resaltar5 === 'si'}">
+                        <tr #asTr5 [ngClass]="{'wrapper2' : resaltar5 === 'si'}">
                             <td colspan="3">
                                 {{mensaje5}} <span style="color: blue; font-weight: bold;">0{{minuto5}} :
                                     {{segundo5}}</span>

@@ -234,7 +234,7 @@ export class PasarelaComponent implements OnInit {
   }  
 
   public hallar_amount(): string {
-    let totalstring = (this.pago.total + 5).toString();
+    let totalstring = this.pago.total.toString();
     let arraytotal = totalstring.split('.');
     let total = (100 * parseInt(arraytotal[0]) + parseInt(arraytotal[1]));
 
@@ -280,7 +280,7 @@ export class PasarelaComponent implements OnInit {
         this.pago.codigo = resp.id;
         this.pago.estado = "Cancelado";
         //console.log('********Pago',this.pago);
-        this.pagoService.pagoCrear(this.pago).subscribe(resp => {
+        this.pagoService.pagoEditar(this.pago).subscribe(resp => {
           this.router.navigate(['ticket']);
         }, err => {
           this.router.navigate(['ticket']);

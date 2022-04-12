@@ -19,27 +19,28 @@ import { TaxistaService } from '../../servicio-conexion/taxista/taxista.service'
   templateUrl: './int-taxista.component.html',
   styleUrls: ['./int-taxista.component.css']
 })
+
 export class IntTaxistaComponent implements OnInit, OnDestroy {
 
   @ViewChild('asPrecio1') asprecio1!: ElementRef;
-  @ViewChild('asTable1') astable1!: ElementRef;
-  @ViewChild('asTr1') astr1!: ElementRef;
+  //@ViewChild('asTable1') astable1!: ElementRef;
+  //@ViewChild('asTr1') astr1!: ElementRef;
 
   @ViewChild('asPrecio2') asprecio2!: ElementRef;
-  @ViewChild('asTable2') astable2!: ElementRef;
-  @ViewChild('asTr2') astr2!: ElementRef;
+  //@ViewChild('asTable2') astable2!: ElementRef;
+  //@ViewChild('asTr2') astr2!: ElementRef;
 
   @ViewChild('asPrecio3') asprecio3!: ElementRef;
-  @ViewChild('asTable3') astable3!: ElementRef;
-  @ViewChild('asTr3') astr3!: ElementRef;
+  //@ViewChild('asTable3') astable3!: ElementRef;
+  //@ViewChild('asTr3') astr3!: ElementRef;
 
   @ViewChild('asPrecio4') asprecio4!: ElementRef;
-  @ViewChild('asTable4') astable4!: ElementRef;
-  @ViewChild('asTr4') astr4!: ElementRef;
+  //@ViewChild('asTable4') astable4!: ElementRef;
+  //@ViewChild('asTr4') astr4!: ElementRef;
 
   @ViewChild('asPrecio5') asprecio5!: ElementRef;
-  @ViewChild('asTable5') astable5!: ElementRef;
-  @ViewChild('asTr5') astr5!: ElementRef;
+  //@ViewChild('asTable5') astable5!: ElementRef;
+  //@ViewChild('asTr5') astr5!: ElementRef;
 
   private client!: Client;
   conectado: boolean = false;
@@ -72,6 +73,12 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   mensaje3!: string;
   mensaje4!: string;
   mensaje5!: string;
+
+  resaltar1!: string;
+  resaltar2!: string;
+  resaltar3!: string;
+  resaltar4!: string;
+  resaltar5!: string;
 
   minuto1!: number;
   segundo1!: number;
@@ -246,6 +253,12 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     this.taxService.historial(this.idtaxista).subscribe(datos => {
       this.smservicioTaxis = datos;
       this.mensajeServicios = "";
+      if(this.verificarEstadoTaxi() == false){
+        this.loginService.estado("Disponible");
+      }
+      else{
+        this.loginService.estado("Ocupado");
+      }
     }, err => {
       this.mensajeServicios = "Sin datos que mostrar";
     });
@@ -503,12 +516,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     this.vigilante.guardarEstadoServicio(1, "ok");
     this.smservicioTaxi1.estado = "Iniciado";
     this.client.publish({destination : '/app/taxi_ok', body : JSON.stringify(this.smservicioTaxi1)});
-
-    const table = this.astable1.nativeElement;
-    const tr = this.astr1.nativeElement;
-
-    this.renderer.addClass(table, 'stilo-modal');
-    this.renderer.addClass(tr, 'wrapper2');
+    this.resaltar1 = "si";    
     this.mensaje1 = "Validando servicio";
     this.minuto1 = 0;
     this.segundo1 = 0;
@@ -618,11 +626,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     this.smservicioTaxi2.estado = "Iniciado";
     this.client.publish({destination : '/app/taxi_ok', body : JSON.stringify(this.smservicioTaxi2)});
 
-    const table = this.astable2.nativeElement;
-    const tr = this.astr2.nativeElement;
-
-    this.renderer.addClass(table, 'stilo-modal');
-    this.renderer.addClass(tr, 'wrapper2');
+    this.resaltar2 = "si"; 
     this.mensaje2 = "Validando servicio";
     this.minuto2 = 0;
     this.segundo2 = 0;
@@ -729,12 +733,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     this.vigilante.guardarEstadoServicio(3, "ok");
     this.smservicioTaxi3.estado = "Iniciado";
     this.client.publish({destination : '/app/taxi_ok', body : JSON.stringify(this.smservicioTaxi3)});
-
-    const table = this.astable3.nativeElement;
-    const tr = this.astr3.nativeElement;
-
-    this.renderer.addClass(table, 'stilo-modal');
-    this.renderer.addClass(tr, 'wrapper2');
+    this.resaltar3 = "si"; 
     this.mensaje3 = "Validando servicio";
     this.minuto3 = 0;
     this.segundo3 = 0;
@@ -843,11 +842,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     this.smservicioTaxi4.estado = "Iniciado";
     this.client.publish({destination : '/app/taxi_ok', body : JSON.stringify(this.smservicioTaxi4)});
 
-    const table = this.astable4.nativeElement;
-    const tr = this.astr4.nativeElement;
-
-    this.renderer.addClass(table, 'stilo-modal');
-    this.renderer.addClass(tr, 'wrapper2');
+    this.resaltar4 = "si"; 
     this.mensaje4 = "Validando servicio";
     this.minuto4 = 0;
     this.segundo4 = 0;
@@ -956,11 +951,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     this.smservicioTaxi5.estado = "Iniciado";
     this.client.publish({destination : '/app/taxi_ok', body : JSON.stringify(this.smservicioTaxi5)});
 
-    const table = this.astable5.nativeElement;
-    const tr = this.astr5.nativeElement;
-
-    this.renderer.addClass(table, 'stilo-modal');
-    this.renderer.addClass(tr, 'wrapper2');
+    this.resaltar5 = "si"; 
     this.mensaje5 = "Validando servicio";
     this.minuto5 = 0;
     this.segundo5 = 0;
@@ -1044,7 +1035,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   cerrarSesion(): void {
     this.desconectar();
     this.loginService.cerrarSesion();
-    this.client.deactivate();
+    this.client.deactivate();    
     Swal.fire({
       icon: 'success',
       title: 'Vuelva pronto',
@@ -1724,23 +1715,19 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   }  
 
   vaciar1() : void {
-
+    this.resaltar1 = "si"; 
     this.smservicioTaxi1 = new SMServicioTaxi();
     this.smservicioTaxi1.taxista = new SMTaxista();
     this.smservicioTaxi1.cliente = new SMCliente();
     this.smservicioTaxi1.ubicacion = new Ubicacion();
     this.enviar1 = false;
     this.estadoConfirmacion1 = false;
-    this.estadoAceptar = false;
-
-    const table = this.astable1.nativeElement;
-    const tr = this.astr1.nativeElement;
-    this.renderer.removeClass(table, 'stilo-modal');
-    this.renderer.removeClass(tr, 'wrapper2');
+    this.estadoAceptar = false;   
 
   }
 
   vaciar2() : void {
+    this.resaltar2 = "si"; 
     this.smservicioTaxi2 = new SMServicioTaxi();
     this.smservicioTaxi2.taxista = new SMTaxista();
     this.smservicioTaxi2.cliente = new SMCliente();
@@ -1749,62 +1736,45 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     this.estadoConfirmacion2 = false;
     this.estadoAceptar = false;
 
-    const table = this.astable2.nativeElement;
-    const tr = this.astr2.nativeElement;
-    this.renderer.removeClass(table, 'stilo-modal');
-    this.renderer.removeClass(tr, 'wrapper2');
   }
 
   vaciar3() : void {
+    this.resaltar3 = "si"; 
     this.smservicioTaxi3 = new SMServicioTaxi();
     this.smservicioTaxi3.taxista = new SMTaxista();
     this.smservicioTaxi3.cliente = new SMCliente();
     this.smservicioTaxi3.ubicacion = new Ubicacion();
     this.enviar3 = false;
     this.estadoConfirmacion3 = false;
-    this.estadoAceptar = false;
-
-    const table = this.astable3.nativeElement;
-    const tr = this.astr3.nativeElement;
-    this.renderer.removeClass(table, 'stilo-modal');
-    this.renderer.removeClass(tr, 'wrapper2');
+    this.estadoAceptar = false;    
   }
 
   vaciar4() : void {
+    this.resaltar4 = "si"; 
     this.smservicioTaxi4 = new SMServicioTaxi();
     this.smservicioTaxi4.taxista = new SMTaxista();
     this.smservicioTaxi4.cliente = new SMCliente();
     this.smservicioTaxi4.ubicacion = new Ubicacion();
     this.enviar4 = false;
     this.estadoConfirmacion4 = false;
-    this.estadoAceptar = false;
-
-    const table = this.astable4.nativeElement;
-    const tr = this.astr4.nativeElement;
-    this.renderer.removeClass(table, 'stilo-modal');
-    this.renderer.removeClass(tr, 'wrapper2');
+    this.estadoAceptar = false;    
 
   }
 
   vaciar5() : void {
-
+    this.resaltar5 = "si"; 
     this.smservicioTaxi5 = new SMServicioTaxi();
     this.smservicioTaxi5.taxista = new SMTaxista();
     this.smservicioTaxi5.cliente = new SMCliente();
     this.smservicioTaxi5.ubicacion = new Ubicacion();
     this.enviar5 = false;
     this.estadoConfirmacion5 = false;
-    this.estadoAceptar = false;
-
-    const table = this.astable5.nativeElement;
-    const tr = this.astr5.nativeElement;
-    this.renderer.removeClass(table, 'stilo-modal');
-    this.renderer.removeClass(tr, 'wrapper2');
-
+    this.estadoAceptar = false;    
   }
 
-  finalizar(servicios:SMServicioTaxi){
-    this.vigilante.editarEstado(servicios.idstaxi).subscribe((resp) => {
+  finalizar(servicios:SMServicioTaxi){    
+    this.vigilante.editarEstado(servicios).subscribe((resp) => {
+      this.loginService.estado("Disponible");
       Swal.fire({
         icon:'success',
         title:'Servicio finalizado',
@@ -1832,7 +1802,16 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
   disponible(): void {
     this.client.activate();
-    this.loginService.estado("Disponible");
+    if(this.verificarEstadoTaxi() == false){
+      this.loginService.estado("Disponible");
+    }
+    else{
+      Swal.fire({
+        icon:'info',
+        text:'Tienes Servicio de taxi sin finalizar'
+      });
+    }
+    
   }
 
   pagar() : void {
@@ -1840,6 +1819,16 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     this.client.deactivate();
     this.router.navigate(['suscripcion']);
 
+  }
+
+  verificarEstadoTaxi() : boolean{
+    const indice = this.smservicioTaxis.find(x => x.estado == "Iniciado");
+    if(indice != null && indice != undefined){
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
 }

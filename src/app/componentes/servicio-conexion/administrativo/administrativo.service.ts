@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+
 import { Administrativo } from '../../modelo/administrativo/administrativo';
 import { URL_BACKEND } from '../../sistema/config/config';
 import { LoginService } from '../login/login.service';
@@ -14,11 +15,11 @@ import { LoginService } from '../login/login.service';
 export class AdministrativoService {
 
   private url:string = URL_BACKEND+"/administrativo";
-  private httpHeaders = new HttpHeaders({'Content-Type' : 'application/json'});
+  //private httpHeaders = new HttpHeaders({'Content-Type' : 'application/json'});
 
   constructor(private http:HttpClient, private loginService:LoginService, private router:Router) { }
 
-  public esNoAutorizado(e:any) : boolean{
+  /*public esNoAutorizado(e:any) : boolean{
     if(e.status == 401 || e.status == 403){
 
       if(this.loginService.isAuthenticate()){
@@ -44,10 +45,10 @@ export class AdministrativoService {
       return this.httpHeaders;
     }
 
-  }  
+  }  */
 
   public listarAdmi() : Observable<Administrativo[]> {
-    return this.http.get<Administrativo[]>(this.url+"/adlista", {headers : this.agregarAutorizacion()}).pipe(
+    return this.http.get<Administrativo[]>(this.url+"/adlista").pipe(
       catchError(e => {
         return throwError(() => e);
       })
@@ -55,67 +56,50 @@ export class AdministrativoService {
   }
 
   public crearAdmi(admin:Administrativo) : Observable<any> {
-    return this.http.post(this.url+"/adcrear", admin, {headers : this.agregarAutorizacion()}).pipe(
+    return this.http.post(this.url+"/adcrear", admin).pipe(
       map(resp => resp),
-      catchError(e => {
-        if (e.status == 404 || e.status == 500) {
+      catchError(e => {    
+
+        if(e.status == 404 || e.status == 500){
           Swal.fire({
-            icon: 'error',
-            title: 'Operación fallida',
-            text: e.mensaje
+            icon:'error',
+            title:'Operación fallida',
+            text:e.error.messaje
           });
         }
-        else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Operación fallida',
-            text: 'Error: No se ha podido establecer conexión con el sistema'
-          });
-        }
-
-        if(this.esNoAutorizado(e)){
-          return throwError(() => e);
-        }
-
+         
         return throwError(() => e);
       })
     );
   }
 
   public obtenerAdmi(id:number) : Observable<Administrativo> {
-    return this.http.get<Administrativo>(this.url+"/adobtener/"+id, {headers : this.agregarAutorizacion()}).pipe(
-      catchError(e => {
-
-        if(this.esNoAutorizado(e)){
-          return throwError(() => e);
-        }
-
+    return this.http.get<Administrativo>(this.url+"/adobtener/"+id).pipe(
+      catchError(e => {  
+        
+        if(e.status == 404 || e.status == 500){
+          Swal.fire({
+            icon:'error',
+            title:'Operación fallida',
+            text:e.error.messaje
+          });
+        }        
         return throwError(() => e);
       })
     );
   }
 
   public editarAdmi(admin:Administrativo) : Observable<any> {
-    return this.http.post(this.url+"/adeditar", admin, {headers : this.agregarAutorizacion()}).pipe(
+    return this.http.post(this.url+"/adeditar", admin).pipe(
       map(resp => resp),
-      catchError(e => {
-        if (e.status == 404 || e.status == 500) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Operación fallida',
-            text: e.mensaje
-          });
-        }
-        else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Operación fallida',
-            text: 'Error: No se ha podido establecer conexión con el sistema'
-          });
-        }
+      catchError(e => {       
 
-        if(this.esNoAutorizado(e)){
-          return throwError(() => e);
+        if(e.status == 404 || e.status == 500){
+          Swal.fire({
+            icon:'error',
+            title:'Operación fallida',
+            text:e.error.messaje
+          });
         }
 
         return throwError(() => e);
@@ -124,27 +108,16 @@ export class AdministrativoService {
   }
 
   public eliminarAdmi(id:number) : Observable<any> {
-    return this.http.delete(this.url+"/adeliminar/"+id, {headers : this.agregarAutorizacion()}).pipe(
+    return this.http.delete(this.url+"/adeliminar/"+id).pipe(
       map(resp => resp),
-      catchError(e => {        
+      catchError(e => { 
 
-        if (e.status == 404 || e.status == 500) {
+        if(e.status == 404 || e.status == 500){
           Swal.fire({
-            icon: 'error',
-            title: 'Operación fallida',
-            text: e.mensaje
+            icon:'error',
+            title:'Operación fallida',
+            text:e.error.messaje
           });
-        }
-        else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Operación fallida',
-            text: 'Error: No se ha podido establecer conexión con el sistema'
-          });
-        }
-
-        if(this.esNoAutorizado(e)){
-          return throwError(() => e);
         }
 
         return throwError(() => e);

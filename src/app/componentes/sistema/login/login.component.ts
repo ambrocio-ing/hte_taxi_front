@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { EmailValuesDto } from '../../security_modelo/email-values/emailvaluesdto';
 import { JwtDto } from '../../security_modelo/jwtDto/jwt-dto';
+import { EmailPasswordService } from '../../servicio-conexion/email-password/email-password.service';
 import { LoginService } from '../../servicio-conexion/login/login.service';
 import { VigilanteService } from '../../usuarios/int-taxista/vigilante.service';
 
@@ -13,10 +15,13 @@ import { VigilanteService } from '../../usuarios/int-taxista/vigilante.service';
 
 export class LoginComponent implements OnInit {
 
-  data:any = {}; 
+  data:any = {};   
+  olvidePassword:boolean = false;
+
+  sendEmail:EmailValuesDto = new EmailValuesDto();
 
   constructor(private router: Router, public loginService:LoginService,
-    private vigilante:VigilanteService) { 
+    private vigilante:VigilanteService, private emailPassService:EmailPasswordService) { 
 
   }  
 
@@ -58,9 +63,10 @@ export class LoginComponent implements OnInit {
         }
         else if(roles.length == 1 && roles[0] == "ROLE_CABBIE"){
           this.vigilante.consultarPago();
+          //this.loginService.estado("Disponible");
         }
         else if(roles.indexOf('ROLE_ADMIN') >= 0 || roles.indexOf('ROLE_USER') >= 0){
-          this.router.navigate(['intusuario']);
+          this.router.navigate(['admi']);
         }
         else{
           Swal.fire({
@@ -82,5 +88,32 @@ export class LoginComponent implements OnInit {
       });
     }
   }  
+
+  olvideContra() : void {
+    this.olvidePassword = true;
+  }
+
+  enviarEmail() : void {
+    if(this.olvidePassword && this.sendEmail.mailTo != null){
+      this.emailPassService.enviarPeticion(this.sendEmail).subscribe(resp => {
+        Swal.fire({
+          icon:'success',
+          title:'OK',
+          text: resp.mensaje
+        });
+      });
+    }
+    else{
+      Swal.fire({
+        icon:'info',
+        title:'Datos incompletos',
+        text: 'Ingrese datos solicitados para continuar'
+      });
+    }
+  }
+
+  cancelarEnvio() : void {
+    this.olvidePassword = false;
+  }
   
 }

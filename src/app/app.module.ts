@@ -16,15 +16,12 @@ import { IntUsuarioComponent } from './componentes/usuarios/int-usuario/int-usua
 import { IntTaxistaComponent } from './componentes/usuarios/int-taxista/int-taxista.component';
 import { AdministradorComponent } from './componentes/administracion/administrador/administrador.component';
 import { SuscripcionComponent } from './componentes/sistema/suscripcion/suscripcion.component';
-import { ListaTaxiComponent } from './componentes/administracion/lista-taxi/lista-taxi.component';
-import { ListaDeliveryComponent } from './componentes/administracion/lista-delivery/lista-delivery.component';
-import { ListaSuscripcionesComponent } from './componentes/administracion/lista-suscripciones/lista-suscripciones.component';
-import { ListaRegistroComponent } from './componentes/administracion/lista-registro/lista-registro.component';
+import { ListaTaxiComponent } from './componentes/administracion/lista-taxistas/lista-taxi.component';
 import { ListaReclamosComponent } from './componentes/administracion/lista-reclamos/lista-reclamos.component';
 import { Perfil2Component } from './componentes/usuarios/perfil2/perfil2.component';
 import { DetTaxistaComponent } from './componentes/usuarios/det-taxista/det-taxista.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ProbandoyaComponent } from './componentes/probandoya/probandoya.component';
 import { MapboxModelComponent } from './componentes/mapbox-model/mapbox-model.component';
 import { MapboxModelTaxistaComponent } from './componentes/mapbox-model-taxista/mapbox-model-taxista.component';
@@ -34,6 +31,13 @@ import { TicketComponent } from './componentes/sistema/ticket/ticket.component';
 import { EstadisticaComponent } from './componentes/usuarios/estadistica/estadistica.component';
 import { DetalleTaxistaComponent } from './componentes/administracion/detalle-taxista/detalle-taxista.component';
 import { AdministrativoComponent } from './componentes/sistema/administrativo/administrativo.component';
+import { ListaUsuariosComponent } from './componentes/administracion/lista-usuarios/lista-usuarios.component';
+import { ListaPagosComponent } from './componentes/administracion/lista-pagos/lista-pagos.component';
+import { ListaServiciosTaxiComponent } from './componentes/administracion/lista-servicios-taxi/lista-servicios-taxi.component';
+import { VisualizacionImagenComponent } from './componentes/administracion/visualizacion-imagen/visualizacion-imagen.component';
+import { ChangePasswordComponent } from './componentes/sistema/change-password/change-password.component';
+import { TokenInterceptor } from './componentes/interceptor/token.interceptor';
+import { AuthInterceptor } from './componentes/interceptor/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -51,10 +55,7 @@ import { AdministrativoComponent } from './componentes/sistema/administrativo/ad
     IntTaxistaComponent,
     AdministradorComponent,
     SuscripcionComponent,
-    ListaTaxiComponent,
-    ListaDeliveryComponent,
-    ListaSuscripcionesComponent,
-    ListaRegistroComponent,
+    ListaTaxiComponent,    
     ListaReclamosComponent,      
     Perfil2Component, 
     DetTaxistaComponent,
@@ -65,7 +66,12 @@ import { AdministrativoComponent } from './componentes/sistema/administrativo/ad
     TicketComponent,
     EstadisticaComponent,
     DetalleTaxistaComponent,
-    AdministrativoComponent
+    AdministrativoComponent,
+    ListaUsuariosComponent,
+    ListaPagosComponent,
+    ListaServiciosTaxiComponent,
+    VisualizacionImagenComponent,    
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -74,7 +80,9 @@ import { AdministrativoComponent } from './componentes/sistema/administrativo/ad
     HttpClientModule,
     NgbModule
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi:true},
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true}],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -10,7 +10,7 @@ import { URL_BACKEND } from '../../sistema/config/config';
 
 export class DetalleTaxistaComponent implements OnInit {
 
-  url_backend:string = URL_BACKEND+"/ptaxista";
+  url_backend:string = URL_BACKEND+"/taxista";
 
   @Input() estadoModal!:boolean;
   @Input() taxista:Taxista = new Taxista();

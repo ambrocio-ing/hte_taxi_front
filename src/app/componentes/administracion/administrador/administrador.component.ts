@@ -13,10 +13,12 @@ export class AdministradorComponent implements OnInit {
   @ViewChild('asAdmin') asadmin!:ElementRef;
   @ViewChild('asTax') astax!:ElementRef;
   @ViewChild('asReclamos') asreclamos!:ElementRef;
+  @ViewChild('asUsuarios') asusuarios!:ElementRef;
 
   admin:boolean = false;
   tax:boolean = false;
   reclamos:boolean = false;
+  usuarios:boolean = false;
 
   constructor(public loginService:LoginService, private renderer:Renderer2,
     private router:Router) { 
@@ -25,7 +27,7 @@ export class AdministradorComponent implements OnInit {
 
   ngOnInit(): void {
     
-    if(this.loginService.isAuthenticate()){
+    /*if(this.loginService.isAuthenticate()){
       let estdo:boolean = false;
 
       if(this.loginService.validarRol("ROLE_ADMIN")){
@@ -45,7 +47,7 @@ export class AdministradorComponent implements OnInit {
     else{
       this.loginService.cerrarSesion();
       this.router.navigate(['']);
-    }
+    }*/
 
     this.admin = true;
   }
@@ -54,6 +56,7 @@ export class AdministradorComponent implements OnInit {
     this.admin = true;
     this.tax = false;
     this.reclamos = false;
+    this.usuarios = false;
 
     this.quitarClaseAdmin('btn-outline-success');
     this.agregarClaseAdmin('btn-success');
@@ -63,12 +66,16 @@ export class AdministradorComponent implements OnInit {
     
     this.quitarClaseReclamos('btn-success');
     this.agregarClaseReclamos('btn-outline-success'); 
+
+    this.quitarClaseUsuarios("btn-success");
+    this.agregarClaseUsuarios("btn-outline-success");
   }
 
   mostrarTax() : void {
     this.admin = false;
     this.tax = true;
     this.reclamos = false;
+    this.usuarios = false;
 
     this.quitarClaseAdmin('btn-success');
     this.agregarClaseAdmin('btn-outline-success');
@@ -78,12 +85,16 @@ export class AdministradorComponent implements OnInit {
     
     this.quitarClaseReclamos('btn-success');
     this.agregarClaseReclamos('btn-outline-success'); 
+
+    this.quitarClaseUsuarios("btn-success");
+    this.agregarClaseUsuarios("btn-outline-success");
   }
 
   mostrarReclamos() : void {
     this.admin = false;
     this.tax = false;
     this.reclamos = true;
+    this.usuarios = false;
 
     this.quitarClaseAdmin('btn-success');
     this.agregarClaseAdmin('btn-outline-success');
@@ -94,6 +105,28 @@ export class AdministradorComponent implements OnInit {
     this.quitarClaseReclamos('btn-outline-success');
     this.agregarClaseReclamos('btn-success'); 
 
+    this.quitarClaseUsuarios("btn-success");
+    this.agregarClaseUsuarios("btn-outline-success");
+
+  }
+
+  mostrarUsuarios() : void {
+    this.admin = false;
+    this.tax = false;
+    this.reclamos = false;
+    this.usuarios = true;
+
+    this.quitarClaseAdmin('btn-success');
+    this.agregarClaseAdmin('btn-outline-success');
+
+    this.quitarClaseTax('btn-success');
+    this.agregarClaseTax('btn-outline-success');  
+    
+    this.quitarClaseReclamos('btn-outline-success');
+    this.agregarClaseReclamos('btn-success'); 
+
+    this.quitarClaseUsuarios("btn-outline-success");
+    this.agregarClaseUsuarios("btn-success");
   }
 
   cerrarsesion() : void {
@@ -129,6 +162,16 @@ export class AdministradorComponent implements OnInit {
   quitarClaseReclamos(clase:string) : void {
     const recl = this.asreclamos.nativeElement;
     this.renderer.removeClass(recl,clase);
+  }
+
+  agregarClaseUsuarios(clase:string) : void {
+    const usu = this.asusuarios.nativeElement;
+    this.renderer.addClass(usu, clase);
+  }
+
+  quitarClaseUsuarios(clase:string) : void {
+    const usu = this.asusuarios.nativeElement;
+    this.renderer.removeClass(usu, clase);
   }
 
 }

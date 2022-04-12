@@ -1,0 +1,49 @@
+<div class="stilo-modal" *ngIf="estado_modal">
+    <div class="wrapper">
+        <div class="contenedor">
+            <div class="row">
+                <h5>Lista de taxis</h5>
+                <span class="sspan" (click)="cerrar()">X</span>
+            </div>
+            <div class="row">                
+                <table class="table table-striped">                    
+                    <thead>
+                        <tr>
+                            <td colspan="">Busqueda</td>
+                            <td>
+                                <input type="date" name="fecha" [(ngModel)]="data.fecha">
+                            </td>
+                            <td>
+                                <input type="date" name="fecha2" [(ngModel)]="data.fecha2">
+                            </td>
+                            <td>
+                                <button (click)="buscar()" class="btn btn-outline-green">Buscar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"></td>
+                            <td>
+                                <button (click)="listar()" class="btn btn-outline-primary">Refrescar</button>
+                            </td>
+                        </tr>
+                        <tr bgcolor="skyblue">
+                            <th scope="col">#</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Codigo</th>
+                            <th scope="col">Total</th>
+                        </tr>                        
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let pago of pagos">
+                            <td>{{pago.idpago}}</td>
+                            <td>{{pago.fecha | date: 'dd/MM'}}</td>
+                            <td>{{pago.codigo}}</td>
+                            <td>{{pago.total}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <span style="color: red;" *ngIf="mensajeLista">{{mensajeLista}}</span>
+            </div>
+        </div>
+    </div>
+</div>

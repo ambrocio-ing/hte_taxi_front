@@ -1,0 +1,70 @@
+<div class="wrapper">
+    <div class="contenedor">
+        <div class="row">
+            <h5>Lista de usuarios</h5>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>Buscar</td>
+                    </tr>
+                    <tr>                        
+                        <td>
+                            <input type="text" name="nombres" (keyup)="limpiar()" [(ngModel)]="data.nombres"
+                                placeholder="Ingrese nombres">
+                        </td>
+                        <td>
+                            <input type="text" name="dni" (keyup)="limpiar2()" [(ngModel)]="data.dni" 
+                                placeholder="Ingrese documento">
+                        </td>
+                        <td>
+                            <button (click)="buscar()" class="btn btn-outline-success">Buscar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td>
+                            <button (click)="listar()" class="btn btn-outline-primary">Refrescar</button>
+                        </td>
+                    </tr>
+                    <tr bgcolor="skyblue" class="text-center">
+                        <th scope="col">Foto</th>
+                        <th scope="col">Datos</th>                                           
+                        <th scope="col">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let cliente of clientes">
+                        <td>
+                            <img class="perfil" src="{{url_backend}}/obtener/imagen/{{cliente.persona.fotoPerfil}}" alt="">
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><span style="color: blue;">DNI:</span>{{cliente.persona.dni}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span style="color: blue;">NOMBRES:</span>
+                                        {{cliente.persona.nombre}}, {{cliente.persona.apellidos}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span style="color: blue;">EMAIL:</span>
+                                    {{cliente.persona.email}}</td>
+                                </tr>
+                                <tr>
+                                    <td> <span style="color: blue;">GENERO:</span> {{cliente.persona.genero}} 
+                                    <span style="color: blue;">EDAD:</span> {{cliente.persona.edad}}</td>
+                                </tr>                                
+                            </table>                            
+                        </td>                        
+                        <td>
+                            <a (click)="eliminar(cliente)" class="aaccion">
+                                <img class="img-accion" src="../../../../assets/img/eliminar.png" alt="">
+                            </a>                            
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <span style="color: red;" *ngIf="mensajeLista">{{mensajeLista}}</span>
+        </div>
+    </div>
+</div>

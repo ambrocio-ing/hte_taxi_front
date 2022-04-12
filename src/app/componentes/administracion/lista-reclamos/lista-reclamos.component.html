@@ -1,3 +1,7 @@
+<app-visualizacion-imagen *ngIf="nombreImagen && mostrarImagen" [mostrar]="mostrarImagen"
+    [nombre]="nombreImagen" (cerrar)="mostrarImagen = $event">
+</app-visualizacion-imagen>
+
 <div class="wrapper">
     <div class="contenedor">
         <h5>Lista de reclamos</h5>
@@ -33,7 +37,11 @@
             </thead>
             <tbody>
                 <tr *ngFor="let reclamo of reclamos">
-                    <th>{{reclamo.idreclamo}}</th>
+                    <td>
+                        <span *ngIf="!reclamo?.evidencia">{{reclamo.idreclamo}}</span>
+                        <img *ngIf="reclamo?.evidencia" (click)="visualizar(reclamo)" style="width: 30px; height: 30px; cursor: pointer;" 
+                            src="{{url_backend}}/reclamo/imagen{{reclamo.evidencia}}" alt="">                        
+                    </td>
                     <td>
                         <table>
                             <tr>
@@ -86,18 +94,8 @@
                         </table>
                     </td>
                     <td>
-                        <table>
-                            <tr class="text-center">
-                                <td>
-                                    <button (click)="eliminar(reclamo)" type="button" class="btn btn-outline-danger">Eliminar</button>
-                                </td>
-                            </tr>
-                            <tr class="text-center">
-                                <td>
-                                    <button (click)="ver(reclamo)" type="button" class="btn btn-outline-primary">Ver</button>
-                                </td>
-                            </tr>
-                        </table>
+                        <button (click)="eliminar(reclamo)" type="button" class="btn btn-outline-danger">Eliminar</button>
+                       
                     </td>                    
                 </tr>
             </tbody>
