@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { ChangePasswordDto } from '../../security_modelo/change-password/changepassworddto';
 import { EmailPasswordService } from '../../servicio-conexion/email-password/email-password.service';
@@ -15,7 +15,7 @@ export class ChangePasswordComponent implements OnInit {
   cpdto:ChangePasswordDto = new ChangePasswordDto();
 
   constructor(private activatedRoute:ActivatedRoute, 
-    private emailPassService:EmailPasswordService) { 
+    private emailPassService:EmailPasswordService, private router:Router) { 
 
   }
 
@@ -38,6 +38,8 @@ export class ChangePasswordComponent implements OnInit {
           icon:'success',
           title:'Cambio exitoso',
           text:resp.mensaje
+        }).then(resp => {
+          this.router.navigate(['login']);
         });
       });
 

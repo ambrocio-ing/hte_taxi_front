@@ -40,8 +40,7 @@ export class ListaReclamosComponent implements OnInit {
 
   } 
 
-  buscar() : void {
-    console.log(this.data.fecha.toString());
+  buscar() : void {    
     if(this.data.fecha != null){
       this.reclamoService.reclamoBuscar(this.data.fecha.toString()).subscribe(resp => {
         this.reclamos = resp;

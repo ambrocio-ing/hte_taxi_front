@@ -11,12 +11,15 @@
         <input type="password" name="password" [(ngModel)]="data.password" placeholder="Password" required="true">
       </div>
       <div class="form-group">
-        <div class="wrape">
+        <div class="wrapper">
           <span (click)="olvideContra()" style="color: blue; cursor: pointer;">Olvide mi comtraseña</span>
         </div>             
       </div>
       <div class="form-group">
         <input type="submit" [disabled]="!asForm.form.valid" value="Iniciar Sesión">
+      </div>
+      <div class="form-group">
+        <button routerLink="">Cancelar</button>
       </div>      
     </form>
   </div>
@@ -31,8 +34,8 @@
       <input type="text" name="mailTo" [(ngModel)]="sendEmail.mailTo" placeholder="Ingrese correo o nombre de usuario" class="form-control">
     </div>
     <div class="form-group">
-      <button (click)="enviarEmail()" class="btn btn-primary">Enviar</button>
-      <button (click)="cancelarEnvio()" style="margin-left: 20px;" class="btn btn-danger">Cancelar</button>
+      <button (click)="enviarEmail()" style="background-color: blue;">Enviar</button>
+      <button (click)="cancelarEnvio()" >Cancelar</button>
     </div>
   </div>
 </div>

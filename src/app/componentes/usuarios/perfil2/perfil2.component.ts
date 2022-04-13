@@ -1,10 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
-import { Taxista } from '../../modelo/taxista/taxista';
 import { LoginService } from '../../servicio-conexion/login/login.service';
 import { TaxistaService } from '../../servicio-conexion/taxista/taxista.service';
 import { URL_BACKEND } from '../../sistema/config/config';
-import { SMServicioTaxi } from '../../socket_modelo/smserviciotaxi/smserviciotaxi';
 import { SMTaxista } from '../../socket_modelo/smtaxista/smtaxista';
 
 @Component({
@@ -20,7 +17,7 @@ export class Perfil2Component implements OnInit {
   nombreUsuario!:string;
   url_backend:string = URL_BACKEND+"/taxista";
 
-  constructor(private router: Router, private taxService:TaxistaService,
+  constructor(private taxService:TaxistaService,
     public loginService:LoginService) {
 
     this.formarNombre();
@@ -28,10 +25,7 @@ export class Perfil2Component implements OnInit {
   }
 
   smtaxista:SMTaxista = new SMTaxista();
-  mensajeTaxista = "";
-
-  //smservicioTaxi:SMServicioTaxi[] = [];
-  //mensajeSMS = "";
+  mensajeTaxista = "";  
 
   idtaxista!:number;
 
@@ -55,16 +49,7 @@ export class Perfil2Component implements OnInit {
     }, err => {
       this.mensajeTaxista = "Sin datos que mostrar";
     });
-  }
-
-  /*historial() : void {
-    this.taxService.historial(this.idtaxista).subscribe(datos => {
-      this.smservicioTaxi = datos;
-      this.mensajeSMS = "";
-    }, err => {
-      this.mensajeSMS = "Sin datos que mostrar";
-    });
-  }*/
+  }  
   
   formarNombre(){
     const nombre = this.loginService.usuario.nombre+" "+this.loginService.usuario.apellidos;
@@ -76,8 +61,5 @@ export class Perfil2Component implements OnInit {
     }
 
   }  
-
-  serrarSesion(): void {
-    //this.loginService.desconectar_Socket.emit('desconectar');
-  }
+  
 }

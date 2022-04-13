@@ -36,21 +36,21 @@ export class ListaUsuariosComponent implements OnInit {
   }
 
   limpiar() : void {
-    if(this.data.dni.length > 0){
+    if(this.data.dni != ""){
       this.data.dni = "";
     }
     
   }
 
   limpiar2() : void {
-    if(this.data.nomberes.length > 0){
+    if(this.data.nomberes != ""){
       this.data.nombres = "";
     }
     
   }
 
   buscar() : void {
-    if(this.data.nombres.length > 0){
+    if(this.data.nombres != ""){
       const nombre = this.data.nombres.replaceAll(' ','');
       this.clienteService.buscarPorNombres(nombre).subscribe(resp => {
         this.clientes = resp;
@@ -59,7 +59,7 @@ export class ListaUsuariosComponent implements OnInit {
         this.mensajeLista = "Sin datos que mostrar";
       });
     }
-    else if(this.data.dni.length > 0){
+    else if(this.data.dni != ""){
       this.clienteService.buscarPorDni(this.data.dni).subscribe(resp => {
         this.clientes = resp;
         this.mensajeLista = "";

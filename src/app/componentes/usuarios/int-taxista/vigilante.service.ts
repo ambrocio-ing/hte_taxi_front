@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -13,47 +13,14 @@ import { SMServicioTaxi } from '../../socket_modelo/smserviciotaxi/smserviciotax
 @Injectable({
   providedIn: 'root'
 })
-
 export class VigilanteService {
 
-  private url: string = URL_BACKEND + "/st";
-  private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-  //pago: Pago = new Pago();
-  //public _fecha: string = "";
+  private url: string = URL_BACKEND + "/st"; 
 
   constructor(private http: HttpClient, private pagoService: PagoService,
     private loginService: LoginService, private router: Router) {
 
-    //this.cargarFecha();
-
-  }
-
-  private esNoAutorizado(e:any) : boolean {
-    if(e.status == 401 || e.status == 403){
-      if(this.loginService.isAuthenticate()){
-        this.loginService.cerrarSesion();
-      }
-
-      this.router.navigate(['login']);
-      return true;
-
-    }
-    else{
-      return false;
-    }
-  }
-
-  private agregarAutorizacion() : HttpHeaders {
-    const token = this.loginService.token;
-    if(token != null && token != ""){
-      return this.httpHeaders.append('Authorization', 'Bearer '+token);
-
-    }
-    else{
-      return this.httpHeaders;
-    }
-  }
+  }  
 
   public guardarEstadoServicio(numero: number, estado: string): void {
     sessionStorage.setItem("servicio" + numero, estado);
@@ -69,27 +36,17 @@ export class VigilanteService {
   }
 
   public editarEstado(smservicioTaxi:SMServicioTaxi): Observable<any> {
-    return this.http.post(this.url + "/steditar",smservicioTaxi, {headers: this.agregarAutorizacion()}).pipe(
+    return this.http.post(this.url + "/steditar",smservicioTaxi).pipe(
       map(resp => resp),
       catchError(e => {
+
         if (e.error.status == 404 || e.error.status == 500) {
           Swal.fire({
             icon: 'error',
             title: 'Operación fallida',
             text: e.error.mensaje
           });
-        }
-        else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Sin servicio',
-            text: 'Es posible que el servidor este inactivo'
-          });
-        }
-
-        if(this.esNoAutorizado(e)){
-          return throwError(e);
-        }
+        }        
 
         return throwError(() => e);
       })

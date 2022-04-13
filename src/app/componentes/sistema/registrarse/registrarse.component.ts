@@ -34,13 +34,14 @@ export class RegistrarseComponent implements OnInit {
   estadoCarnetP: boolean = false;
 
   estadoPropiedad: boolean = false;
-
+  terminosCliente:boolean = false;
+  estadoTipo:boolean = false;
 
   cliente: Cliente = new Cliente();
   taxista: Taxista = new Taxista();
 
   //lista general para los archivos
-  archivos: File[] = [];
+  archivos: File[] = [];  
 
   //cliente
   foto_perfil!: File;
@@ -344,6 +345,26 @@ export class RegistrarseComponent implements OnInit {
     }
   }
 
+  tipoVehiculo(event:any) : void {
+    if(event.target.value == "Automovil"){
+      this.estadoTipo = false;
+      this.taxista.vehiculo.numeroPolicial = "no";
+    }
+    else{
+      this.taxista.vehiculo.numeroPolicial = "";
+      this.estadoTipo = true;
+    }
+  }
+
+  cambiar(event:any) : void {
+    if(event.target.checked){
+      this.terminosCliente = true;
+    }
+    else{
+      this.terminosCliente = false;
+    }
+  }
+
   enviarCliente(): void {
 
     if (this.cliente != null) {
@@ -360,7 +381,7 @@ export class RegistrarseComponent implements OnInit {
           text: resp.messaje
         }).then(() => {
           //console.log('Funcion cerrada');
-          this.router.navigate([''])
+          this.router.navigate(['login'])
         });
 
         //this.router.navigate(['perfil']);
@@ -402,9 +423,9 @@ export class RegistrarseComponent implements OnInit {
         this.archivos.push(this.foto_dni_cliente);
         this.archivos.push(this.foto_targeta_propiedad);
         this.archivos.push(this.foto_vehiculo);
-
-        this.taxista.vehiculo.vehiculoPropietario.documento = this.taxista.persona.dni;
-        this.taxista.vehiculo.vehiculoPropietario.nombres = this.taxista.persona.nombre + " " + this.taxista.persona.apellidos;
+        //this.taxista.vehiculo.vehiculoPropietario.idpropietario = 0;
+        //this.taxista.vehiculo.vehiculoPropietario.documento = this.taxista.persona.dni;
+        //this.taxista.vehiculo.vehiculoPropietario.nombres = this.taxista.persona.nombre + " " + this.taxista.persona.apellidos;
 
       }
     }
@@ -453,7 +474,7 @@ export class RegistrarseComponent implements OnInit {
           text: data.mensaje
         }).then(() => {
           //al darle aceptar al swal
-          this.router.navigate(['']);
+          this.router.navigate(['login']);
         });
 
       });
@@ -476,7 +497,7 @@ export class RegistrarseComponent implements OnInit {
           text: data.mensaje
         }).then(() => {
           //al darle aceptar al swal
-          this.router.navigate(['']);
+          this.router.navigate(['login']);
         });
 
       });

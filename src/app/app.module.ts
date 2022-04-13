@@ -7,8 +7,6 @@ import { InicioComponent } from './componentes/sistema/inicio/inicio.component';
 import { LoginComponent } from './componentes/sistema/login/login.component';
 import { PerfilComponent } from './componentes/usuarios/perfil/perfil.component';
 import { RankingComponent } from './componentes/usuarios/ranking/ranking.component';
-import { SolicitarservicioComponent } from './componentes/usuarios/solicitarservicio/solicitarservicio.component';
-import { SolicitarchoferComponent } from './componentes/usuarios/solicitarchofer/solicitarchofer.component';
 import { RegistrarseComponent } from './componentes/sistema/registrarse/registrarse.component';
 import { TerminoscondicionesComponent } from './componentes/sistema/terminoscondiciones/terminoscondiciones.component';
 import { PasarelaComponent } from './componentes/sistema/pasarela/pasarela.component';
@@ -22,7 +20,6 @@ import { Perfil2Component } from './componentes/usuarios/perfil2/perfil2.compone
 import { DetTaxistaComponent } from './componentes/usuarios/det-taxista/det-taxista.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ProbandoyaComponent } from './componentes/probandoya/probandoya.component';
 import { MapboxModelComponent } from './componentes/mapbox-model/mapbox-model.component';
 import { MapboxModelTaxistaComponent } from './componentes/mapbox-model-taxista/mapbox-model-taxista.component';
 import { ReclamoComponent } from './componentes/usuarios/reclamo/reclamo.component';
@@ -37,7 +34,6 @@ import { ListaServiciosTaxiComponent } from './componentes/administracion/lista-
 import { VisualizacionImagenComponent } from './componentes/administracion/visualizacion-imagen/visualizacion-imagen.component';
 import { ChangePasswordComponent } from './componentes/sistema/change-password/change-password.component';
 import { TokenInterceptor } from './componentes/interceptor/token.interceptor';
-import { AuthInterceptor } from './componentes/interceptor/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -45,9 +41,7 @@ import { AuthInterceptor } from './componentes/interceptor/auth.interceptor';
     InicioComponent,
     LoginComponent,
     PerfilComponent,
-    RankingComponent,
-    SolicitarservicioComponent,    
-    SolicitarchoferComponent,
+    RankingComponent,    
     RegistrarseComponent,
     TerminoscondicionesComponent,
     PasarelaComponent,
@@ -58,8 +52,7 @@ import { AuthInterceptor } from './componentes/interceptor/auth.interceptor';
     ListaTaxiComponent,    
     ListaReclamosComponent,      
     Perfil2Component, 
-    DetTaxistaComponent,
-    ProbandoyaComponent,
+    DetTaxistaComponent,    
     MapboxModelComponent,
     MapboxModelTaxistaComponent,
     ReclamoComponent,
@@ -80,8 +73,7 @@ import { AuthInterceptor } from './componentes/interceptor/auth.interceptor';
     HttpClientModule,
     NgbModule
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi:true},
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true}],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi:true}],
 
   bootstrap: [AppComponent]
 })

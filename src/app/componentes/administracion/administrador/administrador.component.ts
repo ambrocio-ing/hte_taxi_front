@@ -122,8 +122,8 @@ export class AdministradorComponent implements OnInit {
     this.quitarClaseTax('btn-success');
     this.agregarClaseTax('btn-outline-success');  
     
-    this.quitarClaseReclamos('btn-outline-success');
-    this.agregarClaseReclamos('btn-success'); 
+    this.quitarClaseReclamos('btn-success');
+    this.agregarClaseReclamos('btn-outline-success'); 
 
     this.quitarClaseUsuarios("btn-outline-success");
     this.agregarClaseUsuarios("btn-success");

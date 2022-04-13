@@ -225,7 +225,11 @@
             </div>
         </div>
 
-        <button [disabled]="!asFPersona.form.valid || validarImagen" class="btn btn-primary" type="submit">Registrar</button>
+        <div class="form-group">
+            <input type="checkbox" name="remember" (change)="cambiar($event)"> <a style="color: white;">Acepto terminos y condiciones</a>
+        </div>
+        
+        <button [disabled]="!asFPersona.form.valid || validarImagen || !terminosCliente" class="btn btn-primary" type="submit">Registrar</button>
 
     </form>
 
@@ -387,7 +391,7 @@
             </div>
 
             <div class="form-group">
-                <label for="direccion">Direccion(Opcional):</label>
+                <label for="direccion">Direccion:</label>
                 <input type="text" name="direccion" [(ngModel)]="taxista.persona.direccion" class="form-control">
             </div>
 
@@ -482,7 +486,7 @@
             <div class="form-group">
                 <label for="placa">Numero de placa:</label>
                 <input type="text" name="placa" [(ngModel)]="taxista.vehiculo.placa" #asPlaca="ngModel" required
-                    minlength="7" maxlength="7" class="form-control">
+                    minlength="7" maxlength="8" class="form-control">
                 <div *ngIf="asPlaca.invalid && (asPlaca.touched || asPlaca.dirty)">
                     <div *ngIf="asPlaca.errors?.['required']">
                         <span>
@@ -491,12 +495,12 @@
                     </div>
                     <div *ngIf="asPlaca.errors?.['minlength']">
                         <span>
-                            Complete los 7 digitos
+                            Mínimo 7 digitos
                         </span>
                     </div>
                     <div *ngIf="asPlaca.errors?.['maxlength']">
                         <span>
-                            Complete los 7 digitos
+                            Maximo 8 digitos
                         </span>
                     </div>
                 </div>
@@ -522,7 +526,7 @@
             <div class="form-group">
                 <label for="codigoTargetaPropiedad">Codigo de tarjeta propiedad:</label>
                 <input type="text" name="codigoTargetaPropiedad" [(ngModel)]="taxista.vehiculo.codigoTargetaPropiedad"
-                    #asCodigoTP="ngModel" required minlength="6" maxlength="6" class="form-control">
+                    #asCodigoTP="ngModel" required minlength="4" maxlength="10" class="form-control">
                 <div *ngIf="asCodigoTP.invalid && (asCodigoTP.touched || asCodigoTP.dirty)">
                     <div *ngIf="asCodigoTP.errors?.['required']">
                         <span>
@@ -531,12 +535,12 @@
                     </div>
                     <div *ngIf="asCodigoTP.errors?.['maxlength']">
                         <span>
-                            Campo de 6 caracteres
+                            Campo de 10 caracteres
                         </span>
                     </div>
                     <div *ngIf="asCodigoTP.errors?.['minlength']">
                         <span>
-                            Campo de 6 caracteres
+                            Campo de 4 caracteres
                         </span>
                     </div>
                 </div>
@@ -552,7 +556,7 @@
 
             <div class="form-group">
                 <Label for="tipo">Tipo de vehiculo:</Label>
-                <select name="tipo" [(ngModel)]="taxista.vehiculo.tipo" #asTipo="ngModel" required class="form-control"
+                <select name="tipo" [(ngModel)]="taxista.vehiculo.tipo" #asTipo="ngModel" (change)="tipoVehiculo($event)" required class="form-control"
                     required>
                     <option value="">--Selecionar Tipo--</option>
                     <option value="Mototaxi">Mototaxi</option>
@@ -578,7 +582,7 @@
             <div class="form-group">
                 <label for="numeroSeguroVehiculo">Numero de seguro vehicular:</label>
                 <input type="text" name="numeroSeguroVehicular" [(ngModel)]="taxista.vehiculo.numeroSeguroVehicular"
-                    #asNumeroSV="ngModel" requird minlength="6" maxlength="6" class="form-control">
+                    #asNumeroSV="ngModel" requird minlength="4" maxlength="10" class="form-control">
                 <div *ngIf="asNumeroSV.invalid && (asNumeroSV.touched || asNumeroSV.dirty)">
                     <div *ngIf="asNumeroSV.errors?.['required']">
                         <span>
@@ -587,12 +591,12 @@
                     </div>
                     <div *ngIf="asNumeroSV.errors?.['minlength']">
                         <span>
-                            Ingrese 6 caracteres
+                            Ingrese 4 caracteres
                         </span>
                     </div>
                     <div *ngIf="asNumeroSV.errors?.['maxlength']">
                         <span>
-                            Ingrese 6 caracteres
+                            Ingrese 10 caracteres
                         </span>
                     </div>
                 </div>
@@ -611,21 +615,16 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" *ngIf="estadoTipo">
                 <label for="numeroPolicial">Numero policial:</label>
                 <input type="text" name="numeroPolicial" [(ngModel)]="taxista.vehiculo.numeroPolicial"
-                    #asNumeroP="ngModel" required minlength="6" maxlength="6" class="form-control">
+                    #asNumeroP="ngModel" required maxlength="6" class="form-control">
                 <div *ngIf="asNumeroP.invalid && (asNumeroP.touched || asNumeroP.dirty)">
                     <div *ngIf="asNumeroP.errors?.['required']">
                         <span>
                             Campo requerido
                         </span>
-                    </div>
-                    <div *ngIf="asNumeroP.errors?.['minlength']">
-                        <span>
-                            Complete 6 caracteres
-                        </span>
-                    </div>
+                    </div>                    
                     <div *ngIf="asNumeroP.errors?.['maxlength']">
                         <span>
                             Complete 6 caracteres
@@ -637,8 +636,8 @@
             <div class="form-group">
                 <label for="codigoPermisoCirculacion">Codigo de permiso de circulacion:</label>
                 <input type="text" name="codigoPermisoCirculacion"
-                    [(ngModel)]="taxista.vehiculo.codigoPermisoCirculacion" #asCodigoPC="ngModel" required minlength="6"
-                    maxlength="6" class="form-control">
+                    [(ngModel)]="taxista.vehiculo.codigoPermisoCirculacion" #asCodigoPC="ngModel" required minlength="4"
+                    maxlength="10" class="form-control">
                 <div *ngIf="asCodigoPC.invalid && (asCodigoPC.touched || asCodigoPC.dirty)">
                     <div *ngIf="asCodigoPC.errors?.['required']">
                         <span>
@@ -647,12 +646,12 @@
                     </div>
                     <div *ngIf="asCodigoPC.errors?.['minlength']">
                         <span>
-                            Complete 6 dígitos
+                            Complete 4 dígitos
                         </span>
                     </div>
                     <div *ngIf="asCodigoPC.errors?.['maxlength']">
                         <span>
-                            Complete 6 dígitos
+                            Complete 10 dígitos
                         </span>
                     </div>
                 </div>

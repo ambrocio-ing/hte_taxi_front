@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
@@ -12,14 +12,13 @@ import { URL_BACKEND } from '../../sistema/config/config';
 })
 export class LoginService {  
 
-  private url:string = URL_BACKEND+"/auth";
-  private httHeaders = new HttpHeaders({'Content-Type' : 'application/json'});
+  private url:string = URL_BACKEND+"/auth";  
 
   public _usuario!:JwtDto;
   public _token!:string;
   public _disponible!:string;
 
-  constructor(private router:Router, private http:HttpClient) { }
+  constructor(private http:HttpClient) { }
 
   public get usuario() : JwtDto {
     if(this._usuario != null){
@@ -83,7 +82,7 @@ export class LoginService {
   } 
 
   public login(data:any) : Observable<JwtDto> {
-    return this.http.post(this.url+"/login", data, {headers : this.httHeaders}).pipe(
+    return this.http.post(this.url+"/login", data).pipe(
       map(resp => resp as JwtDto),
       catchError(e => {
 
@@ -106,6 +105,13 @@ export class LoginService {
       })
     );
   }
+
+  public refrescarToken(jwtDto:JwtDto) : Observable<JwtDto> {
+    return this.http.post(this.url+"/refrescar", jwtDto).pipe(
+      map(resp => resp as JwtDto)
+      
+    );
+  }
   
   public guardarUsuario(jwtDto:JwtDto){
     this._usuario = new JwtDto();    
@@ -122,6 +128,11 @@ export class LoginService {
     sessionStorage.setItem("token", this._token);   
 
   } 
+
+  public refresToken(token:string){
+    this._token = token;
+    sessionStorage.setItem("token", this._token);
+  }
 
   public validarRol(rolename:string): boolean {
     if(this.token != null && this.token != ""){

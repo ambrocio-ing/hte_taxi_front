@@ -1,7 +1,7 @@
 input[type=text]{
   width: 100%;
   padding: 12px 20px;
-  margin: 8px 0;
+  margin: 2px 0;
   display: inline-block;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -11,7 +11,7 @@ input[type=text]{
 input[type=password] {
   width: 100%;
   padding: 12px 20px;
-  margin: 8px 0;
+  margin: 2px 0;
   display: inline-block;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -23,7 +23,7 @@ input[type=submit] {
   background-color: red;
   color: white;
   padding: 14px 20px;
-  margin: 8px 0;
+  margin: 2px 0;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -36,24 +36,29 @@ input[type=submit]:hover {
 div {
   border-radius: 5px;
   background-color: #f2f2f2;
-  padding: 20px;
+  padding: 5px;
+  
 }
   
 button{
-  margin: 1rem;
-  background: red;
-  border-radius: 5rem;
-  border: red;
-  width: 150px;
-  height: 25px;
+  width: 100%;
+  background-color: red;
+  color: white;
+  padding: 14px 20px;
+  margin: 2px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .wrapper{
-  padding: .5rem;
+  padding: 0.1rem;
   display: flex;
+  background-color: #f2f2f2;
   justify-content: center;
 }
 
 .login{
   width: 300px;
+  margin: 11.5%;
 }

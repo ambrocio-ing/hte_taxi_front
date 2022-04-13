@@ -1,51 +1,22 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { Reclamo } from '../../modelo/reclamo/reclamo';
 import { URL_BACKEND } from '../../sistema/config/config';
-import { LoginService } from '../login/login.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReclamoService {
 
-  private url:string = URL_BACKEND + "/reclamo";
-  private httpHeaders = new HttpHeaders({'Content-Type' : 'application/json'});
+  private url:string = URL_BACKEND + "/reclamo";  
 
-  constructor(private http:HttpClient, private loginService:LoginService, private router:Router) { }
-
-  private esNoAutorizado(e:any) : boolean {
-    if(e.status == 401 || e.status == 403){
-      if(this.loginService.isAuthenticate()){
-        this.loginService.cerrarSesion();
-      }
-
-      this.router.navigate(['login']);
-      return true;
-
-    }
-    else{
-      return false;
-    }
-  }
-
-  private agregarAutorizacion() : HttpHeaders {
-    const token = this.loginService.token;
-    if(token != null && token != ""){
-      return this.httpHeaders.append('Authorization', 'Bearer '+token);
-
-    }
-    else{
-      return this.httpHeaders;
-    }
-  }
+  constructor(private http:HttpClient) { }
 
   reclamoLista() : Observable<Reclamo[]> {
-    return this.http.get<Reclamo[]>(this.url+"/relista", {headers : this.agregarAutorizacion()}).pipe(
+    return this.http.get<Reclamo[]>(this.url+"/relista").pipe(
       catchError(e => {
         return throwError(() => e);
       })
@@ -53,12 +24,8 @@ export class ReclamoService {
   }
 
   reclamoBuscar(fecha:String) : Observable<Reclamo[]> {
-    return this.http.get<Reclamo[]>(this.url+"/rebuscar/"+fecha, {headers : this.agregarAutorizacion()}).pipe(
+    return this.http.get<Reclamo[]>(this.url+"/rebuscar/"+fecha).pipe(
       catchError(e => {
-
-        if(this.esNoAutorizado(e)){
-          return throwError(e);
-        }
 
         return throwError(() => e);
       })
@@ -66,13 +33,13 @@ export class ReclamoService {
   }
 
   reclamoGuardar(reclamo:Reclamo, archivo:File) : Observable<any> {
-    return this.http.post(this.url+"/recrear", reclamo, {headers : this.agregarAutorizacion()}).pipe(
+    return this.http.post(this.url+"/recrear", reclamo).pipe(
       switchMap((resp:any) => {
         const formData = new FormData();
         formData.append("id", resp.id);
         formData.append("archivo",archivo);
 
-        return this.http.post(`${this.url}/reimagen`, formData, {headers : this.agregarAutorizacion()}).pipe(
+        return this.http.post(`${this.url}/reimagen`, formData).pipe(
           map(res => {
             return res;
           })
@@ -87,18 +54,7 @@ export class ReclamoService {
             text : e.error.mensaje
           });
         }
-        else{
-          Swal.fire({
-            icon:'error',
-            title: 'Operación fallida',
-            text : 'Es posible que no haya conexión al servidor'
-          });
-        }
-
-        if(this.esNoAutorizado(e)){
-          return throwError(e);
-        }
-
+        
         return throwError(() => e);
 
       })
@@ -106,7 +62,7 @@ export class ReclamoService {
   }
 
   reclamo_Guardar(reclamo:Reclamo) : Observable<any> {
-    return this.http.post(this.url+"/recrear", reclamo, {headers : this.agregarAutorizacion()}).pipe(
+    return this.http.post(this.url+"/recrear", reclamo).pipe(
       map(resp => resp),
       catchError(e => {
         if(e.error.status == 404 || e.error.status == 500){
@@ -115,56 +71,16 @@ export class ReclamoService {
             title: 'Operación fallida',
             text : e.error.mensaje
           });
-        }
-        else{
-          Swal.fire({
-            icon:'error',
-            title: 'Operación fallida',
-            text : 'Es posible que no haya conexión al servidor'
-          });
-        }
-
-        if(this.esNoAutorizado(e)){
-          return throwError(e);
-        }
+        }       
 
         return throwError(() => e);
 
       })
     );
-  }
-
-  reclamoObtener(id:number) : Observable<Reclamo> {
-    return this.http.get(this.url+"/reobtener/"+id, {headers : this.agregarAutorizacion()}).pipe(
-      map(resp => resp as Reclamo),
-      catchError(e => {
-        if(e.error.status == 404 || e.error.status == 500){
-          Swal.fire({
-            icon:'error',
-            title: 'Operación fallida',
-            text : e.error.mensaje
-          });
-        }
-        else{
-          Swal.fire({
-            icon:'error',
-            title: 'Operación fallida',
-            text : 'Es posible que no haya conexión al servidor'
-          });
-        }
-
-        if(this.esNoAutorizado(e)){
-          return throwError(e);
-        }
-
-        return throwError(() => e);
-
-      })
-    );
-  }
+  } 
 
   reclamoEliminar(id:number) : Observable<any> {
-    return this.http.delete(this.url+"/reeliminar/"+id, {headers : this.agregarAutorizacion()}).pipe(
+    return this.http.delete(this.url+"/reeliminar/"+id).pipe(
       map(resp => resp),
       catchError(e => {
         if(e.error.status == 404 || e.error.status == 500){
@@ -173,18 +89,7 @@ export class ReclamoService {
             title: 'Operación fallida',
             text : e.error.mensaje
           });
-        }
-        else{
-          Swal.fire({
-            icon:'error',
-            title: 'Operación fallida',
-            text : 'Es posible que no haya conexión al servidor'
-          });
-        }
-
-        if(this.esNoAutorizado(e)){
-          return throwError(e);
-        }
+        }      
 
         return throwError(() => e);
 
