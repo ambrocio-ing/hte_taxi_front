@@ -5,6 +5,37 @@
         </div>
         <div class="card-body">
             <div class="row">
+                <h5>Cotización del dolar y agrege funcionalidad para envío de productos</h5>
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <input type="number" name="valor" [(ngModel)]="dolar.valor" class="form-control">
+                    </div>
+                    <div class="form-group">                        
+                        <select name="tipo" name="envioProductos" [(ngModel)]="dolar.envioProductos" class="form-control">
+                            <option value="">-- Selecione --</option>
+                            <option value="Activo">Activo</option>
+                            <option value="Desactivo">Desactivo</option>
+                        </select>
+                    </div>                    
+                </div>
+                <div class="col-xs-4">
+                    <div class="from-group mt-4">
+                        <button (click)="guardarDolar()" class="from-control">Enviar</button>
+                    </div>
+                </div>
+                <div class="col-xs-4" *ngIf="dolar1?.id">
+                    <div class="from-group">
+                        <h5>Valores actuales</h5>
+                    </div>
+                    <div class="from-group">
+                        <span style="color: blue;">Valor</span>{{dolar1.valor}}
+                    </div>
+                    <div class="from-group">
+                        <span style="color: blue;">Envío</span>{{dolar1.envioProductos}}
+                    </div>                    
+                </div>
+            </div>
+            <div class="row">
                 <form (ngSubmit)="enviar($event)" #asForm="ngForm">
                     <div class="row">
                         <div class="col-sm">                            
@@ -92,7 +123,7 @@
                             <div class="form-group">
                                 <label for="role">Tipo de usuario</label>
                                 <br>
-                                <input type="checkbox" (change)="tipo($event)" class=""> ADMIN                                
+                                <input #asTipo type="checkbox" (change)="tipo($event)"> ADMIN                                
                             </div>
                         </div>
                     </div>

@@ -16,7 +16,7 @@ import { AuthGuard } from './componentes/guards/auth.guard';
 import { RoleGuard } from './componentes/guards/role.guard';
 
 const routes: Routes = [
-  {path: '',component:InicioComponent},
+  //{path: '',component:InicioComponent},
   {path: 'registrar',component:RegistrarseComponent},
   {path: 'login',component:LoginComponent},
   {path: 'terminos',component:TerminoscondicionesComponent},  

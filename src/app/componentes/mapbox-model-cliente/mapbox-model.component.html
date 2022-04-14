@@ -14,12 +14,19 @@
         </div>
         <div class="wrapper">
             <div class="box-inputs">
-                <div class="form-group">
+                <div class="form-group" *ngIf="dolar?.envioProductos == 'Activo'">
                     <label for="tipo">Tipo</label>
                     <select name="tipo" [(ngModel)]="data.tipo" class="form-control">
                         <option value="">-- Selecione --</option>
                         <option value="Pasajero">Pasajero</option>
                         <option value="Envio">Envío de algun producto</option>
+                    </select>
+                </div>
+                <div class="form-group" *ngIf="dolar?.envioProductos == 'Desactivo'">
+                    <label for="tipo">Tipo</label>
+                    <select name="tipo" [(ngModel)]="data.tipo" class="form-control">
+                        <option value="">-- Selecione --</option>
+                        <option value="Pasajero">Pasajero</option>                        
                     </select>
                 </div>
                 <div class="form-group">

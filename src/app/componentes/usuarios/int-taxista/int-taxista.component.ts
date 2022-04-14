@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Client } from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import Swal from 'sweetalert2';
-import { MapboxserviceService } from '../../mapbox-model/mapboxservice.service';
+import { MapboxserviceService } from '../../mapbox-model-cliente/mapboxservice.service';
 import { LoginService } from '../../servicio-conexion/login/login.service';
 import { URL_BACKEND } from '../../sistema/config/config';
 import { SMCliente } from '../../socket_modelo/smcliente/smcliente';
@@ -105,18 +105,20 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   enviar4: boolean = false;
   enviar5: boolean = false;
 
-  smservicioTaxis:SMServicioTaxi[] = [];
-  mensajeServicios!:string;
+  smservicioTaxis: SMServicioTaxi[] = [];
+  mensajeServicios!: string;
+
+  smservicioEnCurso: SMServicioTaxi = new SMServicioTaxi();
+  posicion: any = null;
 
   constructor(private router: Router,
     private mapboxService: MapboxserviceService, public loginService: LoginService,
-    private vigilante: VigilanteService, private renderer: Renderer2, 
-    private taxService:TaxistaService) {
+    private vigilante: VigilanteService, private renderer: Renderer2,
+    private taxService: TaxistaService) {
 
     this.idtaxista = loginService.usuario.id;
     this.formarNombre();
     this.getLocation();
-
     this.crearNuevos();
 
   }
@@ -127,23 +129,23 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    if(this.loginService.isAuthenticate()){
-      if(this.loginService.validarRol('ROLE_CABBIE') == false){
+    if (this.loginService.isAuthenticate()) {
+      if (this.loginService.validarRol('ROLE_CABBIE') == false) {
         this.loginService.cerrarSesion();
         this.router.navigate(['']);
       }
     }
-    else{
+    else {
       this.loginService.cerrarSesion();
       this.router.navigate(['']);
-    }    
+    }
 
     this.client = new Client();
     this.client.webSocketFactory = () => {
       return new SockJS("http://localhost:8080/taxi_sock");
-    }    
+    }
 
-    this.client.onConnect = (frame) => {      
+    this.client.onConnect = (frame) => {
       console.log('taxista conectado ' + this.client.connected + ' : ' + frame);
 
       //permanece a la escucha de la peticion de los clientes sobre taxistas cercanos
@@ -152,7 +154,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         console.log('****Respuesta en taxista', ubicacion);
         console.log('****COORDENADAS DE TAXISTA', this.smsubicacion);
 
-        if (ubicacion.idcliente != 0 && ubicacion != null) {
+        if (ubicacion.idcliente != 0 && ubicacion != null && this.loginService.isDisponible()) {
           let coords: number[] = [];
           coords.push(-77.1393496);
           coords.push(-11.8380763);
@@ -161,7 +163,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
           this.mapboxService.validarDistancia(coords).subscribe(resp => {
             console.log('RESPUESTA CON LA DISTANCIA', resp);
-            if ((resp * 0.001) <= 3) {
+            if (resp[0] <= 3) {
 
               //si el taxista esta a menos de 3 km envia su ubicacion al cliente
               ubicacion.idtaxista = this.loginService.usuario.id;
@@ -181,8 +183,8 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
       this.client.subscribe('/staxi/nuevo_servicio/' + this.loginService.usuario.id, (event) => {
         const smservicioTaxi: SMServicioTaxi = JSON.parse(event.body) as SMServicioTaxi;
         console.log('NUEVA PETICION DE SERVICIO****', smservicioTaxi);
-        if (smservicioTaxi.estado == "Pedido") {
-          
+        if (smservicioTaxi.estado == "Pedido" && this.loginService.isDisponible()) {
+
           this.asignarServicios(smservicioTaxi);
 
         }
@@ -210,25 +212,50 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
       });
 
       //Operacion --> 6 inicio de taxi
-      this.client.subscribe('/staxi/ok_taxi/'+this.loginService.usuario.dni, (event) => {
-        const smservicioTaxi:SMServicioTaxi = JSON.parse(event.body) as SMServicioTaxi;
-        if(smservicioTaxi.estado == "Iniciado"){
+      this.client.subscribe('/staxi/ok_taxi/' + this.loginService.usuario.dni, (event) => {
+        const smservicioTaxi: SMServicioTaxi = JSON.parse(event.body) as SMServicioTaxi;
+        if (smservicioTaxi.estado == "Iniciado") {
 
           this.notificarOk(smservicioTaxi);
         }
       });
 
       //Operacion de cancelacion en caso de error
-      this.client.subscribe('/staxi/inicio_error/'+this.loginService.usuario.dni, (event) => {
-        const smservicioTaxi:SMServicioTaxi = JSON.parse(event.body) as SMServicioTaxi;
+      this.client.subscribe('/staxi/inicio_error/' + this.loginService.usuario.dni, (event) => {
+        const smservicioTaxi: SMServicioTaxi = JSON.parse(event.body) as SMServicioTaxi;
         this.errorFinal(smservicioTaxi);
       });
 
       //Cualquier error
       this.client.subscribe('/staxi/error_tax/' + this.idtaxista, (event) => {
         const smservicioTaxi: SMServicioTaxi = JSON.parse(event.body) as SMServicioTaxi;
-        
+
         this.errorDeServidor(smservicioTaxi);
+
+      });
+
+      //cuando el pasajero cancela el taxi
+      this.client.subscribe('/staxi/taxi_cancelado/' + this.idtaxista, (event) => {
+        const id = +event.body;
+        if (id == this.smservicioEnCurso.idstaxi) {
+          Swal.fire({
+            icon: 'info',
+            title: 'Taxi cancelado',
+            text: 'El pasajero acaba de cancelar el servicio, por favor refresque y espere una solicitud'
+          });
+
+          this.loginService.estado("Disponible");
+          this.smservicioEnCurso = new SMServicioTaxi();
+          this.smservicioEnCurso.taxista = new SMTaxista();
+          this.smservicioEnCurso.cliente = new SMCliente();
+          
+          this.taxService.historial(this.idtaxista).subscribe(datos => {
+            this.smservicioTaxis = datos;
+            this.mensajeServicios = "";
+          }, err => {
+            this.mensajeServicios = "Sin datos que mostrar";
+          });
+        }
 
       });
 
@@ -240,8 +267,6 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
       this.smsubicacion.origen_lat = -11.8380763;
       this.client.publish({ destination: '/app/nuevo_conectado', body: JSON.stringify(this.smsubicacion) });
 
-      //https://www.google.com/maps/place/Grifo+Repsol+%22Lubricantes%22/@-11.8380763,-77.1415383,17z/data=!3m1!4b1!4m5!3m4!1s0x9105d45b70384b79:0xae082fea4badc052!8m2!3d-11.8380763!4d-77.1393496     
-      
     }
 
     this.client.activate();
@@ -253,12 +278,18 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     this.taxService.historial(this.idtaxista).subscribe(datos => {
       this.smservicioTaxis = datos;
       this.mensajeServicios = "";
-      if(this.verificarEstadoTaxi() == false){
+
+      if (this.verificarEstadoTaxi() == false) {
         this.loginService.estado("Disponible");
       }
-      else{
+      else {
+        const indice = this.smservicioTaxis.find(x => x.estado == "Iniciado");
+        if (indice != null && indice != undefined) {
+          this.smservicioEnCurso = indice;
+        }
         this.loginService.estado("Ocupado");
       }
+
     }, err => {
       this.mensajeServicios = "Sin datos que mostrar";
     });
@@ -267,35 +298,35 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
   }
 
-  
 
-  errorDeServidor(smservicioTaxi:SMServicioTaxi) : void {
 
-    if(smservicioTaxi.taxista.idtaxista == this.smservicioTaxi1.taxista.idtaxista){
+  errorDeServidor(smservicioTaxi: SMServicioTaxi): void {
+
+    if (smservicioTaxi.taxista.idtaxista == this.smservicioTaxi1.taxista.idtaxista) {
       this.vaciar1();
     }
-    else if(smservicioTaxi.taxista.idtaxista == this.smservicioTaxi2.taxista.idtaxista){
+    else if (smservicioTaxi.taxista.idtaxista == this.smservicioTaxi2.taxista.idtaxista) {
       this.vaciar2();
     }
-    else if(smservicioTaxi.taxista.idtaxista == this.smservicioTaxi3.taxista.idtaxista){
+    else if (smservicioTaxi.taxista.idtaxista == this.smservicioTaxi3.taxista.idtaxista) {
       this.vaciar3();
     }
-    else if(smservicioTaxi.taxista.idtaxista == this.smservicioTaxi4.taxista.idtaxista){
+    else if (smservicioTaxi.taxista.idtaxista == this.smservicioTaxi4.taxista.idtaxista) {
       this.vaciar4();
     }
-    else if(smservicioTaxi.taxista.idtaxista == this.smservicioTaxi5.taxista.idtaxista){
+    else if (smservicioTaxi.taxista.idtaxista == this.smservicioTaxi5.taxista.idtaxista) {
       this.vaciar5();
     }
 
   }
 
-  errorFinal(smservicioTaxi:SMServicioTaxi) : void {
+  errorFinal(smservicioTaxi: SMServicioTaxi): void {
 
-    if(this.smservicioTaxis[0].idstaxi == smservicioTaxi.idstaxi){
+    if (this.smservicioTaxis[0].idstaxi == smservicioTaxi.idstaxi) {
       Swal.fire({
-        icon:'warning',
-        title:'Ocurrio un error al validar el taxi iniciado',
-        text:'El taxi solicitado recientemente será quitado de la lista por favor mantengase a la espera de otra solicitud'
+        icon: 'warning',
+        title: 'Ocurrio un error al validar el taxi iniciado',
+        text: 'El taxi solicitado recientemente será quitado de la lista por favor mantengase a la espera de otra solicitud'
       });
       this.taxService.historial(this.idtaxista).subscribe(datos => {
         this.smservicioTaxis = datos;
@@ -381,31 +412,31 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     }
   }
 
-  notificarOk(smservicioTaxi:SMServicioTaxi){
+  notificarOk(smservicioTaxi: SMServicioTaxi) {
     if (smservicioTaxi.idstaxi == this.smservicioTaxi1.idstaxi) {
       this.mensaje1 = "Agregando servicio a su historial";
       this.vigilante.guardarEstadoServicio(1, "Iniciado");
-      
+
     }
     else if (smservicioTaxi.idstaxi == this.smservicioTaxi2.idstaxi) {
       this.mensaje2 = "Agregando servicio a su historial";
       this.vigilante.guardarEstadoServicio(2, "Iniciado");
-      
+
     }
     else if (smservicioTaxi.idstaxi == this.smservicioTaxi3.idstaxi) {
       this.mensaje3 = "Agregando servicio a su historial";
       this.vigilante.guardarEstadoServicio(3, "Iniciado");
-      
+
     }
     else if (smservicioTaxi.idstaxi == this.smservicioTaxi4.idstaxi) {
       this.mensaje4 = "Agregando servicio a su historial";
       this.vigilante.guardarEstadoServicio(4, "Iniciado");
-     
+
     }
     else if (smservicioTaxi.idstaxi == this.smservicioTaxi5.idstaxi) {
       this.mensaje5 = "Agregando servicio a su historial";
       this.vigilante.guardarEstadoServicio(5, "Iniciado");
-      
+
     }
 
     this.taxService.historial(this.idtaxista).subscribe(datos => {
@@ -418,43 +449,48 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
       this.vaciar4();
       this.vaciar5();
 
+      const indice = this.smservicioTaxis.find(x => x.estado == "Iniciado");
+      if (indice != null && indice != undefined) {
+        this.smservicioEnCurso = indice;
+      }
+
     }, err => {
       this.loginService.estado("Disponible");
       this.mensajeServicios = "Sin datos que mostrar";
       //OPeracion --> 7 cancelar en caso de error
-      smservicioTaxi.estado = "Error";      
-      this.client.publish({ destination: '/app/error_inicio', body: JSON.stringify(smservicioTaxi)});
+      smservicioTaxi.estado = "Error";
+      this.client.publish({ destination: '/app/error_inicio', body: JSON.stringify(smservicioTaxi) });
 
       if (smservicioTaxi.idstaxi == this.smservicioTaxi1.idstaxi) {
         this.mensaje1 = "Ocurrio un error cancelando...";
         this.vigilante.guardarEstadoServicio(1, "Cancelado");
         this.vaciar1();
-        
+
       }
       else if (smservicioTaxi.idstaxi == this.smservicioTaxi2.idstaxi) {
         this.mensaje2 = "Ocurrio un error cancelando...";
         this.vigilante.guardarEstadoServicio(2, "Cancelado");
         this.vaciar2();
-        
+
       }
       else if (smservicioTaxi.idstaxi == this.smservicioTaxi3.idstaxi) {
         this.mensaje3 = "Ocurrio un error cancelando...";
         this.vigilante.guardarEstadoServicio(3, "Cancelado");
         this.vaciar3();
-        
+
       }
       else if (smservicioTaxi.idstaxi == this.smservicioTaxi4.idstaxi) {
         this.mensaje4 = "Ocurrio un error cancelando...";
         this.vigilante.guardarEstadoServicio(4, "Cancelado");
         this.vaciar4();
-       
+
       }
       else if (smservicioTaxi.idstaxi == this.smservicioTaxi5.idstaxi) {
         this.mensaje5 = "Ocurrio un error cancelando...";
         this.vigilante.guardarEstadoServicio(5, "Cancelado");
-        this.vaciar5();        
+        this.vaciar5();
       }
-    });    
+    });
 
   }
 
@@ -463,9 +499,20 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     console.log('************LISTO PARA CONFIRMAR', this.smservicioTaxi1);
 
     this.smservicioTaxi1.estado = "Confirmado";
+    const coordenadas = [
+      this.smsubicacion.origen_lng,
+      this.smsubicacion.origen_lat,
+      this.smservicioTaxi1.ubicacion.origen_lng,
+      this.smservicioTaxi1.ubicacion.origen_lat
+    ];
+    this.mapboxService.validarDistancia(coordenadas).subscribe(resp => {
+      this.smservicioTaxi1.ubicacion.distanciafinal = resp[0];
+      this.smservicioTaxi1.ubicacion.tiempofinal = resp[0];
+    });
+
     if (this.smservicioTaxi1.precio > 0) {
-      //hacer publish
       this.vigilante.guardarEstadoServicio(1, "Confirmado");
+      //hacer publish      
       //devolver el precio del taxi --Operacion --> 3
       this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi1) });
       this.mensaje1 = "Precio confirmado";
@@ -515,8 +562,8 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
     this.vigilante.guardarEstadoServicio(1, "ok");
     this.smservicioTaxi1.estado = "Iniciado";
-    this.client.publish({destination : '/app/taxi_ok', body : JSON.stringify(this.smservicioTaxi1)});
-    this.resaltar1 = "si";    
+    this.client.publish({ destination: '/app/taxi_ok', body: JSON.stringify(this.smservicioTaxi1) });
+    this.resaltar1 = "si";
     this.mensaje1 = "Validando servicio";
     this.minuto1 = 0;
     this.segundo1 = 0;
@@ -545,7 +592,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.vaciar1();
 
       }
-      
+
     }, 30000);
 
   }
@@ -574,9 +621,22 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     console.log('************LISTO PARA CONFIRMAR 2', this.smservicioTaxi2);
 
     this.smservicioTaxi2.estado = "Confirmado";
+
+    const coordenadas = [
+      this.smsubicacion.origen_lng,
+      this.smsubicacion.origen_lat,
+      this.smservicioTaxi2.ubicacion.origen_lng,
+      this.smservicioTaxi2.ubicacion.origen_lat
+    ];
+    this.mapboxService.validarDistancia(coordenadas).subscribe(resp => {
+      this.smservicioTaxi2.ubicacion.distanciafinal = resp[0];
+      this.smservicioTaxi2.ubicacion.tiempofinal = resp[0];
+    });
+
     if (this.smservicioTaxi2.precio > 0) {
-      //hacer publish
+
       this.vigilante.guardarEstadoServicio(2, "Confirmado");
+      //hacer publish
       //devolver el precio del taxi --Operacion --> 3
       this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi2) });
       this.mensaje2 = "Precio confirmado";
@@ -624,9 +684,9 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   aceptarTaxi2(): void {
     this.vigilante.guardarEstadoServicio(2, "ok");
     this.smservicioTaxi2.estado = "Iniciado";
-    this.client.publish({destination : '/app/taxi_ok', body : JSON.stringify(this.smservicioTaxi2)});
+    this.client.publish({ destination: '/app/taxi_ok', body: JSON.stringify(this.smservicioTaxi2) });
 
-    this.resaltar2 = "si"; 
+    this.resaltar2 = "si";
     this.mensaje2 = "Validando servicio";
     this.minuto2 = 0;
     this.segundo2 = 0;
@@ -654,7 +714,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.mensaje2 = "Sin respuesta, cancelando...";
         this.vaciar2();
       }
-      
+
     }, 30000);
   }
 
@@ -682,6 +742,17 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     console.log('************LISTO PARA CONFIRMAR 3', this.smservicioTaxi3);
 
     this.smservicioTaxi3.estado = "Confirmado";
+    const coordenadas = [
+      this.smsubicacion.origen_lng,
+      this.smsubicacion.origen_lat,
+      this.smservicioTaxi3.ubicacion.origen_lng,
+      this.smservicioTaxi3.ubicacion.origen_lat
+    ];
+    this.mapboxService.validarDistancia(coordenadas).subscribe(resp => {
+      this.smservicioTaxi3.ubicacion.distanciafinal = resp[0];
+      this.smservicioTaxi3.ubicacion.tiempofinal = resp[0];
+    });
+
     if (this.smservicioTaxi3.precio > 0) {
       //hacer publish
       this.vigilante.guardarEstadoServicio(3, "Confirmado");
@@ -719,7 +790,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.smservicioTaxi3.estado = "Cancelado";
         this.vigilante.guardarEstadoServicio(3, "Rechazado");
         //hacer publihs
-        this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi3)});
+        this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi3) });
 
         this.vaciar3();
       }
@@ -732,8 +803,8 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   aceptarTaxi3(): void {
     this.vigilante.guardarEstadoServicio(3, "ok");
     this.smservicioTaxi3.estado = "Iniciado";
-    this.client.publish({destination : '/app/taxi_ok', body : JSON.stringify(this.smservicioTaxi3)});
-    this.resaltar3 = "si"; 
+    this.client.publish({ destination: '/app/taxi_ok', body: JSON.stringify(this.smservicioTaxi3) });
+    this.resaltar3 = "si";
     this.mensaje3 = "Validando servicio";
     this.minuto3 = 0;
     this.segundo3 = 0;
@@ -762,7 +833,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.vaciar3();
 
       }
-      
+
     }, 30000);
   }
 
@@ -790,6 +861,17 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     console.log('************LISTO PARA CONFIRMAR 4', this.smservicioTaxi4);
 
     this.smservicioTaxi4.estado = "Confirmado";
+    const coordenadas = [
+      this.smsubicacion.origen_lng,
+      this.smsubicacion.origen_lat,
+      this.smservicioTaxi4.ubicacion.origen_lng,
+      this.smservicioTaxi4.ubicacion.origen_lat
+    ];
+    this.mapboxService.validarDistancia(coordenadas).subscribe(resp => {
+      this.smservicioTaxi4.ubicacion.distanciafinal = resp[0];
+      this.smservicioTaxi4.ubicacion.tiempofinal = resp[0];
+    });
+
     if (this.smservicioTaxi4.precio > 0) {
       //hacer publish
       this.vigilante.guardarEstadoServicio(4, "Confirmado");
@@ -827,7 +909,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.smservicioTaxi4.estado = "Cancelado";
         this.vigilante.guardarEstadoServicio(4, "Rechazado");
         //hacer publihs
-        this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi4)});
+        this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi4) });
 
         this.vaciar4();
       }
@@ -840,9 +922,9 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   aceptarTaxi4(): void {
     this.vigilante.guardarEstadoServicio(4, "ok");
     this.smservicioTaxi4.estado = "Iniciado";
-    this.client.publish({destination : '/app/taxi_ok', body : JSON.stringify(this.smservicioTaxi4)});
+    this.client.publish({ destination: '/app/taxi_ok', body: JSON.stringify(this.smservicioTaxi4) });
 
-    this.resaltar4 = "si"; 
+    this.resaltar4 = "si";
     this.mensaje4 = "Validando servicio";
     this.minuto4 = 0;
     this.segundo4 = 0;
@@ -871,7 +953,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.vaciar4();
 
       }
-      
+
     }, 30000);
   }
 
@@ -899,6 +981,17 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     console.log('************LISTO PARA CONFIRMAR 5', this.smservicioTaxi5);
 
     this.smservicioTaxi5.estado = "Confirmado";
+    const coordenadas = [
+      this.smsubicacion.origen_lng,
+      this.smsubicacion.origen_lat,
+      this.smservicioTaxi5.ubicacion.origen_lng,
+      this.smservicioTaxi5.ubicacion.origen_lat
+    ];
+    this.mapboxService.validarDistancia(coordenadas).subscribe(resp => {
+      this.smservicioTaxi5.ubicacion.distanciafinal = resp[0];
+      this.smservicioTaxi5.ubicacion.tiempofinal = resp[0];
+    });
+
     if (this.smservicioTaxi5.precio > 0) {
       //hacer publish
       this.vigilante.guardarEstadoServicio(5, "Confirmado");
@@ -936,7 +1029,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.smservicioTaxi5.estado = "Cancelado";
         this.vigilante.guardarEstadoServicio(5, "Rechazado");
         //hacer publihs
-        this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi5)});
+        this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi5) });
 
         this.vaciar5();
       }
@@ -949,9 +1042,9 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   aceptarTaxi5(): void {
     this.vigilante.guardarEstadoServicio(5, "ok");
     this.smservicioTaxi5.estado = "Iniciado";
-    this.client.publish({destination : '/app/taxi_ok', body : JSON.stringify(this.smservicioTaxi5)});
+    this.client.publish({ destination: '/app/taxi_ok', body: JSON.stringify(this.smservicioTaxi5) });
 
-    this.resaltar5 = "si"; 
+    this.resaltar5 = "si";
     this.mensaje5 = "Validando servicio";
     this.minuto5 = 0;
     this.segundo5 = 0;
@@ -980,7 +1073,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.vaciar5();
 
       }
-      
+
     }, 30000);
   }
 
@@ -1022,20 +1115,31 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   }
 
   getLocation() {
-    this.mapboxService.getPosition()
-      .then(resp => {
+
+    this.mapboxService.getPosition().then(resp => {
+      this.smsubicacion.origen_lng = resp.lng;
+      this.smsubicacion.origen_lat = resp.lat;
+
+    }).catch(e => {
+      console.log("error : ", e);
+    });
+
+    this.posicion = setInterval(() => {
+      this.mapboxService.getPosition().then(resp => {
         this.smsubicacion.origen_lng = resp.lng;
         this.smsubicacion.origen_lat = resp.lat;
-      })
-      .catch(e => {
+
+      }).catch(e => {
         console.log("error : ", e);
       })
+
+    }, 10000);
   }
 
   cerrarSesion(): void {
     this.desconectar();
     this.loginService.cerrarSesion();
-    this.client.deactivate();    
+    this.client.deactivate();
     Swal.fire({
       icon: 'success',
       title: 'Vuelva pronto',
@@ -1538,6 +1642,9 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     this.smservicioTaxi5.taxista = new SMTaxista();
     this.smservicioTaxi5.ubicacion = new Ubicacion();
 
+    this.smservicioEnCurso.taxista = new SMTaxista();
+    this.smservicioEnCurso.cliente = new SMCliente();
+    this.smservicioEnCurso.ubicacion = new Ubicacion();
   }
 
   fijarTimer111(id: number): void {
@@ -1712,22 +1819,22 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
       console.log('interval')
     }, 30000);
 
-  }  
+  }
 
-  vaciar1() : void {
-    this.resaltar1 = "si"; 
+  vaciar1(): void {
+    this.resaltar1 = "si";
     this.smservicioTaxi1 = new SMServicioTaxi();
     this.smservicioTaxi1.taxista = new SMTaxista();
     this.smservicioTaxi1.cliente = new SMCliente();
     this.smservicioTaxi1.ubicacion = new Ubicacion();
     this.enviar1 = false;
     this.estadoConfirmacion1 = false;
-    this.estadoAceptar = false;   
+    this.estadoAceptar = false;
 
   }
 
-  vaciar2() : void {
-    this.resaltar2 = "si"; 
+  vaciar2(): void {
+    this.resaltar2 = "si";
     this.smservicioTaxi2 = new SMServicioTaxi();
     this.smservicioTaxi2.taxista = new SMTaxista();
     this.smservicioTaxi2.cliente = new SMCliente();
@@ -1738,51 +1845,55 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
   }
 
-  vaciar3() : void {
-    this.resaltar3 = "si"; 
+  vaciar3(): void {
+    this.resaltar3 = "si";
     this.smservicioTaxi3 = new SMServicioTaxi();
     this.smservicioTaxi3.taxista = new SMTaxista();
     this.smservicioTaxi3.cliente = new SMCliente();
     this.smservicioTaxi3.ubicacion = new Ubicacion();
     this.enviar3 = false;
     this.estadoConfirmacion3 = false;
-    this.estadoAceptar = false;    
+    this.estadoAceptar = false;
   }
 
-  vaciar4() : void {
-    this.resaltar4 = "si"; 
+  vaciar4(): void {
+    this.resaltar4 = "si";
     this.smservicioTaxi4 = new SMServicioTaxi();
     this.smservicioTaxi4.taxista = new SMTaxista();
     this.smservicioTaxi4.cliente = new SMCliente();
     this.smservicioTaxi4.ubicacion = new Ubicacion();
     this.enviar4 = false;
     this.estadoConfirmacion4 = false;
-    this.estadoAceptar = false;    
+    this.estadoAceptar = false;
 
   }
 
-  vaciar5() : void {
-    this.resaltar5 = "si"; 
+  vaciar5(): void {
+    this.resaltar5 = "si";
     this.smservicioTaxi5 = new SMServicioTaxi();
     this.smservicioTaxi5.taxista = new SMTaxista();
     this.smservicioTaxi5.cliente = new SMCliente();
     this.smservicioTaxi5.ubicacion = new Ubicacion();
     this.enviar5 = false;
     this.estadoConfirmacion5 = false;
-    this.estadoAceptar = false;    
+    this.estadoAceptar = false;
   }
 
-  finalizar(servicios:SMServicioTaxi){    
+  finalizar(servicios: SMServicioTaxi) {
     this.vigilante.editarEstado(servicios).subscribe((resp) => {
       this.loginService.estado("Disponible");
       Swal.fire({
-        icon:'success',
-        title:'Servicio finalizado',
+        icon: 'success',
+        title: 'Servicio finalizado',
         text: resp.mensaje
       }).then(resp => {
         this.taxService.historial(this.idtaxista).subscribe(datos => {
           this.smservicioTaxis = datos;
           this.mensajeServicios = "";
+          this.smservicioEnCurso = new SMServicioTaxi();
+          this.smservicioEnCurso.taxista = new SMTaxista();
+          this.smservicioEnCurso.cliente = new SMCliente();
+          this.smservicioEnCurso.ubicacion = new Ubicacion();
         }, err => {
           this.mensajeServicios = "Sin datos que mostrar";
         });
@@ -1790,40 +1901,66 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     });
   }
 
-  ver(servicios:SMServicioTaxi){
+  cancelarPendiente(smservicio: SMServicioTaxi) {
+    Swal.fire({
+      icon: 'question',
+      title: 'Seguro que desea cancelar???',
+      text: 'Esta intentado cancelar el servicio por favor confirme',
+      showCancelButton: true,
+      confirmButtonText: 'Si, cancelar',
+      cancelButtonText: 'No, cancelar'
+    }).then(resp => {
+      if (resp.value) {
+        this.client.publish({ destination: '/app/cancelado_taxista', body: JSON.stringify(smservicio) });
+        this.loginService.estado("Disponible");
+        this.smservicioEnCurso = new SMServicioTaxi();
+        this.smservicioEnCurso.taxista = new SMTaxista();
+        this.smservicioEnCurso.cliente = new SMCliente();
+
+        this.taxService.historial(this.idtaxista).subscribe(datos => {
+          this.smservicioTaxis = datos;
+          this.mensajeServicios = "";
+        }, err => {
+          this.mensajeServicios = "Sin datos que mostrar";
+        });
+      }
+    });
+  }
+
+  ver(servicios: SMServicioTaxi) {
     this.smservicioTaxiSeleccionado = servicios;
     this.estadoModalMapa = true;
   }
 
   ocupado(): void {
-    this.client.deactivate();
+    //this.client.deactivate();
     this.loginService.estado("Ocupado");
   }
 
   disponible(): void {
-    this.client.activate();
-    if(this.verificarEstadoTaxi() == false){
+    //this.client.activate();
+    if (this.verificarEstadoTaxi() == false) {
       this.loginService.estado("Disponible");
     }
-    else{
+    else {
       Swal.fire({
-        icon:'info',
-        text:'Tienes Servicio de taxi sin finalizar'
+        icon: 'info',
+        text: 'Tienes Servicio de taxi sin finalizar'
       });
     }
-    
+
   }
 
-  pagar() : void {
+  pagar(): void {
 
     this.client.deactivate();
     this.router.navigate(['suscripcion']);
 
   }
 
-  verificarEstadoTaxi() : boolean{
+  verificarEstadoTaxi(): boolean {
     const indice = this.smservicioTaxis.find(x => x.estado == "Iniciado");
-    if(indice != null && indice != undefined){
+    if (indice != null && indice != undefined) {
       return true;
     }
     else {

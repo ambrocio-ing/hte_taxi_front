@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { WayPoints } from '../mapbox-model/mapbox-model.component';
-import { MapboxserviceService } from '../mapbox-model/mapboxservice.service';
+import { WayPoints } from '../mapbox-model-cliente/mapbox-model.component';
+import { MapboxserviceService } from '../mapbox-model-cliente/mapboxservice.service';
 import { SMServicioTaxi } from '../socket_modelo/smserviciotaxi/smserviciotaxi';
 
 @Component({
@@ -39,27 +39,33 @@ export class MapboxModelTaxistaComponent implements OnInit {
         this.botonReclamo = true;
       }
 
-      this.mapboxService.construir_Mapa(this.coords)
+      const coordenadas:number[] = [
+        this.smservicioTaxi.ubicacion.origen_lng,
+        this.smservicioTaxi.ubicacion.origen_lat,
+        this.smservicioTaxi.ubicacion.destino_lng,
+        this.smservicioTaxi.ubicacion.destino_lat
+      ];
+
+      this.mapboxService.construir_Mapa(this.coords, coordenadas)
       .then(({ map, geocoder }) => {
         //console.log('********TODO BIEN*****');
 
         this.renderer2.appendChild(this.asGeocoder.nativeElement, geocoder.onAdd(map));
-        this.mapboxService.agregarMarcador(this.coords);
 
+        /*this.mapboxService.agregarMarcador(this.coords);
         let coordenadas = [
           this.smservicioTaxi.ubicacion.origen_lng,
           this.smservicioTaxi.ubicacion.origen_lat,
           this.smservicioTaxi.ubicacion.destino_lng,
           this.smservicioTaxi.ubicacion.destino_lat
-        ];
-    
+        ];    
         this.mapboxService.dibujar_Ruta(coordenadas);    
         this.mapboxService.agregar_Marcador1(coordenadas);
-        this.mapboxService.agregar_Marcador2(coordenadas);
+        this.mapboxService.agregar_Marcador2(coordenadas);*/
 
       }).catch(err => {
         console.log('********ERROR********', err);
-      });
+      });      
 
     }).catch(err => {
       console.log('********ERROR********', err);

@@ -11,3 +11,14 @@ html, body { height: 100%; width: 100%; margin: 0; }
     background-repeat: no-repeat;
     background-position: center;
 }
+
+.marker-blue {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: blue;
+    /*background-image: url("./assets/img/ubicacion.png");*/
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}

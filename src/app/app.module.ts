@@ -20,7 +20,7 @@ import { Perfil2Component } from './componentes/usuarios/perfil2/perfil2.compone
 import { DetTaxistaComponent } from './componentes/usuarios/det-taxista/det-taxista.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MapboxModelComponent } from './componentes/mapbox-model/mapbox-model.component';
+import { MapboxModelComponent } from './componentes/mapbox-model-cliente/mapbox-model.component';
 import { MapboxModelTaxistaComponent } from './componentes/mapbox-model-taxista/mapbox-model-taxista.component';
 import { ReclamoComponent } from './componentes/usuarios/reclamo/reclamo.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -34,6 +34,7 @@ import { ListaServiciosTaxiComponent } from './componentes/administracion/lista-
 import { VisualizacionImagenComponent } from './componentes/administracion/visualizacion-imagen/visualizacion-imagen.component';
 import { ChangePasswordComponent } from './componentes/sistema/change-password/change-password.component';
 import { TokenInterceptor } from './componentes/interceptor/token.interceptor';
+import { MapboxTaxiPendienteComponent } from './componentes/mapbox-model-taxi/mapbox-taxi-pendiente/mapbox-taxi-pendiente.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,7 @@ import { TokenInterceptor } from './componentes/interceptor/token.interceptor';
     ListaPagosComponent,
     ListaServiciosTaxiComponent,
     VisualizacionImagenComponent,    
-    ChangePasswordComponent
+    ChangePasswordComponent, MapboxTaxiPendienteComponent
   ],
   imports: [
     BrowserModule,

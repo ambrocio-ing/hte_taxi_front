@@ -3,38 +3,43 @@
         <div class="wrapper">        
             <div style="margin-left: 90%;">
                 <span (click)="cerrarModal()" style="font-weight: bold; font-size: 20px; color: red; cursor: pointer;">X</span>
-            </div>
-    
+            </div>    
         </div>
         <div class="wrapper">
             <div class="box-inputs">
                 <div *ngIf="smservicioTaxi">
-                    <div class="form-group">
-                        <label for="tipo">Tipo</label>
-                        <select name="tipo" [(ngModel)]="smservicioTaxi.ubicacion.tipo" class="form-control" aria-readonly="true">
-                            <option value="">-- Selecione --</option>
-                            <option value="Pasajero">Pasajero</option>
-                            <option value="Envio">Envío de algun producto</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="origen">Referencia al punto de partida</label>
-                        <input type="text" name="origen" [(ngModel)]="smservicioTaxi.ubicacion.origen" readonly class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="destino">Escriba una referencia a su punto destino</label>
-                        <input type="text" name="destino" [(ngModel)]="smservicioTaxi.ubicacion.destino" readonly class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <span style="color: blue;">Nota : </span>
-                        <span>
-                            Los puntos de origen y destino se marcan a continuación, el marcador rojo representa al punto de origen
-                            y el marcador color azul representa el punto de destino, verifique detalladamente y tome una desición.
-                        </span>
-                    </div> 
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <span style="color: blue;">Tipo de servicio : </span>
+                            {{smservicioTaxi.ubicacion.tipo}}
+                        </li>
+                        <li class="list-group-item">
+                            <span style="color: blue;">Referencia al punto de partida : </span>
+                            {{smservicioTaxi.ubicacion.origen}}
+                        </li>
+                        <li class="list-group-item">
+                            <span style="color: blue;">Referencia al punto destino : </span>
+                            {{smservicioTaxi.ubicacion.destino}}
+                        </li>
+                        <li class="list-group-item">
+                            <span style="color: blue;">Distancia estimado : </span> {{smservicioTaxi.ubicacion.distanciaestimado}} km 
+                            <br>
+                            <span style="color: blue;">Tiempo estimado : </span> {{smservicioTaxi.ubicacion.tiempoestimado}} min
+                        </li>
+                        <li class="list-group-item">
+                            <span style="color: blue;">Nota : </span>
+                            <span>
+                                Los puntos de origen y destino se marcan a continuación, el marcador rojo representa al punto de origen
+                                y el marcador color azul representa el punto de destino, verifique detalladamente, tome una desición y 
+                                envíe el precio al solicitante.
+                            </span>
+                        </li>
+                    </ul>                  
+                                        
                     <div class="form-group">
                         <button [disabled]="!botonReclamo" (click)="reportar()" class="btn btn-outline-danger">Informar reclamo</button>
-                    </div>                   
+                    </div> 
+
                 </div>                
     
                 <div id="geocoder" #asGeocoder class="geocoder">

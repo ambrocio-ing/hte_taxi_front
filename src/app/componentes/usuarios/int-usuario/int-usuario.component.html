@@ -30,7 +30,11 @@
 
 <div class="wrapper">
     <div class="contenedor">
-        <button (click)="mostrarMapa()" class="btn btn-outline-danger form-control">Fijar ruta</button>
+        <div *ngIf="vigilante?.ubicacion?.origen">
+            <span style="font-weight: bold;">Origen: </span><span> {{vigilante.ubicacion.origen}}</span>
+            <span style="font-weight: bold;">Destino: </span><span> {{vigilante.ubicacion.destino}}</span>
+        </div>
+        <button (click)="mostrarMapa()" class="btn btn-outline-danger form-control">Fijar nueva ruta</button>
     </div>
 </div>
 <!--Fijar ruta de viaje este será un modal-->
@@ -44,9 +48,10 @@
     </app-det-taxista>
 </div>
 <div class="wrapper">
-    <h2 style="font-weight: bold;">Conductores disponibles:</h2>
+    <h2 style="font-weight: bold; margin-right: 2px;">Conductores disponibles:</h2>
+    <button [disabled]="!conectado && !loginService.isDisponible()" (click)="refrescar()" class="btn btn-outline-success">Refrescar Lista</button>
 </div>
-<div class="wrapper" *ngIf="!conectado">   
+<div class="wrapper" *ngIf="!conectado && loginService.isDisponible()">   
     <div>
         <span>Iniciando servicio...</span>
         <div class="d-flex justify-content-center">
@@ -56,7 +61,7 @@
         </div>
     </div>
 </div>
-<div class="wrapper" *ngIf="!conectado && !loginService.isDisponible()">
+<div class="wrapper" *ngIf="conectado && !loginService.isDisponible()">
     <span style="color: red;">Servicio de taxi en proceso (Para realizar nuevas solicitudes finalize primero el taxi)</span>
 </div>
 <div *ngIf="conectado && loginService.isDisponible()">
@@ -349,10 +354,30 @@
                     </table>
                 </td>
                 <td>
-                    {{servicios.fecha | date: 'dd/MM'}}
+                    
+                    <table>
+                        <tr>
+                            <td>{{servicios.fecha | date: 'dd/MM'}}</td>
+                        </tr>
+                        <tr *ngIf="servicios.estado == 'Iniciado'">
+                            <td>
+                                <button (click)="cancelar(servicios)" class="btn btn-outline-danger" style="color: red;">Cancelar</button>
+                            </td>
+                        </tr>
+                    </table>
                 </td>
-                <td>
-                    {{servicios.estado}}
+                <td>                    
+                    <table>
+                        <tr>
+                            <td>{{servicios.estado}}</td>
+                        </tr>
+                        <tr *ngIf="servicios.estado == 'Iniciado'">
+                            <td>
+                                <span style="color: blue;">El conductor llegará aproximadamente en</span>
+                                {{servicios.ubicacion.tiempofinal}}
+                            </td>
+                        </tr>
+                    </table>
                 </td>
                 <td>
                     <table>
@@ -364,7 +389,7 @@
                         <tr *ngIf="servicios.estado == 'Iniciado'">
                             <td>
                                 <button (click)="finalizar(servicios)"
-                                    class="btn btn-outline-primary">Finalizar</button>
+                                    class="btn btn-outline-danger">Finalizar</button>
                             </td>
                         </tr>
                     </table>

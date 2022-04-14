@@ -5,6 +5,7 @@ import { map, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import Swal from 'sweetalert2';
 import { SMServicioTaxi } from '../../socket_modelo/smserviciotaxi/smserviciotaxi';
+import { Ubicacion } from '../../socket_modelo/ubicacion/ubicacion';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,8 @@ import { SMServicioTaxi } from '../../socket_modelo/smserviciotaxi/smserviciotax
 export class Vigilante2Service {
 
   private url:string = URL_BACKEND+"/st";
+
+  private _ubicacion!:Ubicacion;
   
   constructor(private http:HttpClient) { }  
  
@@ -46,6 +49,23 @@ export class Vigilante2Service {
         return throwError(() => e);
       })
     );
+  }
+
+  public get ubicacion() : Ubicacion {
+    if(this._ubicacion != null){
+      return this._ubicacion;
+    }
+    else if(this._ubicacion == null && sessionStorage.getItem("ubicacion") != null){
+      return JSON.parse(sessionStorage.getItem("ubicacion") || '{}') as Ubicacion;
+    }
+    else{
+      return new Ubicacion();
+    }
+  }
+
+  public establecerUbicacion(ubi:Ubicacion) {
+    this._ubicacion = ubi;
+    sessionStorage.setItem("ubicacion", JSON.stringify(this._ubicacion));
   }
 
 

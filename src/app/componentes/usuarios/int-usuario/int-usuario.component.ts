@@ -5,7 +5,7 @@ import { SMUbicacion } from '../../socket_modelo/smubicacion/smubicacion';
 import * as SockJS from 'sockjs-client';
 import { LoginService } from '../../servicio-conexion/login/login.service';
 import { SMServicioTaxi } from '../../socket_modelo/smserviciotaxi/smserviciotaxi';
-import { MapboxserviceService } from '../../mapbox-model/mapboxservice.service';
+import { MapboxserviceService } from '../../mapbox-model-cliente/mapboxservice.service';
 import { SMTaxista } from '../../socket_modelo/smtaxista/smtaxista';
 import { URL_BACKEND } from '../../sistema/config/config';
 import Swal from 'sweetalert2';
@@ -20,22 +20,7 @@ import { ClienteService } from '../../servicio-conexion/cliente/cliente.service'
   styleUrls: ['./int-usuario.component.css']
 })
 
-export class IntUsuarioComponent implements OnInit {
-
-  /*@ViewChild('asTable1') astable1!: ElementRef;
-  @ViewChild('asTr1') astr1!: ElementRef;
-
-  @ViewChild('asTable2') astable2!: ElementRef;
-  @ViewChild('asTr2') astr2!: ElementRef;
-
-  @ViewChild('asTable3') astable3!: ElementRef;
-  @ViewChild('asTr3') astr3!: ElementRef;
-
-  @ViewChild('asTable4') astable4!: ElementRef;
-  @ViewChild('asTr4') astr4!: ElementRef;
-
-  @ViewChild('asTable5') astable5!: ElementRef;
-  @ViewChild('asTr5') astr5!: ElementRef;*/
+export class IntUsuarioComponent implements OnInit { 
 
   private client!: Client;
   conectado: boolean = false;
@@ -109,6 +94,7 @@ export class IntUsuarioComponent implements OnInit {
   mensajeServicios!: string;
 
   estadoRe:boolean = false;
+  posicion:any = null;
 
   constructor(private router: Router, public loginService: LoginService,
     private mapboxService: MapboxserviceService, public vigilante: Vigilante2Service,
@@ -175,7 +161,7 @@ export class IntUsuarioComponent implements OnInit {
 
             this.mapboxService.validarDistancia(coords).subscribe(resp => {
 
-              if ((resp * 0.001) <= 3) {
+              if (resp[0] <= 3) {
 
                 this.asignarTaxistas(smservicioTaxi.taxista);
 
@@ -269,6 +255,28 @@ export class IntUsuarioComponent implements OnInit {
 
       }); 
 
+      //el taxista cancela el taxi
+      this.client.subscribe('/staxi/taxi_cancel/'+this.idcliente, (event) => {
+        const id = +event.body;
+        if(id == this.smservicioTaxis[0].idstaxi){
+          Swal.fire({
+            icon:'info',
+            title:'Taxi cancelado',
+            text:'El taxista acaba de cancelar el servicio, por favor refresque y solicite otro conductor'
+          });
+  
+          this.loginService.estado("Disponible");
+          
+          this.cliService.historial(this.idcliente).subscribe(datos => {
+            this.smservicioTaxis = datos;
+            this.mensajeServicios = "";          
+          }, err => {
+            this.mensajeServicios = "Sin datos que mostrar";
+          });
+        }       
+
+      });
+
       //solicita las ubicaciones de los taxistas mas cercanos
       this.smubicacion.idcliente = this.loginService.usuario.id;
       this.client.publish({ destination: '/app/peticion_ubicacion', body: JSON.stringify(this.smubicacion) });
@@ -283,7 +291,7 @@ export class IntUsuarioComponent implements OnInit {
     this.mapboxService.cbUbicacion.subscribe(dato => {
       console.log('******UBICACION****', dato);
       this.ubicacion = dato;
-
+      this.vigilante.establecerUbicacion(this.ubicacion);
     });
 
     this.cliService.historial(this.idcliente).subscribe(datos => {
@@ -1067,6 +1075,8 @@ export class IntUsuarioComponent implements OnInit {
 
   validarUbicacion(ubicacion: Ubicacion): boolean {
 
+    ubicacion = this.vigilante.ubicacion;
+
     if (ubicacion != null || ubicacion != undefined) {
       if (ubicacion.origen_lng != null && ubicacion.origen_lat != null &&
         ubicacion.destino_lng != null && ubicacion.destino_lat != null &&
@@ -1080,7 +1090,7 @@ export class IntUsuarioComponent implements OnInit {
         return false;
       }
     }
-    else {
+    else{
       return false;
     }
 
@@ -1091,16 +1101,29 @@ export class IntUsuarioComponent implements OnInit {
     //this.router.navigate(['perfil-cli']);
   }
 
+  refrescar() : void {
+    this.ngOnInit();
+  }
+
   location(): void {
-    this.mapboxService.getPosition()
-      .then(resp => {
+    this.mapboxService.getPosition().then(resp => {
+      this.smubicacion.origen_lng = resp.lng;
+      this.smubicacion.origen_lat = resp.lat;
+        //console.log('COORDENADAS', this.smubicacion);
+    }).catch(resp => {
+      console.log(resp);
+    });
+
+    this.posicion = setInterval(() => {
+      this.mapboxService.getPosition().then(resp => {
         this.smubicacion.origen_lng = resp.lng;
         this.smubicacion.origen_lat = resp.lat;
-        //console.log('COORDENADAS', this.smubicacion);
-      })
-      .catch(resp => {
+          //console.log('COORDENADAS', this.smubicacion);
+      }).catch(resp => {
         console.log(resp);
       });
+    }, 10000);
+
   }
 
   conectar(): void {
@@ -1855,12 +1878,12 @@ export class IntUsuarioComponent implements OnInit {
   }
 
   ocupado(): void {
-    this.client.deactivate();
+    //this.client.deactivate();
     this.loginService.estado("Ocupado");
   }
 
   disponible(): void {
-    this.client.activate();
+    //this.client.activate();
     if(this.verificarEstadoTaxi() == false){
       this.loginService.estado("Disponible");
     }
@@ -1871,6 +1894,31 @@ export class IntUsuarioComponent implements OnInit {
       });
     }
     
+  }
+
+  cancelar(servicios:SMServicioTaxi) : void {
+
+    Swal.fire({
+      icon:'question',
+      title:'Seguro que desea cancelar???',
+      text:'Esta intentado cancelar el servicio por favor confirme',
+      showCancelButton:true,
+      confirmButtonText:'Si, cancelar',
+      cancelButtonText: 'No, cancelar'
+    }).then(resp => {
+      if(resp.value){
+        this.client.publish({destination : '/app/cancelado_pasajero', body : JSON.stringify(servicios)});
+        this.loginService.estado("Disponible");
+
+        this.cliService.historial(this.idcliente).subscribe(datos => {
+          this.smservicioTaxis = datos;
+          this.mensajeServicios = "";
+        }, err => {
+          this.mensajeServicios = "Sin datos que mostrar";
+        });
+      }
+    });   
+
   }
 
   verificarEstadoTaxi() : boolean{

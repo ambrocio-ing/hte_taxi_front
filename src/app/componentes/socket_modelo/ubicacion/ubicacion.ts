@@ -9,6 +9,8 @@ export class Ubicacion {
     destino!:string;
     tiempoestimado!:number;
     distanciaestimado!:number;
+    tiempofinal!:number;
+    distanciafinal!:number;
     tipo!:string;
         
 }

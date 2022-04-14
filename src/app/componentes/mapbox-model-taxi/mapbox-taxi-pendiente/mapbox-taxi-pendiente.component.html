@@ -1,0 +1,29 @@
+<div class="contenedor">    
+    <div class="wrapper">
+        <div class="box-inputs">            
+            <div *ngIf="smservicioTaxi?.idstaxi">
+                <ul class="list-group">
+                    <li class="list-group-item active" aria-current="true">                      
+                        En la mapa encontraras una ruta alternativa y el punto donde se 
+                        encuentra el pasajero, el marcador rojo representa a tu posición y el marador azul representa al 
+                        punto donde se encuentra el pasajero, pudes hacer zoom en la mapa para identificar calles y 
+                        movilizarte con facilidad
+                    </li>
+                    <li class="list-group-item">
+                        <span style="color: blue;">Referencia a la ubicación del pasajero</span>
+                        {{smservicioTaxi.ubicacion.origen}}
+                    </li>
+                    <li class="list-group-item">
+                       <span style="color: blue;">Distancia : </span> {{smservicioTaxi.ubicacion.distanciafinal}} km
+                       <span style="color: blue;"> Tiempo : </span> {{smservicioTaxi.ubicacion.tiempofinal}} min
+                    </li>
+                </ul>             
+            </div>                      
+        </div>
+    </div>
+    <div class="wrapper">
+        <div id="map" #asMap class="map-container">
+
+        </div>
+    </div>
+</div>
