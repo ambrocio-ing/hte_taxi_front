@@ -369,6 +369,7 @@ export class RegistrarseComponent implements OnInit {
 
     if (this.cliente != null) {
       this.cliente.usuario.email = this.cliente.persona.email;
+      this.cliente.estado = "Activo";
       this.cliService.clienteGuardar(this.cliente, this.foto_perfil).subscribe(resp => {
 
         this.cliente = new Cliente();

@@ -6,6 +6,7 @@ import { catchError, concatMap } from "rxjs/operators";
 import { JwtDto } from "../security_modelo/jwtDto/jwt-dto";
 import Swal from "sweetalert2";
 import { Router } from "@angular/router";
+import { InterceptorSkipHeader } from "../servicio-conexion/culqi/culqi.service";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -16,6 +17,11 @@ export class TokenInterceptor implements HttpInterceptor {
 
         if (!this.loginService.isAuthenticate()) {
             return next.handle(req);
+        }
+
+        if(this.loginService.isAuthenticate() && req.headers.has(InterceptorSkipHeader)){
+            const headers = req.headers.delete(InterceptorSkipHeader); 
+            return next.handle(req.clone({ headers }));            
         }
 
         let authReq = req;
@@ -55,6 +61,7 @@ export class TokenInterceptor implements HttpInterceptor {
     }
 
     private addToken(req: HttpRequest<any>, token: string): HttpRequest<any> {
+        
         return req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + token) });
     }
 

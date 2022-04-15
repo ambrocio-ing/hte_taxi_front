@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Reclamo } from '../../modelo/reclamo/reclamo';
 import { LoginService } from '../../servicio-conexion/login/login.service';
@@ -13,7 +12,7 @@ import { URL_BACKEND } from '../../sistema/config/config';
 })
 export class ListaReclamosComponent implements OnInit {
 
-  url_backend:string = URL_BACKEND+"/cliente";
+  url_backend:string = URL_BACKEND+"/cliente"; 
 
   reclamos:Reclamo[] = [];
   mensajeLista!:string;
@@ -24,7 +23,7 @@ export class ListaReclamosComponent implements OnInit {
   data:any = {};
 
   constructor(private reclamoService:ReclamoService, 
-    private router:Router, public loginService:LoginService) {     
+    public loginService:LoginService) {     
 
   }
 

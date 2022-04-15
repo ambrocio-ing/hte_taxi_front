@@ -267,11 +267,13 @@ export class MapboxserviceService {
           center: coords
         });
 
-        this.agregarMarcador(coords);
+        this.map.on('load', () => {
+          this.agregarMarcador(coords);
 
-        this.dibujar_Ruta(coordenadas);
-        this.agregar_Marcador1(coordenadas);
-        this.agregar_Marcador2(coordenadas);
+          this.dibujar_Ruta(coordenadas);
+          this.agregar_Marcador1(coordenadas);
+          this.agregar_Marcador2(coordenadas);
+        });        
 
         const geocoder = new MapboxGeocoder({
           accessToken: mapboxgl.accessToken,
@@ -365,12 +367,14 @@ export class MapboxserviceService {
           style: this.style,
           zoom: this.zoom,
           center: [coordenadas[0],coordenadas[1]]
-        });       
+        });
 
-        this.dibujarRutaPenidente(coordenadas);
-        this.agregar_Marcador1(coordenadas);
-        this.agregar_Marcador2(coordenadas);        
-
+        this.map.on('load', () => {
+          this.dibujarRutaPenidente(coordenadas);
+          this.agregar_Marcador1(coordenadas);
+          this.agregar_Marcador2(coordenadas); 
+        });      
+         
         resolve({
           map: this.map
         });
@@ -397,7 +401,7 @@ export class MapboxserviceService {
         const data = res.routes[0];
         //console.log('**********DATA', data);       
 
-        const route = data.geometry.coordinates;
+        const rouute = data.geometry.coordinates;
 
         this.map.addSource('route', {
           type: 'geojson',
@@ -406,7 +410,7 @@ export class MapboxserviceService {
             properties: {},
             geometry: {
               type: 'LineString',
-              coordinates: route
+              coordinates: rouute
             }
           }
 
@@ -427,7 +431,7 @@ export class MapboxserviceService {
 
         });
 
-        this.map.fitBounds([route[0], route[route.length - 1]], { padding: 100 });
+        this.map.fitBounds([rouute[0], rouute[rouute.length - 1]], { padding: 100 });
 
 
       });

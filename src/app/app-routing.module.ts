@@ -32,7 +32,8 @@ const routes: Routes = [
   {path: 'inttaxista',component:IntTaxistaComponent, canActivate:[AuthGuard, RoleGuard], data:{role:['ROLE_CABBIE']}},
   {path: 'intusuario',component:IntUsuarioComponent, canActivate:[AuthGuard, RoleGuard], data:{role:['ROLE_CLIENT']}},  
       
-  {path: 'admi',component:AdministradorComponent, canActivate:[AuthGuard, RoleGuard], data:{role:['ROLE_ADMIN', 'ROLE_USER']}} 
+  {path: 'admi',component:AdministradorComponent, canActivate:[AuthGuard, RoleGuard], data:{role:['ROLE_ADMIN', 'ROLE_USER']}},
+  {path: 'terminos', component:TerminoscondicionesComponent} 
     
 ];
 

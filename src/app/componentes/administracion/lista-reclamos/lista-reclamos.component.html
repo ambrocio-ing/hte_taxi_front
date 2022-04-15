@@ -40,7 +40,7 @@
                     <td>
                         <span *ngIf="!reclamo?.evidencia">{{reclamo.idreclamo}}</span>
                         <img *ngIf="reclamo?.evidencia" (click)="visualizar(reclamo)" style="width: 30px; height: 30px; cursor: pointer;" 
-                            src="{{url_backend}}/reclamo/imagen{{reclamo.evidencia}}" alt="">                        
+                            src="{{url_backend}}/reclamo/imagen/{{reclamo.evidencia}}" alt="">                        
                     </td>
                     <td>
                         <table>

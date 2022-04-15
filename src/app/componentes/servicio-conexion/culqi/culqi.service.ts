@@ -13,14 +13,19 @@ export class CulqiService {
   getTokenCulqi(clculqi:any):Observable<any>{
     let httpHeaders = new HttpHeaders()
       .set('Content-Type', 'application/json')
-      .set('Authorization', 'Bearer pk_test_1c14cb711272721b');
+      .set('Authorization', 'Bearer pk_test_1c14cb711272721b')
+      .set(InterceptorSkipHeader, '');
     return this.http.post('https://secure.culqi.com/v2/tokens',clculqi,{headers:httpHeaders})
   }
 
   getChargeCulqi(clculqi:any):Observable<any>{
     let httpHeaders = new HttpHeaders()
       .set('Content-Type', 'application/json')
-      .set('Authorization', 'Bearer sk_test_5bb79532376651a3');
+      .set('Authorization', 'Bearer sk_test_5bb79532376651a3')
+      .set(InterceptorSkipHeader, '');
     return this.http.post('https://api.culqi.com/v2/charges',clculqi,{headers:httpHeaders})
   }
 }
+
+export const InterceptorSkipHeader = 'X-Skip-Interceptor';
+

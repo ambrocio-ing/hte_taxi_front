@@ -354,17 +354,8 @@
                     </table>
                 </td>
                 <td>
+                    {{servicios.fecha | date: 'dd/MM'}}
                     
-                    <table>
-                        <tr>
-                            <td>{{servicios.fecha | date: 'dd/MM'}}</td>
-                        </tr>
-                        <tr *ngIf="servicios.estado == 'Iniciado'">
-                            <td>
-                                <button (click)="cancelar(servicios)" class="btn btn-outline-danger" style="color: red;">Cancelar</button>
-                            </td>
-                        </tr>
-                    </table>
                 </td>
                 <td>                    
                     <table>
@@ -388,8 +379,7 @@
                         </tr>
                         <tr *ngIf="servicios.estado == 'Iniciado'">
                             <td>
-                                <button (click)="finalizar(servicios)"
-                                    class="btn btn-outline-danger">Finalizar</button>
+                                <button (click)="cancelar(servicios)" class="btn btn-outline-danger" style="color: red;">Cancelar</button>
                             </td>
                         </tr>
                     </table>

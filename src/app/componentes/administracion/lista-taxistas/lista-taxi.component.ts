@@ -70,15 +70,27 @@ export class ListaTaxiComponent implements OnInit {
     }
   }
 
-  eliminar(taxista:Taxista) : void {
-    this.taxistaService.eliminar_Taxista(taxista.idtaxista).subscribe(resp => {
-      Swal.fire({
-        icon:'success',
-        title:'Registro eliminado',
-        text:resp.mensaje
-      });
-      this.ngOnInit();
-    });
+  suspender(taxista:Taxista) : void {
+    Swal.fire({
+      icon:'question',
+      title:'Seguro que desea suspender',
+      text:'Esta intentando suspender un usuario, por favor confirme su acción',
+      showCancelButton:true,
+      confirmButtonText:'Si, Suspender',
+      cancelButtonText:'No suspender'
+    }).then(resp => {
+      if(resp.value){
+        this.taxistaService.editarEstado(taxista).subscribe(resp => {
+          Swal.fire({
+            icon:'success',
+            title:'Operación éxitosa',
+            text:resp.mensaje
+          });
+          this.ngOnInit();
+        });
+      }
+    });  
+    
   }
 
   ver(taxista:Taxista) : void {

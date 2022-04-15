@@ -14,7 +14,7 @@ export class DolarService {
   constructor(private http:HttpClient) { }  
 
   public crearDolar(dolar:any) : Observable<any> {
-    return this.http.post(this.url+"/pacrear", dolar).pipe(
+    return this.http.post(this.url+"/docrear", dolar).pipe(
       map(resp => resp),
       
       catchError(e => {       

@@ -6,11 +6,16 @@
         <div class="card-body">
             <div class="row">
                 <h5>Cotización del dolar y agrege funcionalidad para envío de productos</h5>
-                <div class="col-xs-4">
+            </div>
+            <div class="row"  style="background-color: rgb(208, 208, 208);">
+                
+                <div class="col-4">
                     <div class="form-group">
+                        <label >Precio del dolar:</label>
                         <input type="number" name="valor" [(ngModel)]="dolar.valor" class="form-control">
                     </div>
-                    <div class="form-group">                        
+                    <div class="form-group" style="margin-top: 1rem; margin-bottom: 1rem;">
+                        <label>Envio de productos:</label>                        
                         <select name="tipo" name="envioProductos" [(ngModel)]="dolar.envioProductos" class="form-control">
                             <option value="">-- Selecione --</option>
                             <option value="Activo">Activo</option>
@@ -18,12 +23,12 @@
                         </select>
                     </div>                    
                 </div>
-                <div class="col-xs-4">
+                <div class="col-4">
                     <div class="from-group mt-4">
-                        <button (click)="guardarDolar()" class="from-control">Enviar</button>
+                        <button (click)="guardarDolar()" class="from-control btn-outline-primary btn">Enviar</button>
                     </div>
                 </div>
-                <div class="col-xs-4" *ngIf="dolar1?.id">
+                <div class="col-4" *ngIf="dolar1?.id">
                     <div class="from-group">
                         <h5>Valores actuales</h5>
                     </div>

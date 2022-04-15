@@ -56,18 +56,18 @@ export class AdministrativoComponent implements OnInit {
     }
 
     if(this.dolar.valor != null && this.dolar.envioProductos != null){
-      this.dolarService.crearDolar(this.dolar).subscribe(resp => {
-        const dol = resp as Dolar;
+      this.dolarService.crearDolar(this.dolar).subscribe(resp => {        
         Swal.fire({
           icon:'success',
           title:'Operación exitosa',
           text:'Datos almacenados con éxito'
-        }).then(resp => {
+        }).then(res => {
+          const dol = resp as Dolar;
           this.dolar1 = dol;
         });
 
       }, err => {
-        if(err.error.mensaje){
+        if(err.status == 404 || err.status == 500){
           Swal.fire({
             icon:'error',
             title:'Operación faliida',
@@ -77,7 +77,7 @@ export class AdministrativoComponent implements OnInit {
         else{
           Swal.fire({
             icon:'error',
-            title:'Operación faliida',
+            title:'Operación fallida',
             text:'No se pudo guardar el registro, hubo un problema de conexión'
           });
         }

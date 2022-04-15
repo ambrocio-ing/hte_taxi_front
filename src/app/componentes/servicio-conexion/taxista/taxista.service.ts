@@ -81,6 +81,28 @@ export class TaxistaService {
     );
 
   }
+
+  public editarEstado(taxista:Taxista) : Observable<any> {
+
+    return this.http.post(this.url_protegido+"/editar/estado", taxista).pipe(
+      map(resp => {
+        return resp;
+      }),
+
+      catchError(e => {
+        if (e.status == 400 || e.status == 404 || e.status == 500) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Operación fallida',
+            text: e.error.mensaje
+          });
+        }       
+
+        return throwError(() => e);
+      })
+    );
+
+  }
   
   //historial los 5 ultimos servicios
   public historial(id:number): Observable<SMServicioTaxi[]> {

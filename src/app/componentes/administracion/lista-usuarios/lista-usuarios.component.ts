@@ -76,7 +76,7 @@ export class ListaUsuariosComponent implements OnInit {
     }
   }  
 
-  eliminar(cliente:Cliente) : void {
+  suspender(cliente:Cliente) : void {
     Swal.fire({
       icon:'question',
       title:'¿Seguro que desea eliminar?',
@@ -86,7 +86,7 @@ export class ListaUsuariosComponent implements OnInit {
       cancelButtonText:'No, eliminar'
     }).then(resp => {
       if(resp.value){
-        this.clienteService.clienteEliminar(cliente.idcliente).subscribe(resp => {
+        this.clienteService.editarEstado(cliente).subscribe(resp => {
           Swal.fire({
             icon:'success',            
             text:resp.mensaje

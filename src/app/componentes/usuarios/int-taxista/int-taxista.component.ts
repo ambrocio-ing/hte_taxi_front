@@ -232,7 +232,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
         this.errorDeServidor(smservicioTaxi);
 
-      });
+      });    
 
       //cuando el pasajero cancela el taxi
       this.client.subscribe('/staxi/taxi_cancelado/' + this.idtaxista, (event) => {
@@ -257,7 +257,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
           });
         }
 
-      });
+      });  
 
       this.conectado = true;
 
@@ -291,6 +291,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
       }
 
     }, err => {
+      this.loginService.estado("Disponible");
       this.mensajeServicios = "Sin datos que mostrar";
     });
 
@@ -1877,26 +1878,26 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     this.enviar5 = false;
     this.estadoConfirmacion5 = false;
     this.estadoAceptar = false;
-  }
+  }  
 
-  finalizar(servicios: SMServicioTaxi) {
-    this.vigilante.editarEstado(servicios).subscribe((resp) => {
-      this.loginService.estado("Disponible");
-      Swal.fire({
-        icon: 'success',
-        title: 'Servicio finalizado',
-        text: resp.mensaje
-      }).then(resp => {
-        this.taxService.historial(this.idtaxista).subscribe(datos => {
-          this.smservicioTaxis = datos;
-          this.mensajeServicios = "";
-          this.smservicioEnCurso = new SMServicioTaxi();
-          this.smservicioEnCurso.taxista = new SMTaxista();
-          this.smservicioEnCurso.cliente = new SMCliente();
-          this.smservicioEnCurso.ubicacion = new Ubicacion();
-        }, err => {
-          this.mensajeServicios = "Sin datos que mostrar";
-        });
+  finalizar(servicios: SMServicioTaxi) : void {
+    servicios.estado = "Finalizado";
+    this.client.publish({destination : '/app/finalizado_taxista', body : JSON.stringify(servicios)});
+    Swal.fire({
+      icon: 'success',
+      title: 'Servicio finalizado',
+      text: 'Servicio finalizado con éxito, en caso de que no se aplique  vuelva a ejecutar'
+    }).then(res => {
+      this.taxService.historial(this.idtaxista).subscribe(datos => {
+        this.smservicioTaxis = datos;
+        this.mensajeServicios = ""; 
+        this.smservicioEnCurso = new SMServicioTaxi();
+        this.smservicioEnCurso.taxista = new SMTaxista();
+        this.smservicioEnCurso.cliente = new SMCliente();
+        this.smservicioEnCurso.ubicacion = new Ubicacion();
+        this.loginService.estado("Disponible");
+      }, err => {
+        this.mensajeServicios = "Sin datos que mostrar";
       });
     });
   }
@@ -1911,6 +1912,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
       cancelButtonText: 'No, cancelar'
     }).then(resp => {
       if (resp.value) {
+        smservicio.estado = "Cancelado";
         this.client.publish({ destination: '/app/cancelado_taxista', body: JSON.stringify(smservicio) });
         this.loginService.estado("Disponible");
         this.smservicioEnCurso = new SMServicioTaxi();
