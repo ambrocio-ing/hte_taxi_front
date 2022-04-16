@@ -8,37 +8,55 @@
             <div class="row">                
                 <table class="table table-striped">                    
                     <thead>
-                        <tr>
-                            <td colspan="">Busqueda</td>
-                            <td>
-                                <input type="date" name="fecha" [(ngModel)]="data.fecha">
-                            </td>
-                            <td>
-                                <input type="date" name="fecha2" [(ngModel)]="data.fecha2">
-                            </td>
+                        <tr> 
                             <td>
                                 <button (click)="buscar()" class="btn btn-outline-green">Buscar</button>
                             </td>
+                            <td>
+                                <input type="date" name="fecha" [(ngModel)]="data.fecha">
+                                <input type="date" name="fecha2" [(ngModel)]="data.fecha2">
+                            </td>
                         </tr>
                         <tr>
-                            <td colspan="3"></td>
                             <td>
                                 <button (click)="listar()" class="btn btn-outline-primary">Refrescar</button>
                             </td>
+                            <td></td>
                         </tr>
                         <tr bgcolor="skyblue">
-                            <th scope="col">#</th>
-                            <th scope="col">Fecha</th>
-                            <th scope="col">Codigo</th>
-                            <th scope="col">Total</th>
+                            <th scope="col">#</th>                           
+                            <th scope="col">Codigo</th>                            
                         </tr>                        
                     </thead>
                     <tbody>
                         <tr *ngFor="let pago of pagos">
-                            <td>{{pago.idpago}}</td>
-                            <td>{{pago.fecha | date: 'dd/MM'}}</td>
-                            <td>{{pago.codigo}}</td>
-                            <td>{{pago.total}}</td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td *ngIf="!pago?.comprobante">{{pago.idpago}}</td>
+                                        <td *ngIf="pago?.comprobante">
+                                            <img style="width: 100px; height: 100px;" src="{{url_backend}}/pago/imagen" alt="">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>                   
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            {{pago.codigo}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span style="color: blue;">Fecha :</span>
+                                            {{pago.fecha | date: 'dd/MM'}}
+                                            <span style="color: blue;">Total :</span>
+                                            S/. {{pago.total}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>                   
                         </tr>
                     </tbody>
                 </table>

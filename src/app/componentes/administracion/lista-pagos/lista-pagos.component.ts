@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import Swal from 'sweetalert2';
 import { Pago } from '../../modelo/pago/pago';
 import { PagoService } from '../../servicio-conexion/pago/pago.service';
+import { URL_BACKEND } from '../../sistema/config/config';
 
 @Component({
   selector: 'app-lista-pagos',
@@ -9,6 +10,8 @@ import { PagoService } from '../../servicio-conexion/pago/pago.service';
   styleUrls: ['./lista-pagos.component.css']
 })
 export class ListaPagosComponent implements OnInit {
+
+  url_backend :string = URL_BACKEND+"/taxista";
 
   @Input() estado_modal!:boolean;
   @Input() idtaxista!:number;

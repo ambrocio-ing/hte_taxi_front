@@ -85,4 +85,39 @@ export class PagoService {
     );
   }
 
+  public pagoMonedero(id:any, total:any,imagen:File): Observable<any> {
+
+    const formData = new FormData();
+    formData.append("id", id);
+    formData.append("total", total);
+    formData.append("imagen", imagen);
+
+    return this.http.post(`${this.url}/pamonedero`, formData).pipe(
+      map(resp => resp),
+      catchError(e => {         
+       return throwError(() => e);
+
+      })
+    );
+  }
+
+  public buscarPorFecha(idtaxista: number, fecha: string): Observable<Pago[]> {
+    return this.http.get<Pago[]>(this.url + "/por/fecha/" + idtaxista + "/" + fecha).pipe(
+
+      catchError(e => {
+
+        if (e.status == 404 || e.ststus == 500) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Operación fallida',
+            text: e.error.mensaje
+          });
+        }
+        
+        return throwError(() => e);
+
+      })
+    );
+  }
+
 }

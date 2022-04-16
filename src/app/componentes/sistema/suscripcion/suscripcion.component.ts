@@ -26,10 +26,12 @@ export class SuscripcionComponent implements OnInit {
   estadoPago:boolean = false;
   formaPago!:string;
 
-  pago:Pago = new Pago();  
+  pago:Pago = new Pago(); 
+  total1!:number;  
+  total2!:number;  
 
-  servicios:SMServicioTaxi[] = [];
-  fechas:any = {finicio:null,ffin:null};
+  imagen!:File;
+  noImagen!:string;
 
   comision!:number;
   conversion!:number;
@@ -54,9 +56,9 @@ export class SuscripcionComponent implements OnInit {
           this.pago.taxista = new SMTaxista();
           this.estadoPago = true;
           this.comision = this.calcularComision(this.pago.subtotal);
-          if(this.pago.total == 0){
-            this.pago.total = this.pago.subtotal + this.comision;
-          }
+
+          this.total1 = this.pago.subtotal + this.comision;   
+          this.total2 = this.pago.subtotal;       
 
         }, err => {
           this.estadoPago = false;
@@ -74,9 +76,9 @@ export class SuscripcionComponent implements OnInit {
               this.estadoPago = true;
 
               this.comision = this.calcularComision(this.pago.subtotal);
-              if(this.pago.total == 0){
-                this.pago.total = this.pago.subtotal + this.comision;
-              }              
+              
+              this.total1 = this.pago.subtotal + this.comision;
+              this.total2 = this.pago.subtotal;   
 
             }, err => {
               this.estadoPago = false;
@@ -123,7 +125,21 @@ export class SuscripcionComponent implements OnInit {
   }
 
   buscar() : void {
-
+    if(this.data.fecha != null){
+      this.pagoService.buscarPorFecha(this.idtaxista, this.data.fecha).subscribe(resp => {
+        this.pagos = resp;
+        this.mensajeHistorial = "";
+      }, err => {
+        this.mensajeHistorial = "Sin datos que mostrar";
+      });
+    }
+    else{
+      Swal.fire({
+        icon:'info',
+        title:'Datos incompletos',
+        text:'Ingrese una fecha para continuar'
+      });
+    }
   }
 
   continuar() : void {
@@ -149,6 +165,56 @@ export class SuscripcionComponent implements OnInit {
         icon:'info',
         title:'Datos incompletos',
         text:'Es posible que aya olvidado marcar forma de pago'
+      });
+    }
+  }
+
+  capturarImagen(event:any) : void {
+    const img = event.target.files[0];
+    if(img.type.indexOf("image") < 0){
+      this.noImagen = "El archivo no es una imagen";
+    }
+    else{
+      this.noImagen = "";
+      this.imagen = img;
+    }
+  }
+
+  confirmar() : void {
+    if(this.noImagen == "" && this.imagen != null){
+      this.pagoService.pagoMonedero(this.pago.idpago, this.pago.subtotal, this.imagen).subscribe(resp => {
+        Swal.fire({
+          icon:'success',
+          title:'Operación exitosa',
+          text:resp.mensaje
+        });
+        this.pago = new Pago();
+        this.total1 = 0;
+        this.total2 = 0;
+        this.ngOnInit();
+
+      }, err => {
+        if(err.status == 404 || err.status == 500){
+          Swal.fire({
+            icon:'error',
+            title:'Pago no procesado',
+            text:err.error.mensaje
+          });
+        }
+        else{
+          Swal.fire({
+            icon:'error',
+            title:'Pago no procesado',
+            text:'Su pago se a podido procesar por favor intentelo mas tarde'
+          });
+        }        
+      });
+    }
+    else{
+      Swal.fire({
+        icon:'info',
+        title:'Datos incompletos',
+        text:'Suba su comprobante como una imagen para continuar'
       });
     }
   }
