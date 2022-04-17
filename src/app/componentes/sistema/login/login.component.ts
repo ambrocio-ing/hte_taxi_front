@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
 
         if(roles.length == 1 && roles[0] == "ROLE_CLIENT"){
           this.loginService.estado("Disponible");
-          //this.router.navigate(['intusuario']);
+          this.router.navigate(['intusuario']);
         }
         else if(roles.length == 1 && roles[0] == "ROLE_CABBIE"){
           this.vigilante.consultarPago();

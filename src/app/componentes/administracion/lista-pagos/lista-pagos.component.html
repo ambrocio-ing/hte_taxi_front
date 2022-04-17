@@ -35,7 +35,7 @@
                                     <tr>
                                         <td *ngIf="!pago?.comprobante">{{pago.idpago}}</td>
                                         <td *ngIf="pago?.comprobante">
-                                            <img style="width: 100px; height: 100px;" src="{{url_backend}}/pago/imagen" alt="">
+                                            <img style="width: 100px; height: 100px;" src="{{url_backend}}/pago/imagen/{{pago.comprobante}}" alt="">
                                         </td>
                                     </tr>
                                 </table>

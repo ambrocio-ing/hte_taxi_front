@@ -194,6 +194,7 @@ export class SuscripcionComponent implements OnInit {
         this.ngOnInit();
 
       }, err => {
+        console.log('verificar',err)
         if(err.status == 404 || err.status == 500){
           Swal.fire({
             icon:'error',
@@ -205,7 +206,7 @@ export class SuscripcionComponent implements OnInit {
           Swal.fire({
             icon:'error',
             title:'Pago no procesado',
-            text:'Su pago se a podido procesar por favor intentelo mas tarde'
+            text:'Su pago no se a podido procesar por favor intentelo mas tarde'
           });
         }        
       });

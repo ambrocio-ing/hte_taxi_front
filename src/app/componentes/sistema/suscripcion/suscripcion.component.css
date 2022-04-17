@@ -1,7 +1,7 @@
 .conductor{
     display: -ms-grid;
     display: grid;
-    -ms-grid-columns: (minmax(1rem, 1fr))[auto-fit];
+    
     grid-template-columns: repeat(auto-fit, minmax(1rem, 1fr));
     gap: 1rem;
     width: 100%;
@@ -22,3 +22,19 @@
     display: flex;
     justify-content: center;
 }
+.boton-recargar {
+    border-style: none;
+    height: 33px;
+    padding: 0px;
+    background-color: white;
+
+}
+.img-stilo{
+    width: 30px;
+    height: 30px;
+    margin: auto;
+    border-radius: 50% ;    
+    object-fit: cover;
+}
+tbody tr:hover {background-color: rgb(17, 173, 28);
+    color: aliceblue;}

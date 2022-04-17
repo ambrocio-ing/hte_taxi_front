@@ -156,8 +156,8 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
         if (ubicacion.idcliente != 0 && ubicacion != null && this.loginService.isDisponible()) {
           let coords: number[] = [];
-          coords.push(-77.1393496);
-          coords.push(-11.8380763);
+          coords.push(-77.2059918);
+          coords.push(-11.4909882);
           coords.push(ubicacion.origen_lng);
           coords.push(ubicacion.origen_lat);
 
@@ -263,8 +263,8 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
       //notifica a los clientes que un taxista se acaba de conectar
       this.smsubicacion.idtaxista = this.idtaxista;
-      this.smsubicacion.origen_lng = -77.1393496;
-      this.smsubicacion.origen_lat = -11.8380763;
+      this.smsubicacion.origen_lng = -77.2059918;
+      this.smsubicacion.origen_lat = -11.4909882;
       this.client.publish({ destination: '/app/nuevo_conectado', body: JSON.stringify(this.smsubicacion) });
 
     }
@@ -1349,7 +1349,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
       this.smservicioTaxi1 = smservicioTaxi;
       this.vigilante.guardarEstadoServicio(1, "Procesando");
-      this.mensaje1 = "Nueva solicitud, no cerrar hasta finalizar";
+      this.mensaje1 = "Enviar el precio antes de que termine el tiempo";
       this.fijarTimer1(this.smservicioTaxi1.idstaxi);
       this.enviar1 = false;
     }
@@ -1357,7 +1357,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
       this.smservicioTaxi2 = smservicioTaxi;
       this.vigilante.guardarEstadoServicio(2, "Procesando");
-      this.mensaje2 = "Nueva solicitud, no cerrar hasta finalizar";
+      this.mensaje2 = "Enviar el precio antes de que termine el tiempo";
       this.fijarTimer2(this.smservicioTaxi1.idstaxi);
       this.enviar2 = false;
 
@@ -1366,7 +1366,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
       this.smservicioTaxi3 = smservicioTaxi;
       this.vigilante.guardarEstadoServicio(3, "Procesando");
-      this.mensaje3 = "Nueva solicitud, no cerrar hasta finalizar";
+      this.mensaje3 = "Enviar el precio antes de que termine el tiempo";
       this.fijarTimer3(this.smservicioTaxi3.idstaxi);
       this.enviar3 = false;
 
@@ -1375,7 +1375,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
       this.smservicioTaxi4 = smservicioTaxi;
       this.vigilante.guardarEstadoServicio(4, "Procesando");
-      this.mensaje4 = "Nueva solicitud, no cerrar hasta finalizar";
+      this.mensaje4 ="Enviar el precio antes de que termine el tiempo";
       this.fijarTimer4(this.smservicioTaxi4.idstaxi);
       this.enviar4 = false;
 
@@ -1384,7 +1384,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
       this.smservicioTaxi5 = smservicioTaxi
       this.vigilante.guardarEstadoServicio(5, "Procesando");
-      this.mensaje5 = "Nueva solicitud, no cerrar hasta finalizar";
+      this.mensaje5 ="Enviar el precio antes de que termine el tiempo";
       this.fijarTimer5(this.smservicioTaxi5.idstaxi);
       this.enviar5 = false;
 

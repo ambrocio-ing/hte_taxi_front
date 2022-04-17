@@ -17,7 +17,7 @@
                 <li>
                     <hr class="dropdown-divider">
                 </li>
-                <li><a (click)="cerrarSesion()" class="dropdown-item">Serrar Sesión</a></li>
+                <li><a (click)="cerrarSesion()" class="dropdown-item">Cerrar Sesión</a></li>
             </ul>
         </div>
     </div>
@@ -25,12 +25,12 @@
 <div class="wrapper">
     <div class="card">
         <div class="card-header">
-            <h4 *ngIf="!estadoPago">Su facturación estará disponible al transcurso de los 15 días desde el último día de
+            <h4 *ngIf="!estadoPago" style="text-transform: uppercase; font-family: Times New Roman, Times, serif;">Su facturación estará disponible al transcurso de los 15 días desde el último día de
                 pago</h4>
             <h4 *ngIf="estadoPago">Efectuar pago</h4>
         </div>
         <div class="card-body" *ngIf="estadoPago">
-            <div class="row" *ngIf="pago?.idpago">    
+            <div class="row" *ngIf="pago?.idpago">
                 <div class="col-sm">
                     <ul class="list-group">
                         <li class="list-group-item active">
@@ -43,23 +43,23 @@
                             <span style="color: blue;">Estado : </span> {{pago.estado}}
                         </li>
                         <li class="list-group-item"><span style="color: blue;">
-                            Sub total : </span>s/. {{pago.subtotal}}
-                        </li>                       
+                                Sub total : </span>s/. {{pago.subtotal}}
+                        </li>
                     </ul>
                 </div>
             </div>
             <div class="row">
                 <div class="wrapper">
-                    <h5 style="font-weight: bold;">FORMAS DE PAGO</h5>
+                    <h5 style="font-weight: bold; text-transform: uppercase; font-family: Times New Roman, Times, serif;" >FORMAS DE PAGO</h5>
                     <h5 style="font-weight: bold;">Use una de las dos formas</h5>
                 </div>
             </div>
-            <div class="row">                
-                <div class="col-sm-6">  
+            <div class="row">
+                <div class="col-sm-6">
                     <fieldset style="border: black solid 2px;">
                         <div class="form-group">
                             <ul class="list-group">
-                                <li class="list-group-item active">
+                                <li class="list-group-item active" style="text-transform: uppercase; font-family: Times New Roman, Times, serif;">
                                     PAGO CON TARGETA
                                 </li>
                                 <li class="list-group-item">
@@ -83,39 +83,39 @@
                         <div class="form-group">
                             <div class="wrapper">
                                 <button (click)="continuar()" class="btn btn-outline-primary">Continuar</button>
-                            </div> 
+                            </div>
                         </div>
                     </fieldset>
-                </div>                
-                <div class="col-sm-6"> 
+                </div>
+                <div class="col-sm-6">
                     <fieldset style="border: black solid 2px;">
                         <div class="form-group">
                             <ul class="list-group">
-                                <li class="list-group-item active">
+                                <li class="list-group-item active" style="text-transform: uppercase; font-family: Times New Roman, Times, serif;">
                                     PAGO CON MONEDERO DIGITAL
-                                </li>                            
+                                </li>
                                 <li class="list-group-item">
                                     <span style="color: blue;">Total : </span> s/. {{total2}}
                                 </li>
                             </ul>
                         </div>
                         <div class="form-group">
-                            <span>Los medios de pago permitidos son YAPE y TUNKI</span>
-                            <span>Page y suba la captura de su comprobante </span>                        
+                            <span>Los medios de pago permitidos son YAPE: 914900491 y TUNKI: 914900491</span>
+                            <span>Page y suba la captura de su comprobante </span>
                         </div>
                         <div class="form-group">
-                            <label>Comprobante</label> 
-                            <input type="file" class="form-control" (change)="capturarImagen($event)">  
+                            <label>Comprobante</label>
+                            <input type="file" class="form-control" (change)="capturarImagen($event)">
                             <div>
                                 <span *ngIf="noImagen">{{noImagen}}</span>
-                            </div>                                                 
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="wrapper">
                                 <button (click)="confirmar()" class="btn btn-outline-primary">Confirmar pago</button>
-                            </div> 
-                        </div>   
-                    </fieldset>  
+                            </div>
+                        </div>
+                    </fieldset>
                 </div>
             </div>
         </div>
@@ -124,62 +124,57 @@
 </div>
 <div class="wrapper">
     <div>
-        <h5>Historial de pagos</h5>
+        <h5 style="text-transform: uppercase; font-family: Times New Roman, Times, serif;">Historial de pagos</h5>
         <table style="width: 100%;" class="table table-striped">
             <thead>
                 <tr>
-                   
+
                     <td>
-                        <button (click)="buscar()" class="btn btn-outline-green">Buscar</button>                        
+                        <button (click)="buscar()" class="btn btn-outline-green">Buscar</button>
+
                     </td>
                     <td>
                         <input class="form-control" type="date" name="fecha" [(ngModel)]="data.fecha">
                     </td>
-                </tr>
-                <tr>
                     <td>
-                        <button (click)="listar()" class="btn btn-outline-success">Refrescar</button>
+                        <button (click)="listar()" class="boton-recargar"><img class="img-stilo"
+                                src="../../../../assets/img/recargar.jpg" alt=""></button>
                     </td>
-                    <td>
-                        
-                    </td>
-                </tr>
-                <tr bgcolor="skyblue">
-                    <th scope="col">#</th>                    
-                    <th scope="col">Codigo</th>                    
-                </tr>
+
             </thead>
             <tbody>
-                <tr *ngFor="let pago of pagos">
-                    <td>
-                        <table>
-                            <tr>
-                                <td *ngIf="!pago?.comprobante">{{pago.idpago}}</td>
-                                <td *ngIf="pago?.comprobante">
-                                    <img style="width: 50px; height: 50px;" src="{{url_backend}}/pago/imagen" alt="">
-                                </td>
-                            </tr>
-                        </table>
-                    </td>                   
-                    <td>
-                        <table>
-                            <tr>
-                                <td>
-                                    {{pago.codigo}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span style="color: blue;">Fecha :</span>
-                                    {{pago.fecha | date: 'dd/MM'}}
-                                    <span style="color: blue;">Total :</span>
-                                    S/. {{pago.total}}
-                                </td>
-                            </tr>
-                        </table>
-                    </td>                   
+                <tr>
+                    <th>#</th>
+                    <th>Codigo</th>
+                    <th> Fecha</th>
+                    <th>Total</th>
                 </tr>
-            </tbody>
+                <tr *ngFor="let pago of pagos">
+                    <td *ngIf="!pago?.comprobante">
+
+                        <p *ngIf="!pago?.comprobante">{{pago.idpago}}</p>
+                        <p *ngIf="pago?.comprobante">
+                            <img style="width: 50px; height: 50px;"
+                                src="{{url_backend}}/pago/imagen/{{pago.comprobante}}" alt="">
+                        </p>
+
+                    </td>
+                    <td>
+
+                        {{pago.codigo}}
+                    </td>
+
+                    <td>
+
+                        {{pago.fecha | date: 'dd/MM'}}
+                    </td>
+                    <td>
+
+                        S/. {{pago.total}}
+                    </td>
+                </tr>
+      
+        </tbody>
         </table>
     </div>
 </div>

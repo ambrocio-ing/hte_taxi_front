@@ -1,17 +1,21 @@
-<div class="contenedor">    
+<div class="contenedor"> 
+    <h2 style="font-family: Georgia, 'Times New Roman', Times, serif;">SERVICIO ACTUAL EN PROCESO</h2>   
     <div class="wrapper">
         <div class="box-inputs">            
             <div *ngIf="smservicioTaxi?.idstaxi">
                 <ul class="list-group">
                     <li class="list-group-item active" aria-current="true">                      
-                        En la mapa encontraras una ruta alternativa y el punto donde se 
-                        encuentra el pasajero, el marcador rojo representa a tu posición y el marador azul representa al 
-                        punto donde se encuentra el pasajero, pudes hacer zoom en la mapa para identificar calles y 
-                        movilizarte con facilidad
+                    
+                    <img src="../../../../assets/img/marcadorAzul.png" style="height: 30px; width: 30px; object-fit: cover;">    Marcador azul: Origen
+                    <img src="../../../../assets/img/marcadorRojo.jpg" style="height: 30px; width: 30px; object-fit: cover;">Marcador rojo: Destino
                     </li>
                     <li class="list-group-item">
-                        <span style="color: blue;">Referencia a la ubicación del pasajero</span>
+                        <span style="color: blue;">Ubicación y referencia del origen</span>
                         {{smservicioTaxi.ubicacion.origen}}
+                    </li>
+                    <li class="list-group-item">
+                        <span style="color: blue;">Ubicación y referencia del destino</span>
+                        {{smservicioTaxi.ubicacion.destino}}
                     </li>
                     <li class="list-group-item">
                        <span style="color: blue;">Distancia : </span> {{smservicioTaxi.ubicacion.distanciafinal}} km
