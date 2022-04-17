@@ -205,7 +205,7 @@ export class SuscripcionComponent implements OnInit {
           Swal.fire({
             icon:'error',
             title:'Pago no procesado',
-            text:'Su pago se a podido procesar por favor intentelo mas tarde'
+            text:'Su pago se no a podido procesar por favor intentelo mas tarde'
           });
         }        
       });
