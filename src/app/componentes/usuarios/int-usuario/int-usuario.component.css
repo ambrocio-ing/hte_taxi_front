@@ -1,7 +1,7 @@
 .cabecera{
-    display: -ms-grid;
+    
     display: grid;
-    -ms-grid-columns: (minmax(1rem, 1fr))[auto-fit];
+    
     grid-template-columns: repeat(auto-fit, minmax(1rem, 1fr));
     gap: 1rem;
     width: 100%;
@@ -30,6 +30,7 @@
     height: 30px;
     margin: auto;
     border-radius: 50% ;    
+    object-fit: cover;
 }
 
 .boton-aceptar {
@@ -48,11 +49,21 @@
     left: 10px;
 
 }
+.boton-recargar {
+    border-style: none;
+    height: 33px;
+    padding: 5px;
+    
+
+}
 
 .wrapper{
     padding: 2px;
     display: flex;
     justify-content: center;
+}
+.wrapper table span{
+    color: blue;
 }
 
 .contenedor {
@@ -87,3 +98,5 @@
     display: flex;
     justify-content: center;
 }
+ tr:hover {background-color: rgb(17, 173, 28);
+color: aliceblue;}

@@ -1,0 +1,28 @@
+.contenedor{
+    padding: 0.8rem;
+    color: black;
+    font-family: "Times New Roman", Times, serif;
+}
+.leer{
+    font: italic small-caps bold 12px Georgia, serif;
+
+}
+h2{
+    text-transform: uppercase;
+}
+button {
+    width: 250px;    
+    background-color: red;
+    padding: 14px 20px;
+   
+    margin: 8px 0;
+   
+    border: none;
+    border-radius: 4px;
+    
+  }
+  button:hover{
+    background-color: blue;
+    color: white;
+  }
+  

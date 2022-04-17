@@ -23,25 +23,31 @@
                     </select>
                 </div>
                 <div class="form-group" *ngIf="dolar?.envioProductos == 'Desactivo'">
-                    <label for="tipo">Tipo</label>
+                    <label for="tipo">Tipo: <span style="color: red;">(Posteriormente se habilitaran más opciones)</span></label>
                     <select name="tipo" [(ngModel)]="data.tipo" class="form-control">
                         <option value="">-- Selecione --</option>
                         <option value="Pasajero">Pasajero</option>                        
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="origen">Escriba una referencia a su punto de partida</label>
+                    <label for="origen">Ingrese su origen y alguna referencia</label>
                     <input type="text" name="origen" [(ngModel)]="data.origen" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="destino">Escriba una referencia a su punto destino</label>
+                    <label for="destino">Ingrese su destino y alguna referencia</label>
                     <input type="text" name="destino" [(ngModel)]="data.destino" class="form-control">
+                </div>
+                <label>Buscar su origen y destino en el mapa:</label>
+                <div id="geocoder" #asGeocoder class="geocoder">
+    
+                </div>
+                <div [ngClass]="{'active-way': modeInput === 'start'}">
+                    <div class="mock-label">Detalle</div>
+                    <div class="mock-input">{{wayPoints?.start?.place_name}}</div>
                 </div>
                 <div class="form-group">
                     <span style="color: blue;">Nota : </span>
-                    <span>Para completar el proceso es importante que marque el punto de origen y destino en la mapa, use
-                        click para esta acción,
-                        es importante que primero marque el punto de origen y luego el punto destino
+                    <span>Marque el punto de origen y luego el punto destino(solo 2 puntos).El punto rojo es su ubicacion.
                     </span>
                 </div>
                 <div>
@@ -49,14 +55,8 @@
                     <button class="btn btn-success" style="margin-left: 20px;" (click)="confirmar()">Confirmar</button>
                 </div>
     
-                <div id="geocoder" #asGeocoder class="geocoder">
     
-                </div>
-    
-                <div [ngClass]="{'active-way': modeInput === 'start'}">
-                    <div class="mock-label">Detalle</div>
-                    <div class="mock-input">{{wayPoints?.start?.place_name}}</div>
-                </div>
+               
     
             </div>
             

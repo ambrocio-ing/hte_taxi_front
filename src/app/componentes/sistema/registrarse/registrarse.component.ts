@@ -521,5 +521,10 @@ export class RegistrarseComponent implements OnInit {
   irPerfilconductor() {
     this.router.navigate(['perfil2']);
   }
-
+  irTerminos() {
+    this.router.navigate(['terminos']);
+  }
+  cancelar() {
+    this.router.navigate(['']);
+  }
 }

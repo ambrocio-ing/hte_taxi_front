@@ -13,9 +13,11 @@
             </button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" (click)="irPerfil()">Ver mis datos</a></li>
-                <li *ngIf="!loginService.isDisponible"><a class="dropdown-item" (click)="disponible()">Marcar disponible</a>
+                <li *ngIf="!loginService.isDisponible"><a class="dropdown-item" (click)="disponible()">Marcar
+                        disponible</a>
                 </li>
-                <li *ngIf="loginService.isDisponible"><a class="dropdown-item" (click)="ocupado()">Marcar ocupado</a></li>
+                <li *ngIf="loginService.isDisponible"><a class="dropdown-item" (click)="ocupado()">Marcar ocupado</a>
+                </li>
                 <li>
                     <hr class="dropdown-divider">
                 </li>
@@ -29,13 +31,17 @@
 </app-perfil>
 
 <div class="wrapper">
+    <div style="width: 373px;">
     <div class="contenedor">
         <div *ngIf="vigilante?.ubicacion?.origen">
-            <span style="font-weight: bold;">Origen: </span><span> {{vigilante.ubicacion.origen}}</span>
-            <span style="font-weight: bold;">Destino: </span><span> {{vigilante.ubicacion.destino}}</span>
+            <p>
+            <span style="font-weight: bold;">Origen y referencia: </span><span> {{vigilante.ubicacion.origen}}</span></p>
+            <p><span style="font-weight: bold;">Destino y referencia: </span><span> {{vigilante.ubicacion.destino}}</span>
+            </p>
         </div>
         <button (click)="mostrarMapa()" class="btn btn-outline-danger form-control">Fijar nueva ruta</button>
     </div>
+</div>
 </div>
 <!--Fijar ruta de viaje este será un modal-->
 <div>
@@ -47,11 +53,11 @@
         [estadoReclamo]="estadoRe" (cerrarDetalle)="estadoDetalle = $event">
     </app-det-taxista>
 </div>
-<div class="wrapper">
-    <h2 style="font-weight: bold; margin-right: 2px;">Conductores disponibles:</h2>
-    <button [disabled]="!conectado && !loginService.isDisponible()" (click)="refrescar()" class="btn btn-outline-success">Refrescar Lista</button>
+<div class="wrapper" *ngIf="conectado && loginService.isDisponible()" >
+    <h2  style="text-transform: uppercase; font-family: Times New Roman, Times, serif;">Conductores disponibles</h2>
+    <button [disabled]="!conectado && !loginService.isDisponible()" (click)="refrescar()" class="boton-recargar"><img class="img-stilo" src="../../../../assets/img/recargar.jpg" alt=""></button>
 </div>
-<div class="wrapper" *ngIf="!conectado && loginService.isDisponible()">   
+<div class="wrapper" *ngIf="!conectado && loginService.isDisponible()">
     <div>
         <span>Iniciando servicio...</span>
         <div class="d-flex justify-content-center">
@@ -61,12 +67,11 @@
         </div>
     </div>
 </div>
-<div class="wrapper" *ngIf="conectado && !loginService.isDisponible()">
-    <span style="color: red;">Servicio de taxi en proceso (Para realizar nuevas solicitudes finalize primero el taxi)</span>
-</div>
+
 <div *ngIf="conectado && loginService.isDisponible()">
     <div class="wrapper">
-        <table style="width: 99%;" class="table table-hover">
+        <div style="width: 373px;">
+        <table class="table table-hover">
             <!--Taxista 1-->
             <tr *ngIf="smservicioTaxiPedido1.taxista?.idtaxista">
                 <td>
@@ -329,60 +334,79 @@
             </tr>
         </table>
     </div>
+    </div>
 
 </div>
 
+<div class="wrapper" *ngFor="let servicios of smservicioTaxis">
+    <div style="width: 373px;">
+    <h3 *ngIf="servicios.estado == 'Iniciado'" style="text-align: center; text-transform: uppercase; font-family: Times New Roman, Times, serif; ;">Solicitud actual en proceso</h3>
+    
+    <table *ngIf="servicios.estado == 'Iniciado'" style="width: 98%;" class="table table-striped">
+        <tr style="text-align: center">
+            <th>Detalle</th>
+
+            <th>Estado</th>
+            <th>Acción</th>
+        </tr>
+        <tr *ngIf="servicios.estado == 'Iniciado'" style="text-align: center">
+
+
+            <td style="text-align: left">
+                <tr style="border: none;">
+                <span style="font-weight: bold;">Origen y referencia: </span> {{servicios.ubicacion.origen}}</tr>
+                <tr style="border: none;">
+                <span style="font-weight: bold;">Destino y referencia: </span> {{servicios.ubicacion.destino}}
+            </tr>
+        </td>
+            <td style="text-align: center">
+                <tr style="border: none;">-{{servicios.estado}}-</tr>
+                <tr style="border: none;"><span style="color: blue;">El conductor llegará aproximadamente en:</span>
+                {{servicios.ubicacion.tiempofinal}}</tr>
+            </td>
+            <td style="text-align: center">
+                <button (click)="ver(servicios)" class="btn btn-outline-primary">Ver</button>
+           
+                <button (click)="cancelar(servicios)" class="btn btn-outline-danger"
+                    style="color: red;">Cancelar</button>
+            </td>
+        </tr>
+    </table>
+    <span *ngIf="servicios.estado == 'Iniciado'" style="text-align: center; color: red;text-transform: none; font-family: 'Times New Roman', Times, serif; ">Servicio en proceso (para realizar nuevas solicitudes finalice el servicio actual).</span>
+</div>
+</div>
+
+<h2 style="text-align: center; text-transform: uppercase; font-family: Times New Roman, Times, serif; ;">Historial</h2>
 <div class="wrapper">
     <div>
-        <h2>Historial:</h2>
-        <table style="width: 98%;" class="table table-striped">
-            <tr class="text-center">
+        
+        <table class="table table-striped" class="table table-striped">
+            <tr style="text-align: center">
                 <th>Detalle</th>
                 <th>Día</th>
                 <th>Estado</th>
                 <th>Acción</th>
             </tr>
-            <tr *ngFor="let servicios of smservicioTaxis">
-                <td>
-                    <table>
-                        <tr>
-                            <td><span style="font-weight: bold;">Origen: </span> {{servicios.ubicacion.origen}}</td>
-                        </tr>
-                        <tr>
-                            <td><span style="font-weight: bold;">Destino: </span> {{servicios.ubicacion.destino}}</td>
-                        </tr>
-                    </table>
+            <tr *ngFor="let servicios of smservicioTaxis" style="text-align: center" >
+                <td style="text-align: left">
+                    <tr style="border: none;">
+                    <span style="font-weight: bold;">Origen y referencia:</span> {{servicios.ubicacion.origen}}
+                    </tr>
+                    <tr style="border: none;">
+                    <span style="font-weight: bold;">Destino y referencia:</span> {{servicios.ubicacion.destino}}
+                </tr>
                 </td>
                 <td>
                     {{servicios.fecha | date: 'dd/MM'}}
-                    
-                </td>
-                <td>                    
-                    <table>
-                        <tr>
-                            <td>{{servicios.estado}}</td>
-                        </tr>
-                        <tr *ngIf="servicios.estado == 'Iniciado'">
-                            <td>
-                                <span style="color: blue;">El conductor llegará aproximadamente en</span>
-                                {{servicios.ubicacion.tiempofinal}}
-                            </td>
-                        </tr>
-                    </table>
+
                 </td>
                 <td>
-                    <table>
-                        <tr class="text-center">
-                            <td>
-                                <button (click)="ver(servicios)" class="btn btn-outline-primary">Ver</button>
-                            </td>
-                        </tr>
-                        <tr *ngIf="servicios.estado == 'Iniciado'">
-                            <td>
-                                <button (click)="cancelar(servicios)" class="btn btn-outline-danger" style="color: red;">Cancelar</button>
-                            </td>
-                        </tr>
-                    </table>
+                    {{servicios.estado}}
+                </td>
+                <td>
+
+                    <button (click)="ver(servicios)" class="btn btn-outline-primary">Ver</button>
+
                 </td>
             </tr>
         </table>

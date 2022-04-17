@@ -226,9 +226,7 @@
         </div>
 
         <div class="form-group">
-            <input type="checkbox" name="remember" (change)="cambiar($event)"> 
-            <a style="color: white;">Acepto terminos y condiciones</a>
-            <a routerLink="/terminos" style="color: blue;">Ver</a>
+            <input type="checkbox" name="remember" (change)="cambiar($event)"> <a (click)="irTerminos()" style="color: white;">Acepto terminos y condiciones</a>
         </div>
         
         <button [disabled]="!asFPersona.form.valid || validarImagen || !terminosCliente" class="btn btn-primary" type="submit">Registrar</button>
@@ -416,7 +414,7 @@
             </div>
 
             <div class="form-group">
-                <label for="antecedentesPoliciales">Antecedentes Policiales</label>
+                <label for="antecedentesPoliciales">Numero de Brevete/licencia de conducir y mencione si tuvo Antecedentes Policiales</label>
                 <textarea rows="3" name="antecedentePolicial" [(ngModel)]="taxista.antecedentesPoliciales"
                     #asAntecedentes="ngModel" required="true" maxlength="100" class="form-control"></textarea>
                 <div *ngIf="asAntecedentes.invalid && asAntecedentes.touched">
@@ -760,9 +758,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="checkbox" name="remember" (change)="cambiarya()"> 
-                <a style="color: white;">Acepto terminos y condiciones</a>
-                <a routerLink="/terminos" style="color: blue;">Ver</a>
+                <input type="checkbox" name="remember" (change)="cambiarya()"> <a (click)="irTerminos()" style="color: white;">Acepto terminos y condiciones</a>
             </div>            
 
             <button [disabled]="!asFTaxista.form.valid || activarOno()" class="btn btn-primary form-control"
@@ -774,3 +770,4 @@
     </form>
 
 </div>
+<button (click)="cancelar()" >Cancelar</button>
