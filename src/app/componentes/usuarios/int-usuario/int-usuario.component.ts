@@ -223,12 +223,10 @@ export class IntUsuarioComponent implements OnInit {
           this.notificarConfirmacion(smservicioTaxi);
 
         }
-        else if (smservicioTaxi.estado == "Cancelado") {
+        else {
           this.notificarRechazo(smservicioTaxi);
         }
-        else {
-
-        }
+        
 
       });
 

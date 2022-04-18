@@ -406,7 +406,7 @@ export class MapboxserviceService {
 
         const rouute = data.geometry.coordinates;
 
-        this.map.addSource('route', {
+        this.map.addSource('routee', {
           type: 'geojson',
           data: {
             type: 'Feature',
@@ -420,9 +420,9 @@ export class MapboxserviceService {
         });
 
         this.map.addLayer({
-          id: 'route',
+          id: 'routee',
           type: 'line',
-          source: 'route',
+          source: 'routee',
           layout: {
             'line-join': 'round',
             'line-cap': 'round'

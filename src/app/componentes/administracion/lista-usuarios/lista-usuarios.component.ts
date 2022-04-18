@@ -79,13 +79,14 @@ export class ListaUsuariosComponent implements OnInit {
   suspender(cliente:Cliente) : void {
     Swal.fire({
       icon:'question',
-      title:'¿Seguro que desea eliminar?',
-      text:'Confirme si desea eliminar o no',
+      title:'¿Seguro que desea suspender?',
+      text:'Confirme si desea suspender o no',
       showCancelButton:true,
-      confirmButtonText:'Si, eliminar',
-      cancelButtonText:'No, eliminar'
+      confirmButtonText:'Si, suspender',
+      cancelButtonText:'No, no suspender'
     }).then(resp => {
       if(resp.value){
+        cliente.estado = "Suspendido";
         this.clienteService.editarEstado(cliente).subscribe(resp => {
           Swal.fire({
             icon:'success',            

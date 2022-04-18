@@ -1,6 +1,7 @@
 <div class="wrapper">
     <div class="cabecera">
-        <img (click)="editarPerfil()" *ngIf="!loginService.usuario?.fotoPerfil" src="../../../../assets/img/perfil.jpg" alt="">
+        <img (click)="editarPerfil()" *ngIf="!loginService.usuario?.fotoPerfil" src="../../../../assets/img/perfil.jpg"
+            alt="">
         <img (click)="editarPerfil()" *ngIf="loginService.usuario?.fotoPerfil"
             src="{{url_backend}}/obtener/imagen/{{loginService.usuario.fotoPerfil}}" alt="">
         <!-- Example split danger button <a (click)="irPerfil()"></a> -->
@@ -27,7 +28,7 @@
     </div>
 </div>
 
-<app-cambio-foto-perfil *ngIf="visibleEditarPerfil" [visible]="visibleEditarPerfil" 
+<app-cambio-foto-perfil *ngIf="visibleEditarPerfil" [visible]="visibleEditarPerfil"
     (cerrarModalPerfil)="visibleEditarPerfil = $event">
 </app-cambio-foto-perfil>
 
@@ -36,16 +37,19 @@
 
 <div class="wrapper">
     <div style="width: 373px;">
-    <div class="contenedor">
-        <div *ngIf="vigilante?.ubicacion?.origen">
-            <p>
-            <span style="font-weight: bold;">Origen y referencia: </span><span> {{vigilante.ubicacion.origen}}</span></p>
-            <p><span style="font-weight: bold;">Destino y referencia: </span><span> {{vigilante.ubicacion.destino}}</span>
-            </p>
+        <div class="contenedor">
+            <div *ngIf="vigilante?.ubicacion?.origen">
+                <p>
+                    <span style="font-weight: bold;">Origen y referencia: </span><span>
+                        {{vigilante.ubicacion.origen}}</span>
+                </p>
+                <p><span style="font-weight: bold;">Destino y referencia: </span><span>
+                        {{vigilante.ubicacion.destino}}</span>
+                </p>
+            </div>
+            <button (click)="mostrarMapa()" class="btn btn-outline-danger form-control">Fijar nueva ruta</button>
         </div>
-        <button (click)="mostrarMapa()" class="btn btn-outline-danger form-control">Fijar nueva ruta</button>
     </div>
-</div>
 </div>
 <!--Fijar ruta de viaje este será un modal-->
 <div>
@@ -57,9 +61,10 @@
         [estadoReclamo]="estadoRe" (cerrarDetalle)="estadoDetalle = $event">
     </app-det-taxista>
 </div>
-<div class="wrapper" *ngIf="conectado && loginService.isDisponible()" >
-    <h2  style="text-transform: uppercase; font-family: Times New Roman, Times, serif;">Conductores disponibles</h2>
-    <button [disabled]="!conectado && !loginService.isDisponible()" (click)="refrescar()" class="boton-recargar"><img class="img-stilo" src="../../../../assets/img/recargar.jpg" alt=""></button>
+<div class="wrapper" *ngIf="conectado && loginService.isDisponible()">
+    <h2 style="text-transform: uppercase; font-family: Times New Roman, Times, serif;">Conductores disponibles</h2>
+    <button [disabled]="!conectado && !loginService.isDisponible()" (click)="refrescar()" class="boton-recargar"><img
+            class="img-stilo" src="../../../../assets/img/recargar.jpg" alt=""></button>
 </div>
 <div class="wrapper" *ngIf="!conectado && loginService.isDisponible()">
     <div>
@@ -75,343 +80,347 @@
 <div *ngIf="conectado && loginService.isDisponible()">
     <div class="wrapper">
         <div style="width: 373px;">
-        <table class="table table-hover">
-            <!--Taxista 1-->
-            <tr *ngIf="smservicioTaxiPedido1.taxista?.idtaxista">
-                <td>
-                    <img class="img-perfil" *ngIf="!smservicioTaxiPedido1.taxista?.fotoPerfil"
-                        src="../../../../assets/img/perfil.jpg" alt="">
-                    <img class="img-perfil" *ngIf="smservicioTaxiPedido1.taxista?.fotoPerfil"
-                        src="{{url_backend_taxista}}/{{smservicioTaxiPedido1.taxista.fotoPerfil}}" alt="">
-                </td>
-                <td>
-                    {{smservicioTaxiPedido1.taxista.nombre}}, {{smservicioTaxiPedido1.taxista.apellidos}}
-                </td>
-                <td>
-                    {{smservicioTaxiPedido1.taxista.calificacion.promedio}} es
-                </td>
-                <td>
-                    <button class="btn btn-outline-danger" (click)="verDetalle(smservicioTaxiPedido1.taxista)">
-                        Detalle
-                    </button>
-                </td>
-                <td>
-                    <button *ngIf="estadoSolicitar1" class="btn btn-outline-primary"
-                        (click)="enviarPedido1()">Solicitar</button>
-                    <button *ngIf="!estadoSolicitar1" class="btn btn-outline-danger"
-                        (click)="cancelarPedido1()">Cancelar</button>
-                </td>
+            <table class="table table-hover">
+                <!--Taxista 1-->
+                <tr *ngIf="smservicioTaxiPedido1.taxista?.idtaxista">
+                    <td>
+                        <img class="img-perfil" *ngIf="!smservicioTaxiPedido1.taxista?.fotoPerfil"
+                            src="../../../../assets/img/perfil.jpg" alt="">
+                        <img class="img-perfil" *ngIf="smservicioTaxiPedido1.taxista?.fotoPerfil"
+                            src="{{url_backend_taxista}}/{{smservicioTaxiPedido1.taxista.fotoPerfil}}" alt="">
+                    </td>
+                    <td>
+                        {{smservicioTaxiPedido1.taxista.nombre}}, {{smservicioTaxiPedido1.taxista.apellidos}}
+                    </td>
+                    <td>
+                        {{smservicioTaxiPedido1.taxista.calificacion.promedio}} es
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-danger" (click)="verDetalle(smservicioTaxiPedido1.taxista)">
+                            Detalle
+                        </button>
+                    </td>
+                    <td>
+                        <button *ngIf="estadoSolicitar1" class="btn btn-outline-primary"
+                            (click)="enviarPedido1()">Solicitar</button>
+                        <button *ngIf="!estadoSolicitar1" class="btn btn-outline-danger"
+                            (click)="cancelarPedido1()">Cancelar</button>
+                    </td>
 
-            </tr>
-            <tr *ngIf="estadoTaxista1">
-                <td *ngIf="!estadoRespuesta1" colspan="5">
-                    {{mensaje1}} <span style="color: blue; font-weight: bold;">0{{minuto1}} : {{segundo1}}</span>
-                </td>
-                <td *ngIf="estadoRespuesta1" colspan="5">
-                    <table #asTable1 [ngClass]="{'stilo-modal': resaltar1 === 'si'}">
-                        <tr #asTr1 [ngClass]="{'wrapper2': resaltar1 === 'si'}">
-                            <td colspan="3">
-                                {{mensaje1}} <span style="color: blue; font-weight: bold;">0{{minuto1}} :
-                                    {{segundo1}}</span>
-                            </td>
-                            <td style="background: yellow; color: black;">
-                                S/. {{smservicioTaxiPedido1.precio}}
-                            </td>
-                            <td>
-                                <button [disabled]="estadoAceptar" class="boton-aceptar" (click)="aceptarPedido1()">
-                                    <img class="img-stilo" src="../../../../assets/img/aceptar.png" alt="">
-                                </button>
-                                <button (click)="rechazarPedido1()" class="boton-cancelar">
-                                    <img class="img-stilo" src="../../../../assets/img/cancelar.jpg" alt="">
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <!--Taxista 2-->
-            <tr *ngIf="smservicioTaxiPedido2?.taxista?.idtaxista">
-                <td>
-                    <img class="img-perfil" *ngIf="!smservicioTaxiPedido2.taxista?.fotoPerfil"
-                        src="../../../../assets/img/perfil.jpg" alt="">
-                    <img class="img-perfil" *ngIf="smservicioTaxiPedido2.taxista?.fotoPerfil"
-                        src="{{url_backend_taxista}}/{{smservicioTaxiPedido2.taxista.fotoPerfil}}" alt="">
-                </td>
-                <td>
-                    {{smservicioTaxiPedido2.taxista.nombre}}, {{smservicioTaxiPedido2.taxista.apellidos}}
-                </td>
-                <td>
-                    {{smservicioTaxiPedido2.taxista.calificacion.promedio}} es
-                </td>
-                <td>
-                    <button class="btn btn-outline-danger"
-                        (click)="verDetalle(smservicioTaxiPedido2.taxista)">Detalle</button>
+                </tr>
+                <tr *ngIf="estadoTaxista1">
+                    <td *ngIf="!estadoRespuesta1" colspan="5">
+                        {{mensaje1}} <span style="color: blue; font-weight: bold;">0{{minuto1}} : {{segundo1}}</span>
+                    </td>
+                    <td *ngIf="estadoRespuesta1" colspan="5">
+                        <table #asTable1 [ngClass]="{'stilo-modal': resaltar1 === 'si'}">
+                            <tr #asTr1 [ngClass]="{'wrapper2': resaltar1 === 'si'}">
+                                <td colspan="3">
+                                    {{mensaje1}} <span style="color: blue; font-weight: bold;">0{{minuto1}} :
+                                        {{segundo1}}</span>
+                                </td>
+                                <td style="background: yellow; color: black;">
+                                    S/. {{smservicioTaxiPedido1.precio}}
+                                </td>
+                                <td>
+                                    <button [disabled]="estadoAceptar" class="boton-aceptar" (click)="aceptarPedido1()">
+                                        <img class="img-stilo" src="../../../../assets/img/aceptar.png" alt="">
+                                    </button>
+                                    <button (click)="rechazarPedido1()" class="boton-cancelar">
+                                        <img class="img-stilo" src="../../../../assets/img/cancelar.jpg" alt="">
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <!--Taxista 2-->
+                <tr *ngIf="smservicioTaxiPedido2?.taxista?.idtaxista">
+                    <td>
+                        <img class="img-perfil" *ngIf="!smservicioTaxiPedido2.taxista?.fotoPerfil"
+                            src="../../../../assets/img/perfil.jpg" alt="">
+                        <img class="img-perfil" *ngIf="smservicioTaxiPedido2.taxista?.fotoPerfil"
+                            src="{{url_backend_taxista}}/{{smservicioTaxiPedido2.taxista.fotoPerfil}}" alt="">
+                    </td>
+                    <td>
+                        {{smservicioTaxiPedido2.taxista.nombre}}, {{smservicioTaxiPedido2.taxista.apellidos}}
+                    </td>
+                    <td>
+                        {{smservicioTaxiPedido2.taxista.calificacion.promedio}} es
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-danger"
+                            (click)="verDetalle(smservicioTaxiPedido2.taxista)">Detalle</button>
 
-                </td>
-                <td>
-                    <button *ngIf="estadoSolicitar2" class="btn btn-outline-primary"
-                        (click)="enviarPedido2()">Solicitar</button>
-                    <button *ngIf="!estadoSolicitar2" class="btn btn-outline-danger"
-                        (click)="cancelarPedido2()">Cancelar</button>
-                </td>
-            </tr>
-            <tr *ngIf="estadoTaxista2">
-                <td *ngIf="!estadoRespuesta2" colspan="5">
-                    {{mensaje2}} <span style="color: blue; font-weight: bold;">{{minuto2}} : {{segundo2}}</span>
-                </td>
-                <td *ngIf="estadoRespuesta2" colspan="5">
-                    <table #asTable2 [ngClass]="{'stilo-modal': resaltar2 === 'si'}">
-                        <tr #asTr2 [ngClass]="{'wrapper2': resaltar2 === 'si'}">
-                            <td colspan="3">
-                                {{mensaje2}} <span style="color: blue; font-weight: bold;">0{{minuto2}} :
-                                    {{segundo2}}</span>
-                            </td>
-                            <td style="background: yellow; color: black;">
-                                S/. {{smservicioTaxiPedido2.precio}}
-                            </td>
-                            <td>
-                                <button [disabled]="estadoAceptar" class="boton-aceptar" (click)="aceptarPedido2()">
-                                    <img class="img-stilo" src="../../../../assets/img/aceptar.png" alt="">
-                                </button>
-                                <button (click)="rechazarPedido2()" class="boton-cancelar">
-                                    <img class="img-stilo" src="../../../../assets/img/cancelar.jpg" alt="">
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <!--Taxista 3-->
-            <tr *ngIf="smservicioTaxiPedido3?.taxista?.idtaxista">
-                <td>
-                    <img class="img-perfil" *ngIf="!smservicioTaxiPedido3.taxista?.fotoPerfil"
-                        src="../../../../assets/img/perfil.jpg" alt="">
-                    <img class="img-perfil" *ngIf="smservicioTaxiPedido3.taxista?.fotoPerfil"
-                        src="{{url_backend_taxista}}/{{smservicioTaxiPedido3.taxista.fotoPerfil}}" alt="">
-                </td>
-                <td>
-                    {{smservicioTaxiPedido3.taxista.nombre}}, {{smservicioTaxiPedido3.taxista.apellidos}}
-                </td>
-                <td>
-                    {{smservicioTaxiPedido3.taxista.calificacion.promedio}} es
-                </td>
-                <td>
-                    <button class="btn btn-outline-danger"
-                        (click)="verDetalle(smservicioTaxiPedido3.taxista)">Detalle</button>
-                </td>
-                <td>
-                    <button *ngIf="estadoSolicitar3" class="btn btn-outline-primary"
-                        (click)="enviarPedido3()">Solicitar</button>
-                    <button *ngIf="!estadoSolicitar3" class="btn btn-outline-danger"
-                        (click)="cancelarPedido3()">Cancelar</button>
-                </td>
-            </tr>
-            <tr *ngIf="estadoTaxista3">
-                <td *ngIf="!estadoRespuesta3" colspan="5">
-                    {{mensaje3}} <span style="color: blue; font-weight: bold;">{{minuto3}} : {{segundo3}}</span>
-                </td>
-                <td *ngIf="estadoRespuesta3" colspan="5">
-                    <table #asTable3 [ngClass]="{'stilo-modal': resaltar3 === 'si'}">
-                        <tr #asTr3 [ngClass]="{'wrapper2': resaltar3 === 'si'}">
-                            <td colspan="3">
-                                {{mensaje3}} <span style="color: blue; font-weight: bold;">0{{minuto3}} :
-                                    {{segundo3}}</span>
-                            </td>
-                            <td style="background: yellow; color: black;">
-                                S/. {{smservicioTaxiPedido3.precio}}
-                            </td>
-                            <td>
-                                <button [disabled]="estadoAceptar" class="boton-aceptar" (click)="aceptarPedido3()">
-                                    <img class="img-stilo" src="../../../../assets/img/aceptar.png" alt="">
-                                </button>
-                                <button (click)="rechazarPedido3()" class="boton-cancelar">
-                                    <img class="img-stilo" src="../../../../assets/img/cancelar.jpg" alt="">
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <!--Taxista 4-->
-            <tr *ngIf="smservicioTaxiPedido4?.taxista?.idtaxista">
-                <td>
-                    <img class="img-perfil" *ngIf="!smservicioTaxiPedido4.taxista?.fotoPerfil"
-                        src="../../../../assets/img/perfil.jpg" alt="">
-                    <img class="img-perfil" *ngIf="smservicioTaxiPedido4.taxista?.fotoPerfil"
-                        src="{{url_backend_taxista}}/{{smservicioTaxiPedido4.taxista.fotoPerfil}}" alt="">
-                </td>
-                <td>
-                    {{smservicioTaxiPedido4.taxista.nombre}}, {{smservicioTaxiPedido4.taxista.apellidos}}
-                </td>
-                <td>
-                    {{smservicioTaxiPedido4.taxista.calificacion.promedio}} es
-                </td>
-                <td>
-                    <button class="btn btn-outline-danger"
-                        (click)="verDetalle(smservicioTaxiPedido4.taxista)">Detalle</button>
+                    </td>
+                    <td>
+                        <button *ngIf="estadoSolicitar2" class="btn btn-outline-primary"
+                            (click)="enviarPedido2()">Solicitar</button>
+                        <button *ngIf="!estadoSolicitar2" class="btn btn-outline-danger"
+                            (click)="cancelarPedido2()">Cancelar</button>
+                    </td>
+                </tr>
+                <tr *ngIf="estadoTaxista2">
+                    <td *ngIf="!estadoRespuesta2" colspan="5">
+                        {{mensaje2}} <span style="color: blue; font-weight: bold;">{{minuto2}} : {{segundo2}}</span>
+                    </td>
+                    <td *ngIf="estadoRespuesta2" colspan="5">
+                        <table #asTable2 [ngClass]="{'stilo-modal': resaltar2 === 'si'}">
+                            <tr #asTr2 [ngClass]="{'wrapper2': resaltar2 === 'si'}">
+                                <td colspan="3">
+                                    {{mensaje2}} <span style="color: blue; font-weight: bold;">0{{minuto2}} :
+                                        {{segundo2}}</span>
+                                </td>
+                                <td style="background: yellow; color: black;">
+                                    S/. {{smservicioTaxiPedido2.precio}}
+                                </td>
+                                <td>
+                                    <button [disabled]="estadoAceptar" class="boton-aceptar" (click)="aceptarPedido2()">
+                                        <img class="img-stilo" src="../../../../assets/img/aceptar.png" alt="">
+                                    </button>
+                                    <button (click)="rechazarPedido2()" class="boton-cancelar">
+                                        <img class="img-stilo" src="../../../../assets/img/cancelar.jpg" alt="">
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <!--Taxista 3-->
+                <tr *ngIf="smservicioTaxiPedido3?.taxista?.idtaxista">
+                    <td>
+                        <img class="img-perfil" *ngIf="!smservicioTaxiPedido3.taxista?.fotoPerfil"
+                            src="../../../../assets/img/perfil.jpg" alt="">
+                        <img class="img-perfil" *ngIf="smservicioTaxiPedido3.taxista?.fotoPerfil"
+                            src="{{url_backend_taxista}}/{{smservicioTaxiPedido3.taxista.fotoPerfil}}" alt="">
+                    </td>
+                    <td>
+                        {{smservicioTaxiPedido3.taxista.nombre}}, {{smservicioTaxiPedido3.taxista.apellidos}}
+                    </td>
+                    <td>
+                        {{smservicioTaxiPedido3.taxista.calificacion.promedio}} es
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-danger"
+                            (click)="verDetalle(smservicioTaxiPedido3.taxista)">Detalle</button>
+                    </td>
+                    <td>
+                        <button *ngIf="estadoSolicitar3" class="btn btn-outline-primary"
+                            (click)="enviarPedido3()">Solicitar</button>
+                        <button *ngIf="!estadoSolicitar3" class="btn btn-outline-danger"
+                            (click)="cancelarPedido3()">Cancelar</button>
+                    </td>
+                </tr>
+                <tr *ngIf="estadoTaxista3">
+                    <td *ngIf="!estadoRespuesta3" colspan="5">
+                        {{mensaje3}} <span style="color: blue; font-weight: bold;">{{minuto3}} : {{segundo3}}</span>
+                    </td>
+                    <td *ngIf="estadoRespuesta3" colspan="5">
+                        <table #asTable3 [ngClass]="{'stilo-modal': resaltar3 === 'si'}">
+                            <tr #asTr3 [ngClass]="{'wrapper2': resaltar3 === 'si'}">
+                                <td colspan="3">
+                                    {{mensaje3}} <span style="color: blue; font-weight: bold;">0{{minuto3}} :
+                                        {{segundo3}}</span>
+                                </td>
+                                <td style="background: yellow; color: black;">
+                                    S/. {{smservicioTaxiPedido3.precio}}
+                                </td>
+                                <td>
+                                    <button [disabled]="estadoAceptar" class="boton-aceptar" (click)="aceptarPedido3()">
+                                        <img class="img-stilo" src="../../../../assets/img/aceptar.png" alt="">
+                                    </button>
+                                    <button (click)="rechazarPedido3()" class="boton-cancelar">
+                                        <img class="img-stilo" src="../../../../assets/img/cancelar.jpg" alt="">
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <!--Taxista 4-->
+                <tr *ngIf="smservicioTaxiPedido4?.taxista?.idtaxista">
+                    <td>
+                        <img class="img-perfil" *ngIf="!smservicioTaxiPedido4.taxista?.fotoPerfil"
+                            src="../../../../assets/img/perfil.jpg" alt="">
+                        <img class="img-perfil" *ngIf="smservicioTaxiPedido4.taxista?.fotoPerfil"
+                            src="{{url_backend_taxista}}/{{smservicioTaxiPedido4.taxista.fotoPerfil}}" alt="">
+                    </td>
+                    <td>
+                        {{smservicioTaxiPedido4.taxista.nombre}}, {{smservicioTaxiPedido4.taxista.apellidos}}
+                    </td>
+                    <td>
+                        {{smservicioTaxiPedido4.taxista.calificacion.promedio}} es
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-danger"
+                            (click)="verDetalle(smservicioTaxiPedido4.taxista)">Detalle</button>
 
-                </td>
-                <td>
-                    <button *ngIf="estadoSolicitar4" class="btn btn-outline-primary"
-                        (click)="enviarPedido4()">Solicitar</button>
-                    <button *ngIf="!estadoSolicitar4" class="btn btn-outline-danger"
-                        (click)="cancelarPedido4()">Cancelar</button>
-                </td>
-            </tr>
-            <tr *ngIf="estadoTaxista4">
-                <td *ngIf="!estadoRespuesta4" colspan="5">
-                    {{mensaje4}} <span style="color: blue; font-weight: bold;">{{minuto4}} : {{segundo4}}</span>
-                </td>
-                <td *ngIf="estadoRespuesta4" colspan="5">
-                    <table #asTable4 [ngClass]="{'stilo-modal' : resaltar4 === 'si'}">
-                        <tr #asTr4 [ngClass]="{'wrapper2' : resaltar4 === 'si'}">
-                            <td colspan="3">
-                                {{mensaje4}} <span style="color: blue; font-weight: bold;">0{{minuto4}} :
-                                    {{segundo4}}</span>
-                            </td>
-                            <td style="background: yellow; color: black;">
-                                S/. {{smservicioTaxiPedido4.precio}}
-                            </td>
-                            <td>
-                                <button [disabled]="estadoAceptar" class="boton-aceptar" (click)="aceptarPedido4()">
-                                    <img class="img-stilo" src="../../../../assets/img/aceptar.png" alt="">
-                                </button>
-                                <button (click)="rechazarPedido4()" class="boton-cancelar">
-                                    <img class="img-stilo" src="../../../../assets/img/cancelar.jpg" alt="">
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <!--Taxista 5-->
-            <tr *ngIf="smservicioTaxiPedido5?.taxista?.idtaxista">
-                <td>
-                    <img class="img-perfil" *ngIf="!smservicioTaxiPedido5.taxista?.fotoPerfil"
-                        src="../../../../assets/img/perfil.jpg" alt="">
-                    <img class="img-perfil" *ngIf="smservicioTaxiPedido5.taxista?.fotoPerfil"
-                        src="{{url_backend_taxista}}/{{smservicioTaxiPedido5.taxista.fotoPerfil}}" alt="">
-                </td>
-                <td>
-                    {{smservicioTaxiPedido5.taxista.nombre}}, {{smservicioTaxiPedido5.taxista.apellidos}}
-                </td>
-                <td>
-                    {{smservicioTaxiPedido5.taxista.calificacion.promedio}} es
-                </td>
-                <td>
-                    <button class="btn btn-outline-danger"
-                        (click)="verDetalle(smservicioTaxiPedido5.taxista)">Detalle</button>
+                    </td>
+                    <td>
+                        <button *ngIf="estadoSolicitar4" class="btn btn-outline-primary"
+                            (click)="enviarPedido4()">Solicitar</button>
+                        <button *ngIf="!estadoSolicitar4" class="btn btn-outline-danger"
+                            (click)="cancelarPedido4()">Cancelar</button>
+                    </td>
+                </tr>
+                <tr *ngIf="estadoTaxista4">
+                    <td *ngIf="!estadoRespuesta4" colspan="5">
+                        {{mensaje4}} <span style="color: blue; font-weight: bold;">{{minuto4}} : {{segundo4}}</span>
+                    </td>
+                    <td *ngIf="estadoRespuesta4" colspan="5">
+                        <table #asTable4 [ngClass]="{'stilo-modal' : resaltar4 === 'si'}">
+                            <tr #asTr4 [ngClass]="{'wrapper2' : resaltar4 === 'si'}">
+                                <td colspan="3">
+                                    {{mensaje4}} <span style="color: blue; font-weight: bold;">0{{minuto4}} :
+                                        {{segundo4}}</span>
+                                </td>
+                                <td style="background: yellow; color: black;">
+                                    S/. {{smservicioTaxiPedido4.precio}}
+                                </td>
+                                <td>
+                                    <button [disabled]="estadoAceptar" class="boton-aceptar" (click)="aceptarPedido4()">
+                                        <img class="img-stilo" src="../../../../assets/img/aceptar.png" alt="">
+                                    </button>
+                                    <button (click)="rechazarPedido4()" class="boton-cancelar">
+                                        <img class="img-stilo" src="../../../../assets/img/cancelar.jpg" alt="">
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <!--Taxista 5-->
+                <tr *ngIf="smservicioTaxiPedido5?.taxista?.idtaxista">
+                    <td>
+                        <img class="img-perfil" *ngIf="!smservicioTaxiPedido5.taxista?.fotoPerfil"
+                            src="../../../../assets/img/perfil.jpg" alt="">
+                        <img class="img-perfil" *ngIf="smservicioTaxiPedido5.taxista?.fotoPerfil"
+                            src="{{url_backend_taxista}}/{{smservicioTaxiPedido5.taxista.fotoPerfil}}" alt="">
+                    </td>
+                    <td>
+                        {{smservicioTaxiPedido5.taxista.nombre}}, {{smservicioTaxiPedido5.taxista.apellidos}}
+                    </td>
+                    <td>
+                        {{smservicioTaxiPedido5.taxista.calificacion.promedio}} es
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-danger"
+                            (click)="verDetalle(smservicioTaxiPedido5.taxista)">Detalle</button>
 
-                </td>
-                <td>
-                    <button *ngIf="estadoSolicitar5" class="btn btn-outline-primary"
-                        (click)="enviarPedido5()">Solicitar</button>
-                    <button *ngIf="!estadoSolicitar5" class="btn btn-outline-danger"
-                        (click)="cancelarPedido5()">Cancelar</button>
-                </td>
-            </tr>
-            <tr *ngIf="estadoTaxista5">
-                <td *ngIf="!estadoRespuesta5" colspan="5">
-                    {{mensaje5}} <span style="color: blue; font-weight: bold;">{{minuto5}} : {{segundo5}}</span>
-                </td>
-                <td *ngIf="estadoRespuesta5" colspan="5">
-                    <table #asTable5 [ngClass]="{'stilo-modal' : resaltar5 === 'si'}">
-                        <tr #asTr5 [ngClass]="{'wrapper2' : resaltar5 === 'si'}">
-                            <td colspan="3">
-                                {{mensaje5}} <span style="color: blue; font-weight: bold;">0{{minuto5}} :
-                                    {{segundo5}}</span>
-                            </td>
-                            <td style="background: yellow; color: black;">
-                                S/. {{smservicioTaxiPedido5.precio}}
-                            </td>
-                            <td>
-                                <button [disabled]="estadoAceptar" class="boton-aceptar" (click)="aceptarPedido5()">
-                                    <img class="img-stilo" src="../../../../assets/img/aceptar.png" alt="">
-                                </button>
-                                <button (click)="rechazarPedido5()" class="boton-cancelar">
-                                    <img class="img-stilo" src="../../../../assets/img/cancelar.jpg" alt="">
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
+                    </td>
+                    <td>
+                        <button *ngIf="estadoSolicitar5" class="btn btn-outline-primary"
+                            (click)="enviarPedido5()">Solicitar</button>
+                        <button *ngIf="!estadoSolicitar5" class="btn btn-outline-danger"
+                            (click)="cancelarPedido5()">Cancelar</button>
+                    </td>
+                </tr>
+                <tr *ngIf="estadoTaxista5">
+                    <td *ngIf="!estadoRespuesta5" colspan="5">
+                        {{mensaje5}} <span style="color: blue; font-weight: bold;">{{minuto5}} : {{segundo5}}</span>
+                    </td>
+                    <td *ngIf="estadoRespuesta5" colspan="5">
+                        <table #asTable5 [ngClass]="{'stilo-modal' : resaltar5 === 'si'}">
+                            <tr #asTr5 [ngClass]="{'wrapper2' : resaltar5 === 'si'}">
+                                <td colspan="3">
+                                    {{mensaje5}} <span style="color: blue; font-weight: bold;">0{{minuto5}} :
+                                        {{segundo5}}</span>
+                                </td>
+                                <td style="background: yellow; color: black;">
+                                    S/. {{smservicioTaxiPedido5.precio}}
+                                </td>
+                                <td>
+                                    <button [disabled]="estadoAceptar" class="boton-aceptar" (click)="aceptarPedido5()">
+                                        <img class="img-stilo" src="../../../../assets/img/aceptar.png" alt="">
+                                    </button>
+                                    <button (click)="rechazarPedido5()" class="boton-cancelar">
+                                        <img class="img-stilo" src="../../../../assets/img/cancelar.jpg" alt="">
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 
 </div>
 
 <div class="wrapper" *ngFor="let servicios of smservicioTaxis">
     <div style="width: 373px;">
-    <h3 *ngIf="servicios.estado == 'Iniciado'" style="text-align: center; text-transform: uppercase; font-family: Times New Roman, Times, serif; ;">Solicitud actual en proceso</h3>
-    
-    <table *ngIf="servicios.estado == 'Iniciado'" style="width: 98%;" class="table table-striped">
-        <tr style="text-align: center">
-            <th>Detalle</th>
+        <h3 *ngIf="servicios.estado == 'Iniciado'"
+            style="text-align: center; text-transform: uppercase; font-family: Times New Roman, Times, serif; ;">
+            Solicitud actual en proceso</h3>
 
-            <th>Estado</th>
-            <th>Acción</th>
-        </tr>
-        <tr *ngIf="servicios.estado == 'Iniciado'" style="text-align: center">
+        <table *ngIf="servicios.estado == 'Iniciado'" style="width: 98%;" class="table table-striped">
+            <tr style="text-align: center">
+                <th>Detalle</th>
+
+                <th>Estado</th>
+                <th>Acción</th>
+            </tr>
+            <tr *ngIf="servicios.estado == 'Iniciado'" style="text-align: center">
 
 
-            <td style="text-align: left">
-                <tr style="border: none;">
-                <span style="font-weight: bold;">Origen y referencia: </span> {{servicios.ubicacion.origen}}</tr>
-                <tr style="border: none;">
+                <td style="text-align: left">
+            <tr style="border: none;">
+                <span style="font-weight: bold;">Origen y referencia: </span> {{servicios.ubicacion.origen}}
+            </tr>
+            <tr style="border: none;">
                 <span style="font-weight: bold;">Destino y referencia: </span> {{servicios.ubicacion.destino}}
             </tr>
-        </td>
+            </td>
             <td style="text-align: center">
                 <tr style="border: none;">-{{servicios.estado}}-</tr>
                 <tr style="border: none;"><span style="color: blue;">El conductor llegará aproximadamente en:</span>
-                {{servicios.ubicacion.tiempofinal}}</tr>
+                    {{servicios.ubicacion.tiempofinal}}</tr>
             </td>
             <td style="text-align: center">
                 <button (click)="ver(servicios)" class="btn btn-outline-primary">Ver</button>
-           
+
                 <button (click)="cancelar(servicios)" class="btn btn-outline-danger"
                     style="color: red;">Cancelar</button>
             </td>
-        </tr>
-    </table>
-    <span *ngIf="servicios.estado == 'Iniciado'" style="text-align: center; color: red;text-transform: none; font-family: 'Times New Roman', Times, serif; ">Servicio en proceso (para realizar nuevas solicitudes finalice el servicio actual).</span>
-</div>
+            </tr>
+        </table>
+        <span *ngIf="servicios.estado == 'Iniciado'"
+            style="text-align: center; color: red;text-transform: none; font-family: 'Times New Roman', Times, serif; ">Servicio
+            en proceso (para realizar nuevas solicitudes finalice el servicio actual).</span>
+    </div>
 </div>
 
 <h2 style="text-align: center; text-transform: uppercase; font-family: Times New Roman, Times, serif; ;">Historial</h2>
 <div class="wrapper">
     <div>
-        
-        <table class="table table-striped" class="table table-striped">
+        <table *ngIf="smservicioTaxis.length > 0" class="table table-striped" class="table table-striped">
             <tr style="text-align: center">
                 <th>Detalle</th>
                 <th>Día</th>
                 <th>Estado</th>
                 <th>Acción</th>
             </tr>
-            <tr *ngFor="let servicios of smservicioTaxis" style="text-align: center" >
+            <tr *ngFor="let servicios of smservicioTaxis" style="text-align: center">
                 <td style="text-align: left">
-                    <tr style="border: none;">
-                    <span style="font-weight: bold;">Origen y referencia:</span> {{servicios.ubicacion.origen}}
-                    </tr>
-                    <tr style="border: none;">
-                    <span style="font-weight: bold;">Destino y referencia:</span> {{servicios.ubicacion.destino}}
-                </tr>
-                </td>
-                <td>
-                    {{servicios.fecha | date: 'dd/MM'}}
+            <tr style="border: none;">
+                <span style="font-weight: bold;">Origen y referencia:</span> {{servicios.ubicacion.origen}}
+            </tr>
+            <tr style="border: none;">
+                <span style="font-weight: bold;">Destino y referencia:</span> {{servicios.ubicacion.destino}}
+            </tr>
+            </td>
+            <td>
+                {{servicios.fecha | date: 'dd/MM'}}
 
-                </td>
-                <td>
-                    {{servicios.estado}}
-                </td>
-                <td>
+            </td>
+            <td>
+                {{servicios.estado}}
+            </td>
+            <td>
 
-                    <button (click)="ver(servicios)" class="btn btn-outline-primary">Ver</button>
+                <button (click)="ver(servicios)" class="btn btn-outline-primary">Ver</button>
 
-                </td>
+            </td>
             </tr>
         </table>
         <div>
