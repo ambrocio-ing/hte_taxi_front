@@ -111,6 +111,8 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   smservicioEnCurso: SMServicioTaxi = new SMServicioTaxi();
   posicion: any = null;
 
+  visibleEditarPerfil:boolean = false;
+
   constructor(private router: Router,
     private mapboxService: MapboxserviceService, public loginService: LoginService,
     private vigilante: VigilanteService, private renderer: Renderer2,
@@ -159,7 +161,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
           coords.push(-77.2059918);
           coords.push(-11.4909882);
           coords.push(ubicacion.origen_lng);
-          coords.push(ubicacion.origen_lat);
+          coords.push(ubicacion.origen_lat); 
 
           this.mapboxService.validarDistancia(coords).subscribe(resp => {
             console.log('RESPUESTA CON LA DISTANCIA', resp);
@@ -1968,6 +1970,10 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     else {
       return false;
     }
+  }
+
+  editarPerfil() : void {
+    this.visibleEditarPerfil = true;
   }
 
 }

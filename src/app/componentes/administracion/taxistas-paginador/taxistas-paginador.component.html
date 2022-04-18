@@ -1,0 +1,18 @@
+<ul *ngIf="paginas.length > 0" class="pagination">
+    <li style="cursor: pointer;" class="page-item" *ngIf="paginador.number > 0">
+        <a class="page-link" (click)="cambiarpagina(paginador.number - 1)">&laquo;</a>
+    </li>
+    <li [ngClass]="paginador.number == 0?'disabled page-item':'page-item'">
+        <a style="cursor: pointer;" class="page-link" (click)="cambiarpagina(0)">Primera</a>
+    </li>
+    <li *ngFor="let pagina of paginas" [ngClass]="pagina -1 == paginador.number?'active':''" class="page-item">
+        <span class="page-link" *ngIf="pagina -1 == paginador.number">{{pagina}}</span>
+        <a class="page-link" *ngIf="pagina -1 != paginador.number" style="cursor: pointer;" (click)="cambiarpagina(pagina - 1)" >{{pagina}}</a>
+    </li>
+    <li [ngClass]="paginador.number == paginador.totalPages - 1?'disabled page-item':'page-item'">
+        <a style="cursor: pointer;" class="page-link" (click)="cambiarpagina(paginador.totalPages - 1)">Ultima</a>
+    </li>
+    <li class="page-item" *ngIf="paginador.number < paginador.totalPages - 1">
+        <a style="cursor: pointer;" class="page-link" (click)="cambiarpagina(paginador.number + 1)">&raquo;</a>
+    </li>    
+</ul>

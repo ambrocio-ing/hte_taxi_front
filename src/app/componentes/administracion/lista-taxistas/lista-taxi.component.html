@@ -33,7 +33,7 @@
                     <tr>
                         <td colspan="3"></td>
                         <td>
-                            <button (click)="listar()" class="btn btn-outline-primary">Refrescar</button>
+                            <button (click)="listar(0)" class="btn btn-outline-primary">Refrescar</button>
                         </td>
                     </tr>
                     <tr bgcolor="skyblue" class="text-center">
@@ -76,6 +76,9 @@
                     </tr>
                 </tbody>
             </table>
+            <div class="wrapper">
+                <app-taxistas-paginador [paginador]="paginador"></app-taxistas-paginador>
+            </div>
             <span style="color: red;" *ngIf="mensajeLista">{{mensajeLista}}</span>
         </div>
     </div>

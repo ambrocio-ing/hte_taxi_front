@@ -129,6 +129,18 @@ export class LoginService {
 
   } 
 
+  public setUsuario(jwtDto:JwtDto){
+    this._usuario = new JwtDto();    
+    this._usuario.id = jwtDto.id;
+    this._usuario.dni = jwtDto.dni;
+    this._usuario.nombre = jwtDto.nombre;
+    this._usuario.apellidos = jwtDto.apellidos;
+    this._usuario.fotoPerfil = jwtDto.fotoPerfil;    
+    this._usuario.email = jwtDto.email;  
+
+    sessionStorage.setItem("usuario", JSON.stringify(this._usuario));    
+  } 
+
   public refresToken(token:string){
     this._token = token;
     sessionStorage.setItem("token", this._token);

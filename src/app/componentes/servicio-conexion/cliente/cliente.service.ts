@@ -153,8 +153,30 @@ export class ClienteService {
     );
   }
 
+  public editarPerfil(id:any, imagen:File) : Observable<any> {
+
+    const formData = new FormData();
+    formData.append("id", id);
+    formData.append("imagen", imagen);
+
+    return this.http.post(this.url_protegido+"/imagen/editar", formData).pipe(
+      map(resp => resp),
+
+      catchError(e => {       
+        if(e.status == 404 || e.status == 500){
+          Swal.fire({
+            icon:'error',
+            title:'Operación fallida',
+            text:e.error.messaje
+          });
+        } 
+        return throwError(() => e);
+      })
+    );
+  }
+
   //ingreso libre ===================================
-  public clienteGuardar(cliente:Cliente, archivo:File):Observable<any>{
+  public clienteGuardar(cliente:Cliente, perfil:File, dni:File):Observable<any>{
     
     return this.http.post(this.url+"/clcrear", cliente).pipe(
 
@@ -162,9 +184,10 @@ export class ClienteService {
 
         let formData = new FormData();
         formData.append("idcliente", resp.idcliente);
-        formData.append("archivo", archivo);   
+        formData.append("archivo1", perfil);   
+        formData.append("archivo2", dni);
             
-        return this.http.post(`${this.url}/climagenes`,formData).pipe(
+        return this.http.post(`${this.url}/climagenes`, formData).pipe(
           map(res => {
             return res;
           })
@@ -187,6 +210,15 @@ export class ClienteService {
     );
 
   }  
+
+  public eliminarCliente(id:number) : Observable<any> {
+    return this.http.delete(this.url+"/cleliminar/"+id).pipe(
+      map(resp => resp),
+      catchError(e => {
+        return throwError(e);
+      })
+    );
+  }
   
 
 }

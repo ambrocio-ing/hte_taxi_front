@@ -35,6 +35,8 @@ import { VisualizacionImagenComponent } from './componentes/administracion/visua
 import { ChangePasswordComponent } from './componentes/sistema/change-password/change-password.component';
 import { TokenInterceptor } from './componentes/interceptor/token.interceptor';
 import { MapboxTaxiPendienteComponent } from './componentes/mapbox-model-taxi/mapbox-taxi-pendiente/mapbox-taxi-pendiente.component';
+import { TaxistasPaginadorComponent } from './componentes/administracion/taxistas-paginador/taxistas-paginador.component';
+import { CambioFotoPerfilComponent } from './componentes/sistema/cambio-foto-perfil/cambio-foto-perfil.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +67,7 @@ import { MapboxTaxiPendienteComponent } from './componentes/mapbox-model-taxi/ma
     ListaPagosComponent,
     ListaServiciosTaxiComponent,
     VisualizacionImagenComponent,    
-    ChangePasswordComponent, MapboxTaxiPendienteComponent
+    ChangePasswordComponent, MapboxTaxiPendienteComponent, TaxistasPaginadorComponent, CambioFotoPerfilComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,7 @@
 <div class="wrapper">
     <div class="cabecera">
-        <img *ngIf="!loginService.usuario?.fotoPerfil" src="../../../../assets/img/perfil.jpg" alt="">
-        <img *ngIf="loginService.usuario?.fotoPerfil"
+        <img (click)="editarPerfil()" *ngIf="!loginService.usuario?.fotoPerfil" src="../../../../assets/img/perfil.jpg" alt="">
+        <img (click)="editarPerfil()" *ngIf="loginService.usuario?.fotoPerfil"
             src="{{url_backend}}/obtener/imagen/{{loginService.usuario.fotoPerfil}}" alt="">
         <!-- Example split danger button <a (click)="irPerfil()"></a> -->
 
@@ -26,6 +26,10 @@
         </div>
     </div>
 </div>
+
+<app-cambio-foto-perfil *ngIf="visibleEditarPerfil" [visible]="visibleEditarPerfil" 
+    (cerrarModalPerfil)="visibleEditarPerfil = $event">
+</app-cambio-foto-perfil>
 
 <app-perfil *ngIf="estado_perfil" [estadoPerfil]="estado_perfil" (cerraPerfil)="estado_perfil = $event">
 </app-perfil>

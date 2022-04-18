@@ -45,8 +45,10 @@ export class RegistrarseComponent implements OnInit {
 
   //cliente
   foto_perfil!: File;
+  foto_dni!:File;
   validarImagen: boolean = true;
   foto_perfil_error: string = "";
+  foto_dni_error:string = "";
 
   //taxista
   foto_perfil_cliente!: File;
@@ -168,7 +170,7 @@ export class RegistrarseComponent implements OnInit {
   //cliente
   capturarFotoPerfil(event: any): void {
 
-    let archivo: File = event.target.files[0];
+    const archivo: File = event.target.files[0];
     if (archivo.type.indexOf('image') < 0) {
       this.validarImagen = true;
       this.foto_perfil_error = "El archivo no es una imagen";
@@ -179,6 +181,19 @@ export class RegistrarseComponent implements OnInit {
       this.foto_perfil = archivo;
     }
 
+  }
+
+  capturarFotoDni(event:any) : void {
+    const archivo:File = event.target.files[0];
+    if(archivo.type.indexOf('image') < 0){
+      this.validarImagen = true;
+      this.foto_dni_error = "El archivo no es una imagen";
+    }
+    else{
+      this.validarImagen = false;
+      this.foto_dni_error = "";
+      this.foto_dni = archivo;
+    }
   }
 
   //taxista
@@ -370,7 +385,7 @@ export class RegistrarseComponent implements OnInit {
     if (this.cliente != null) {
       this.cliente.usuario.email = this.cliente.persona.email;
       this.cliente.estado = "Activo";
-      this.cliService.clienteGuardar(this.cliente, this.foto_perfil).subscribe(resp => {
+      this.cliService.clienteGuardar(this.cliente, this.foto_perfil, this.foto_dni).subscribe(resp => {
 
         this.cliente = new Cliente();
         this.cliente.persona = new Persona();

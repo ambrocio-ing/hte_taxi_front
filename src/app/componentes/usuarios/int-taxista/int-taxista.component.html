@@ -1,6 +1,6 @@
 <div class="conductor">
-    <img class="img-perfil" *ngIf="!loginService.usuario?.fotoPerfil" src="../../../../assets/img/perfil.jpg" alt="">
-    <img class="img-perfil" *ngIf="loginService.usuario?.fotoPerfil"
+    <img (click)="editarPerfil()" class="img-perfil" *ngIf="!loginService.usuario?.fotoPerfil" src="../../../../assets/img/perfil.jpg" alt="">
+    <img (click)="editarPerfil()" class="img-perfil" *ngIf="loginService.usuario?.fotoPerfil"
         src="{{url_backend}}/obtener/imagen/{{loginService.usuario.fotoPerfil}}" alt="">
     <!--<h4 (click)="irPerfil2()">Usuario: - 28192813</h4>-->
     <div class="btn-group">
@@ -22,6 +22,11 @@
         </ul>
     </div>
 </div>
+
+<app-cambio-foto-perfil *ngIf="visibleEditarPerfil" [visible]="visibleEditarPerfil" 
+    (cerrarModalPerfil)="visibleEditarPerfil = $event">
+</app-cambio-foto-perfil>
+
 <div class="wrapper">
     <h2  style="text-transform: uppercase; font-family: Times New Roman, Times, serif;">Solicitudes pendientes</h2></div>
     <div class="wrapper">

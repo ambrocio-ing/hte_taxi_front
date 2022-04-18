@@ -96,6 +96,8 @@ export class IntUsuarioComponent implements OnInit {
   estadoRe: boolean = false;
   posicion: any = null;
 
+  visibleEditarPerfil:boolean = false;
+
   constructor(private router: Router, public loginService: LoginService,
     private mapboxService: MapboxserviceService, public vigilante: Vigilante2Service,
     private renderer: Renderer2, private cliService: ClienteService) {
@@ -585,7 +587,7 @@ export class IntUsuarioComponent implements OnInit {
           this.client.publish({ destination: "/app/stcrear", body: JSON.stringify(this.smservicioTaxiPedido1) });
 
           this.vigilante.guardarPedido(1, "Cancelado");
-          this.renovar1();
+          this.renovar1(); 
         }
         else {
 
@@ -1932,6 +1934,10 @@ export class IntUsuarioComponent implements OnInit {
     else {
       return false;
     }
+  }
+
+  editarPerfil() : void {
+    this.visibleEditarPerfil = true;
   }
 
 }

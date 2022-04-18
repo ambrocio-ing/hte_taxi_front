@@ -31,7 +31,14 @@ export class MapboxTaxiPendienteComponent implements OnInit {
         this.smservicioTaxi.ubicacion.origen_lat        
       ];
 
-      this.mapboxService.construirMapaPendiente(coordenadas)
+      const coor:number[] = [
+        this.smservicioTaxi.ubicacion.origen_lng,
+        this.smservicioTaxi.ubicacion.origen_lat,  
+        this.smservicioTaxi.ubicacion.destino_lng,
+        this.smservicioTaxi.ubicacion.destino_lat
+      ];
+
+      this.mapboxService.construirMapaPendiente(coordenadas, coor)
       .then((map) => {
         
         //console.log('******TODO BIEN');

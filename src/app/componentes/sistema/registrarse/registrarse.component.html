@@ -166,8 +166,7 @@
         </div>
 
         <div class="form-group">
-            <label for="fotoPerfil">Foto de Perfil(Puede actualizar luego):</label>
-            <!--<input type="hidden" name="fotoPerfil" [(ngModel)]="cliente.persona.fotoPerfil">-->
+            <label for="fotoPerfil">Foto de Perfil:</label>            
             <input type="file" (change)="capturarFotoPerfil($event)" class="form-control">
             <span *ngIf="foto_perfil_error">
                 {{foto_perfil_error}}
@@ -175,8 +174,11 @@
         </div>
 
         <div class="form-group">
-            <!--Foto del documento no necesario-->
-            <input type="hidden" name="fotoDni" [(ngModel)]="cliente.persona.fotoDni" class="form-control">
+            <label for="fotoDni">Foto del DNI:</label>            
+            <input type="file" (change)="capturarFotoDni($event)" class="form-control">
+            <span *ngIf="dniError">
+                {{dniError}}
+            </span>
         </div>
 
         <div class="from-group">
@@ -392,7 +394,13 @@
 
             <div class="form-group">
                 <label for="direccion">Direccion:</label>
-                <input type="text" name="direccion" [(ngModel)]="taxista.persona.direccion" class="form-control">
+                <input type="text" name="direccion" [(ngModel)]="taxista.persona.direccion" required 
+                    #asDireccion="ngModel" class="form-control">
+                <div *ngIf="asDireccion.invalid && asDireccion.touched">
+                    <div *ngIf="asDireccion.errors?.['required']">
+                        <span>Campo requerido</span>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">

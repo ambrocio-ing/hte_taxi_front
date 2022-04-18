@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
@@ -18,11 +18,18 @@ export class TaxistaService {
   private url_protegido: string = URL_BACKEND + "/ptaxista";
   private url_protegido2: string = URL_BACKEND + "/st";  
 
+  cbPaginar:EventEmitter<number> = new EventEmitter();
+
   constructor(private http: HttpClient) { }
  
 
-  public taxistaLista(): Observable<Taxista[]> {
-    return this.http.get<Taxista[]>(this.url_protegido + "/talista").pipe(
+  public taxistaLista(page:number): Observable<any> {
+    return this.http.get(this.url_protegido + "/tapaginar/"+page).pipe(
+      map((resp:any) => {
+        resp.content as Taxista[];
+        return resp;
+      }),
+
       catchError(e => {
         return throwError(() => e)
       })    
@@ -30,18 +37,27 @@ export class TaxistaService {
     );
   }
 
-  public buscarPorDni(dni:string): Observable<Taxista[]> {
+  public buscarPorDni(dni:string, page:number): Observable<any> {
 
-    return this.http.get<Taxista[]>(this.url_protegido + "/bdni/"+dni).pipe(
+    return this.http.get(this.url_protegido + "/bdni/"+dni+"/"+page).pipe(
+      map((resp:any) => {
+        resp.content as Taxista[];
+        return resp;
+      }),
+
       catchError(e => {
         return throwError(() => e)
       })      
     );
   }
 
-  public buscarPorNombres(nombres:string): Observable<Taxista[]> {
+  public buscarPorNombres(nombres:string, page:number): Observable<any> {
 
-    return this.http.get<Taxista[]>(this.url_protegido + "/bnombre/"+nombres).pipe(
+    return this.http.get(this.url_protegido + "/bnombre/"+nombres+"/"+page).pipe(
+      map((resp:any) => {
+        resp.content as Taxista[];
+        return resp;
+      }),
       catchError(e => {       
 
         return throwError(() => e)
@@ -116,6 +132,28 @@ export class TaxistaService {
   public buscarSmsPorFecha(id:number, fecha:string): Observable<SMServicioTaxi[]> {
     return this.http.get<SMServicioTaxi[]>(this.url_protegido2+"/buscar/"+id+"/"+fecha).pipe(
       catchError(e => {
+        return throwError(() => e);
+      })
+    );
+  }
+
+  public editarPerfil(id:any, imagen:File) : Observable<any> {
+
+    const formData = new FormData();
+    formData.append("id", id);
+    formData.append("imagen", imagen);
+
+    return this.http.post(this.url_protegido+"/imagen/editar", formData).pipe(
+      map(resp => resp),
+
+      catchError(e => {       
+        if(e.status == 404 || e.status == 500){
+          Swal.fire({
+            icon:'error',
+            title:'Operación fallida',
+            text:e.error.messaje
+          });
+        } 
         return throwError(() => e);
       })
     );

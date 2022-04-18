@@ -25,18 +25,25 @@ export class ListaTaxiComponent implements OnInit {
   mostrarHistorial:boolean = false;
   mostrarPagos:boolean = false;
 
+  paginador:any = {};
+
   constructor(private taxistaService:TaxistaService) { }
 
   ngOnInit(): void {
     this.data.nombres="";
     this.data.dni = "";
-    this.listar();
+    this.listar(0);
+
+    this.taxistaService.cbPaginar.subscribe(resp => {
+      this.listar(resp);
+    });
 
   }
 
-  listar(){
-    this.taxistaService.taxistaLista().subscribe(resp => {
-      this.taxistas = resp;
+  listar(page:number){
+    this.taxistaService.taxistaLista(page).subscribe(resp => {
+      this.taxistas = resp.content;
+      this.paginador = resp;
       this.mensajeLista = "";
     }, err => {
       this.mensajeLista = "Sin datos que mostrar";
@@ -46,16 +53,18 @@ export class ListaTaxiComponent implements OnInit {
   buscar() : void {
     if(this.data.nombres.length != 0){
       this.data.nombres = this.data.nombres.replaceAll(' ','');
-      this.taxistaService.buscarPorNombres(this.data.nombres).subscribe(resp => {
-        this.taxistas = resp;
+      this.taxistaService.buscarPorNombres(this.data.nombres, 0).subscribe(resp => {
+        this.taxistas = resp.content;
+        this.paginador = resp;
         this.mensajeLista = "";
       }, err => {
         this.mensajeLista = "Sin datos que mostrar";
       });
     }
     else if(this.data.dni.length != 0){
-      this.taxistaService.buscarPorDni(this.data.dni).subscribe(resp => {
-        this.taxistas = resp;
+      this.taxistaService.buscarPorDni(this.data.dni, 0).subscribe(resp => {
+        this.taxistas = resp.content;
+        this.paginador = resp;
         this.mensajeLista = "";
       }, err => {
         this.mensajeLista = "Sin datos que mostrar";

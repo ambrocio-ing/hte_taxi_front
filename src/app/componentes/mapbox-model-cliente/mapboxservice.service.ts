@@ -356,7 +356,7 @@ export class MapboxserviceService {
 
   }
 
-  construirMapaPendiente(coordenadas:number[]): Promise<any> {
+  construirMapaPendiente(coordenadas:number[], coor:number[]): Promise<any> {
 
     return new Promise((resolve, reject) => {
 
@@ -371,8 +371,11 @@ export class MapboxserviceService {
 
         this.map.on('load', () => {
           this.dibujarRutaPenidente(coordenadas);
-          this.agregar_Marcador1(coordenadas);
-          this.agregar_Marcador2(coordenadas); 
+          this.agregar_Marcador3(coordenadas); 
+
+          this.dibujar_Ruta(coor);         
+          this.agregar_Marcador1(coor);
+          this.agregar_Marcador2(coor);           
         });      
          
         resolve({
@@ -425,14 +428,13 @@ export class MapboxserviceService {
             'line-cap': 'round'
           },
           paint: {
-            'line-color': 'red',
+            'line-color': 'green',
             'line-width': 5
           }
 
         });
 
         this.map.fitBounds([rouute[0], rouute[rouute.length - 1]], { padding: 100 });
-
 
       });
 
@@ -460,7 +462,7 @@ export class MapboxserviceService {
 
     const popup1 = new mapboxgl.Popup().setHTML(`    
       
-      <span>Punto de origen</span>
+      <span>Punto de origen del pasajero</span>
 
     `);
 
@@ -477,12 +479,27 @@ export class MapboxserviceService {
 
     const popup2 = new mapboxgl.Popup().setHTML(`    
       
-      <span>Punto destino</span>
+      <span>Punto destino del pasajero</span>
 
     `);
 
     const marker2 = new mapboxgl.Marker({ color: 'blue' });
     marker2.setLngLat([coords[2], coords[3]]).setPopup(popup2).addTo(this.map);
+
+  }
+
+  agregar_Marcador3(coords: number[]): void {
+
+    //console.log('*********CREANDO MARCADOR', marker);
+
+    const popup2 = new mapboxgl.Popup().setHTML(`    
+      
+      <span>Tu posición</span>
+
+    `);
+
+    const marker2 = new mapboxgl.Marker({ color: 'green' });
+    marker2.setLngLat([coords[0], coords[1]]).setPopup(popup2).addTo(this.map);
 
   }
 
