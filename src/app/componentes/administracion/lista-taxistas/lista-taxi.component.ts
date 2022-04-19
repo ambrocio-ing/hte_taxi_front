@@ -18,6 +18,9 @@ export class ListaTaxiComponent implements OnInit {
   taxistas:Taxista[] = [];
   mensajeLista!:string;
 
+  busquedas:Taxista[] = [];
+  mensajeBusqueda!:string;
+
   estadoDetalle:boolean = false;
   taxistaSeleccionado:Taxista = new Taxista();
 
@@ -50,24 +53,26 @@ export class ListaTaxiComponent implements OnInit {
     });
   } 
 
+  limpiarBusqueda() : void {
+    this.busquedas.length = 0;
+  }
+
   buscar() : void {
     if(this.data.nombres.length != 0){
       this.data.nombres = this.data.nombres.replaceAll(' ','');
-      this.taxistaService.buscarPorNombres(this.data.nombres, 0).subscribe(resp => {
-        this.taxistas = resp.content;
-        this.paginador = resp;
-        this.mensajeLista = "";
+      this.taxistaService.buscarPorNombres(this.data.nombres).subscribe(resp => {
+        this.busquedas = resp;
+        this.mensajeBusqueda = "";
       }, err => {
-        this.mensajeLista = "Sin datos que mostrar";
+        this.mensajeBusqueda = "Sin datos que mostrar";
       });
     }
     else if(this.data.dni.length != 0){
-      this.taxistaService.buscarPorDni(this.data.dni, 0).subscribe(resp => {
-        this.taxistas = resp.content;
-        this.paginador = resp;
-        this.mensajeLista = "";
+      this.taxistaService.buscarPorDni(this.data.dni).subscribe(resp => {
+        this.busquedas = resp;
+        this.mensajeBusqueda = "";
       }, err => {
-        this.mensajeLista = "Sin datos que mostrar";
+        this.mensajeBusqueda = "Sin datos que mostrar";
       });
     }
     else{

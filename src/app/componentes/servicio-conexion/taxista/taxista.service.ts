@@ -37,12 +37,11 @@ export class TaxistaService {
     );
   }
 
-  public buscarPorDni(dni:string, page:number): Observable<any> {
+  public buscarPorDni(dni:string): Observable<any> {
 
-    return this.http.get(this.url_protegido + "/bdni/"+dni+"/"+page).pipe(
-      map((resp:any) => {
-        resp.content as Taxista[];
-        return resp;
+    return this.http.get(this.url_protegido + "/bdni/"+dni).pipe(
+      map((resp:any) => {        
+        return resp as Taxista[];
       }),
 
       catchError(e => {
@@ -51,12 +50,12 @@ export class TaxistaService {
     );
   }
 
-  public buscarPorNombres(nombres:string, page:number): Observable<any> {
+  public buscarPorNombres(nombres:string): Observable<Taxista[]> {
 
-    return this.http.get(this.url_protegido + "/bnombre/"+nombres+"/"+page).pipe(
+    return this.http.get(this.url_protegido + "/bnombre/"+nombres).pipe(
       map((resp:any) => {
-        resp.content as Taxista[];
-        return resp;
+        
+        return resp as Taxista[];
       }),
       catchError(e => {       
 

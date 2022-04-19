@@ -13,6 +13,74 @@
 <div class="wrapper">
     <div class="contenedor">
         <div class="row">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>Buscar</td>
+                        <td>
+                            <input type="text" name="nombres" (keyup)="limpiar()" [(ngModel)]="data.nombres"
+                                placeholder="Ingrese nombres">
+                        </td>
+                        <td>
+                            <input type="text" name="dni" (keyup)="limpiar2()" [(ngModel)]="data.dni" 
+                                placeholder="Ingrese documento">
+                        </td>
+                        <td>
+                            <button (click)="buscar()" class="btn btn-outline-success">Buscar</button>
+                        </td>
+                    </tr>  
+                    <tr>
+                        <td colspan="3"></td>
+                        <td>
+                            <button (click)="limpiarBusqueda()" class="btn btn-outline-primary">Limpiar</button>
+                        </td>
+                    </tr>                  
+                    <tr bgcolor="skyblue" class="text-center">
+                        <th scope="col">Foto</th>
+                        <th scope="col">Datos</th>
+                        <th scope="col">Detalles</th>                       
+                        <th scope="col">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let taxista of busquedas">
+                        <td>
+                            <img class="perfil" src="{{url_backend}}/obtener/imagen/{{taxista.persona.fotoPerfil}}" alt="">
+                        </td>
+                        <td>
+                            {{taxista.persona.nombre}}, {{taxista.persona.apellidos}}
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <a style="cursor: pointer; color: blue;" (click)="historialPagos(taxista)">Historial de pagos</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a style="cursor: pointer; color: blue;" (click)="historialTaxis(taxista)">Historial de servicios</a>
+                                    </td>
+                                </tr>
+                            </table>                            
+                        </td>
+                        <td>
+                            <a (click)="ver(taxista)" class="aaccion" style="margin-left: 10px;">
+                                <img class="img-ver" src="../../../../assets/img/ver.png" alt="">
+                            </a>
+                            <a (click)="suspender(taxista)" class="aaccion">
+                                <img class="img-accion" src="../../../../assets/img/eliminar.png" alt="">
+                            </a>
+                            <a (click)="activar(taxista)" class="aaccion">
+                                <img class="img-accion" src="../../../../assets/img/aceptar.png" alt="">
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <span style="color: red;" *ngIf="mensajeBusqueda">{{mensajeBusqueda}}</span>
+        </div>
+        <div class="row mt-3">
             <h5>Lista de taxistas</h5>
             <table class="table table-striped">
                 <thead>
