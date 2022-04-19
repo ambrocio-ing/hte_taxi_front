@@ -64,11 +64,11 @@ export class MapboxModelTaxistaComponent implements OnInit {
         this.mapboxService.agregar_Marcador2(coordenadas);*/
 
       }).catch(err => {
-        console.log('********ERROR********', err);
+        
       });      
 
     }).catch(err => {
-      console.log('********ERROR********', err);
+      
     });    
 
     this.mapboxService.cbDatos.subscribe((getPoint) => {

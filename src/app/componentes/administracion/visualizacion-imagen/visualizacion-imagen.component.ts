@@ -8,10 +8,13 @@ import { URL_BACKEND } from '../../sistema/config/config';
 })
 export class VisualizacionImagenComponent implements OnInit {
 
-  url_backend:string = URL_BACKEND+"/cliente";
+  url_reclamo:string = URL_BACKEND+"/cliente";
+  url_pago :string = URL_BACKEND+"/taxista";
   @Input() nombre!:string;
   @Input() mostrar!:boolean;
   @Output() cerrar : EventEmitter<boolean> = new EventEmitter();
+
+  @Input() tipo!:string;
 
   constructor() { }
 

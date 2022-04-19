@@ -75,28 +75,34 @@
 <div *ngIf="conectado && loginService.isDisponible()">
     <div class="wrapper">
         <div style="width: 373px;">
-        <table class="table table-hover">
+        <table class="table table-hover" style="align-items: center;" >
+            <tr style="width: 100%;" >
+                <th></th>
+                <th>Conductores</th>
+                <th>Estrellas</th>
+                <th>Vehiculo</th>
+                <th>Accion</th>
+            </tr>
             <!--Taxista 1-->
-            <tr *ngIf="smservicioTaxiPedido1.taxista?.idtaxista">
+            <tr style="width: 100%;" *ngIf="smservicioTaxiPedido1?.taxista?.idtaxista">
                 <td>
                     <img class="img-perfil" *ngIf="!smservicioTaxiPedido1.taxista?.fotoPerfil"
                         src="../../../../assets/img/perfil.jpg" alt="">
                     <img class="img-perfil" *ngIf="smservicioTaxiPedido1.taxista?.fotoPerfil"
-                        src="{{url_backend_taxista}}/{{smservicioTaxiPedido1.taxista.fotoPerfil}}" alt="">
-                </td>
+                        src="{{url_backend_taxista}}/{{smservicioTaxiPedido1.taxista.fotoPerfil}}" alt=""></td>
                 <td>
                     {{smservicioTaxiPedido1.taxista.nombre}}, {{smservicioTaxiPedido1.taxista.apellidos}}
                 </td>
+                
                 <td>
-                    {{smservicioTaxiPedido1.taxista.calificacion.promedio}} es
+                    {{smservicioTaxiPedido1.taxista.calificacion.promedio}} <span style="color: red;">★</span>
                 </td>
-                <td>
+                <td style="display: inline-table;">
                     <button class="btn btn-outline-danger" (click)="verDetalle(smservicioTaxiPedido1.taxista)">
                         Detalle
                     </button>
                 </td>
-                <td>
-                    <button *ngIf="estadoSolicitar1" class="btn btn-outline-primary"
+                <td>                    <button *ngIf="estadoSolicitar1" class="btn btn-outline-primary"
                         (click)="enviarPedido1()">Solicitar</button>
                     <button *ngIf="!estadoSolicitar1" class="btn btn-outline-danger"
                         (click)="cancelarPedido1()">Cancelar</button>
@@ -141,7 +147,7 @@
                     {{smservicioTaxiPedido2.taxista.nombre}}, {{smservicioTaxiPedido2.taxista.apellidos}}
                 </td>
                 <td>
-                    {{smservicioTaxiPedido2.taxista.calificacion.promedio}} es
+                    {{smservicioTaxiPedido2.taxista.calificacion.promedio}} <span style="color: red;">★</span>
                 </td>
                 <td>
                     <button class="btn btn-outline-danger"
@@ -193,7 +199,7 @@
                     {{smservicioTaxiPedido3.taxista.nombre}}, {{smservicioTaxiPedido3.taxista.apellidos}}
                 </td>
                 <td>
-                    {{smservicioTaxiPedido3.taxista.calificacion.promedio}} es
+                    {{smservicioTaxiPedido3.taxista.calificacion.promedio}} <span style="color: red;">★</span>
                 </td>
                 <td>
                     <button class="btn btn-outline-danger"
@@ -244,7 +250,7 @@
                     {{smservicioTaxiPedido4.taxista.nombre}}, {{smservicioTaxiPedido4.taxista.apellidos}}
                 </td>
                 <td>
-                    {{smservicioTaxiPedido4.taxista.calificacion.promedio}} es
+                    {{smservicioTaxiPedido4.taxista.calificacion.promedio}} <span style="color: red;">★</span>
                 </td>
                 <td>
                     <button class="btn btn-outline-danger"
@@ -296,7 +302,7 @@
                     {{smservicioTaxiPedido5.taxista.nombre}}, {{smservicioTaxiPedido5.taxista.apellidos}}
                 </td>
                 <td>
-                    {{smservicioTaxiPedido5.taxista.calificacion.promedio}} es
+                    {{smservicioTaxiPedido5.taxista.calificacion.promedio}} <span style="color: red;">★</span>
                 </td>
                 <td>
                     <button class="btn btn-outline-danger"
@@ -342,41 +348,42 @@
 
 </div>
 
-<div class="wrapper" *ngFor="let servicios of smservicioTaxis">
+<div class="wrapper" *ngIf="smservicioTaxienproceso?.idstaxi">
     <div style="width: 373px;">
-    <h3 *ngIf="servicios.estado == 'Iniciado'" style="text-align: center; text-transform: uppercase; font-family: Times New Roman, Times, serif; ;">Solicitud actual en proceso</h3>
-    
-    <table *ngIf="servicios.estado == 'Iniciado'" style="width: 98%;" class="table table-striped">
+    <h3 style="text-align: center; text-transform: uppercase; font-family: Times New Roman, Times, serif; ;">Solicitud actual en proceso</h3>
+    <span  style="text-align: center; color: red;text-transform: none; font-family: 'Times New Roman', Times, serif; ">Servicio en proceso (para realizar nuevas solicitudes finalice el servicio actual).</span>
+    <table style="width: 98%;" class="table table-striped">
         <tr style="text-align: center">
             <th>Detalle</th>
 
             <th>Estado</th>
             <th>Acción</th>
         </tr>
-        <tr *ngIf="servicios.estado == 'Iniciado'" style="text-align: center">
+        <tr style="text-align: center">
 
 
             <td style="text-align: left">
                 <tr style="border: none;">
-                <span style="font-weight: bold;">Origen y referencia: </span> {{servicios.ubicacion.origen}}</tr>
+                <span style="font-weight: bold;">Origen y referencia: </span> {{smservicioTaxienproceso.ubicacion.origen}}</tr>
                 <tr style="border: none;">
-                <span style="font-weight: bold;">Destino y referencia: </span> {{servicios.ubicacion.destino}}
+                <span style="font-weight: bold;">Destino y referencia: </span> {{smservicioTaxienproceso.ubicacion.destino}}
             </tr>
         </td>
             <td style="text-align: center">
-                <tr style="border: none;">-{{servicios.estado}}-</tr>
+                <tr style="border: none;">-{{smservicioTaxienproceso.estado}}-</tr>
                 <tr style="border: none;"><span style="color: blue;">El conductor llegará aproximadamente en:</span>
-                {{servicios.ubicacion.tiempofinal}}</tr>
+                {{smservicioTaxienproceso.ubicacion.tiempofinal}}</tr>
             </td>
             <td style="text-align: center">
-                <button (click)="ver(servicios)" class="btn btn-outline-primary">Ver</button>
+                <button (click)="ver(smservicioTaxienproceso)" class="btn btn-outline-primary">Ver</button>
            
-                <button (click)="cancelar(servicios)" class="btn btn-outline-danger"
+                <button (click)="cancelar(smservicioTaxienproceso)" class="btn btn-outline-danger"
                     style="color: red;">Cancelar</button>
             </td>
         </tr>
     </table>
-    <span *ngIf="servicios.estado == 'Iniciado'" style="text-align: center; color: red;text-transform: none; font-family: 'Times New Roman', Times, serif; ">Servicio en proceso (para realizar nuevas solicitudes finalice el servicio actual).</span>
+    
+    <span style=" color: rgb(0, 0, 0);text-transform: none; font-family: 'Times New Roman', Times, serif; ">Puede reportar algun incidente mediante nuestra plataforma, revisaremos el caso. <span style="color: red; text-transform: uppercase;">En casos de emergencia llamar al 911.</span></span>
 </div>
 </div>
 
@@ -384,14 +391,15 @@
 <div class="wrapper">
     <div>
         
-        <table class="table table-striped" class="table table-striped">
-            <tr style="text-align: center">
+        <table class="table table-striped" class="table table-striped" *ngIf="smservicioTaxis.length > 0"
+            >
+            <tr  style="text-align: center">
                 <th>Detalle</th>
                 <th>Día</th>
                 <th>Estado</th>
                 <th>Acción</th>
             </tr>
-            <tr *ngFor="let servicios of smservicioTaxis" style="text-align: center" >
+            <tr *ngFor="let servicios of smservicioTaxis"  style="text-align: center" >
                 <td style="text-align: left">
                     <tr style="border: none;">
                     <span style="font-weight: bold;">Origen y referencia:</span> {{servicios.ubicacion.origen}}

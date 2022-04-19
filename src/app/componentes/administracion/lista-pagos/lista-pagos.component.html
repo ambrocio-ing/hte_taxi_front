@@ -1,3 +1,7 @@
+<app-visualizacion-imagen *ngIf="nombreImagen && mostrarImagen" [mostrar]="mostrarImagen" [tipo]="tipo"
+    [nombre]="nombreImagen" (cerrar)="mostrarImagen = $event">
+</app-visualizacion-imagen>
+
 <div class="stilo-modal" *ngIf="estado_modal">
     <div class="wrapper">
         <div class="contenedor">
@@ -35,7 +39,7 @@
                                     <tr>
                                         <td *ngIf="!pago?.comprobante">{{pago.idpago}}</td>
                                         <td *ngIf="pago?.comprobante">
-                                            <img style="width: 100px; height: 100px;" src="{{url_backend}}/pago/imagen/{{pago.comprobante}}" alt="">
+                                            <img (click)="mostrarImg(pago.comprobante)" style="width: 50px; height: 50px; object-fit: cover;" src="{{url_backend}}/pago/imagen/{{pago.comprobante}}" alt="">
                                         </td>
                                     </tr>
                                 </table>

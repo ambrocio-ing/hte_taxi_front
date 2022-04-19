@@ -13,10 +13,10 @@ html, body { height: 100%; width: 100%; margin: 0; }
 }
 
 .marker-blue {
-    width: 15px;
-    height: 15px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-    background-color: blue;
+    background-color: rgb(9, 9, 9);
     /*background-image: url("./assets/img/ubicacion.png");*/
     background-size: contain;
     background-repeat: no-repeat;

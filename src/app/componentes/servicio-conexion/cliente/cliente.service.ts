@@ -106,10 +106,12 @@ export class ClienteService {
   }
 
   public editarEstado(cliente:Cliente) : Observable<any> {
+    
     return this.http.post(this.url_protegido+"/editar/estado", cliente).pipe(
       map(resp => resp),
 
-      catchError(e => {       
+      catchError(e => {   
+           
         if(e.status == 404 || e.status == 500){
           Swal.fire({
             icon:'error',

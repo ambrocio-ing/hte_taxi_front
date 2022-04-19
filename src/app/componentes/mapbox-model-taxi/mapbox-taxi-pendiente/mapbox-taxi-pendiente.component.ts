@@ -44,16 +44,16 @@ export class MapboxTaxiPendienteComponent implements OnInit {
         //console.log('******TODO BIEN');
 
       }).catch(err => {
-        console.log('********ERROR********', err);
+        
       });
 
       this.posicion = setInterval(()=>{
-        console.log('PONIENDO MARCADAR');
+        
         this.mapboxService.marcadorEnTimepoReal();
       }, 2000);
 
     }).catch(err => {
-      console.log('********ERROR********', err);
+      
     });    
     
   }      

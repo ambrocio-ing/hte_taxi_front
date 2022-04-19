@@ -2,7 +2,8 @@
     <div class="wrapper">
         <div class="row">
             <span (click)="cerrarModal()">X</span>
-            <img src="{{url_backend}}/reclamo/imagen/{{nombre}}" alt="">
+            <img *ngIf="tipo=='pago'" src="{{url_pago}}/pago/imagen/{{nombre}}" alt="">
+            <img *ngIf="tipo=='reclamo'" src="{{url_reclamo}}/reclamo/imagen/{{nombre}}" alt="">
         </div>
     </div>
 </div>

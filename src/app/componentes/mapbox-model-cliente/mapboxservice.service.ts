@@ -158,7 +158,7 @@ export class MapboxserviceService {
   }
 
   validarDistancia(coords: number[]): Observable<number[]> {
-    //console.log('**********COORDENADAS', coords);
+    
     const url = [
       `https://api.mapbox.com/directions/v5/mapbox/driving/`,
       `${coords[0]},${coords[1]};${coords[2]},${coords[3]}`,
@@ -406,7 +406,7 @@ export class MapboxserviceService {
 
         const rouute = data.geometry.coordinates;
 
-        this.map.addSource('route', {
+        this.map.addSource('routee', {
           type: 'geojson',
           data: {
             type: 'Feature',
@@ -420,9 +420,9 @@ export class MapboxserviceService {
         });
 
         this.map.addLayer({
-          id: 'route',
+          id: 'routee',
           type: 'line',
-          source: 'route',
+          source: 'routee',
           layout: {
             'line-join': 'round',
             'line-cap': 'round'

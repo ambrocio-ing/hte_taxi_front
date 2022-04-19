@@ -1,25 +1,37 @@
 <div class="stilo-modal" *ngIf="visible">
     <div class="wrapper">
         <div class="contenedor">
-            <div class="row">
-                <span (click)="cerrarModal()" style="margin-left: 90%; font-weight: bold; font-size: 25px; color: red;" >X</span>
+
+            <div class="row2">
+
+                <span (click)="cerrarModal()"
+                    style="margin-left: 90%; font-weight: bold; font-size: 25px; color: red;">X</span>
+
             </div>
             <div class="row">
-                <ul class="list-group">
-                    <li class="list-group-item active">
-                        <img *ngIf="tipo == 'cliente'" src="{{url_backend_cliente}}/obtener/imagen/{{loginService.usuario.fotoPerfil}}" style="width: 200px; height: 200px;" alt="">
-                        <img *ngIf="tipo == 'taxista'" src="{{url_backend_taxista}}/obtener/imagen/{{loginService.usuario.fotoPerfil}}" style="width: 200px; height: 200px;" alt="">
-                    </li>
-                    <li class="list-group-item active">
-                        <input type="file" (change)="capturarImagen($event)" class="form-control">
-                        <span *ngIf="erroImagen">{{erroImagen}}</span>
-                    </li>
-                    <li class="list-group-item active">
-                        <button (click)="guardar()" class="btn btn-outline-primary form-control">Guardar nueva imagen</button>
-                    </li>
-                   
-                </ul>
-            </div>            
+                <div class="wrapper">
+                    <ul class="list-group">
+                        <li class="list-group-item active">
+                            <img *ngIf="tipo == 'cliente'"
+                                src="{{url_backend_cliente}}/obtener/imagen/{{loginService.usuario.fotoPerfil}}"
+                                style="width: 100%; object-fit: cover; height: 100%;" alt="">
+                            <img *ngIf="tipo == 'taxista'"
+                                src="{{url_backend_taxista}}/obtener/imagen/{{loginService.usuario.fotoPerfil}}"
+                                style="width: 100%; object-fit: cover; height: 100%;" alt="">
+                        </li>
+                        <li class="list-group-item active">
+                            <input type="file" (change)="capturarImagen($event)" class="form-control">
+                            <span *ngIf="erroImagen">{{erroImagen}}</span>
+                        </li>
+                        <li class="list-group-item active">
+                            <button (click)="guardar()" >Guardar nueva
+                                imagen</button>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

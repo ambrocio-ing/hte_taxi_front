@@ -10,14 +10,39 @@
 }
 
 .wrapper{
-    padding: .5rem;
+    padding: 2.5rem;
     display: flex;
     justify-content: center;
 }
 
 .contenedor{
-    width: 90%;
-    height: 400px;
-    margin-top: 50px;
+    width: 370px;
+    height: 500px;
+    margin-right: 0.5rem;
     background-color: white;
 }
+.contenedor .row2
+{
+    width: 373px;
+    padding: 0.5rem;
+}
+button{
+    width: 100%;
+    background-color: red;
+    color: white;
+    padding: 14px 20px;
+    margin: 2px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  button:hover{
+    width: 100%;
+    background-color: rgba(58, 180, 39, 0.715);
+    color: white;
+    padding: 14px 20px;
+    margin: 2px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }

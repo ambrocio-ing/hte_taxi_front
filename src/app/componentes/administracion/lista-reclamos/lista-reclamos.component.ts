@@ -16,7 +16,7 @@ export class ListaReclamosComponent implements OnInit {
 
   reclamos:Reclamo[] = [];
   mensajeLista!:string;
-
+tipo:string="reclamo";
   nombreImagen!:string;
   mostrarImagen:boolean = false;
 

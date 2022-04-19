@@ -1,16 +1,17 @@
 <div class="wrapper">
     <div class="cabecera">
+        <div class="wrapper">
         <img  *ngIf="reclamoCliente" (click)="solicitar()" class="img-flecha" src="../../../../assets/img/flecha.png" alt="">
         <img *ngIf="reclamoTaxista" (click)="versolicitudes()" class="img-flecha" src="../../../../assets/img/flecha.png" alt="">
         <img class="img-perfil" *ngIf="!loginService.usuario?.fotoPerfil" src="../../../../assets/img/perfil.jpg" alt="">
-        
+   
         <img class="img-perfil" *ngIf="loginService.usuario?.fotoPerfil && reclamoCliente"
             src="{{url_cliente}}/obtener/imagen/{{loginService.usuario.fotoPerfil}}" alt="">
 
         <img class="img-perfil" *ngIf="loginService.usuario?.fotoPerfil && reclamoTaxista"
             src="{{url_taxista}}/obtener/imagen/{{loginService.usuario.fotoPerfil}}" alt="">
         <!-- Example split danger button <a (click)="irPerfil()"></a> -->
-
+    </div>
         <div class="btn-group">
             <button type="button" class="btn btn-danger">{{nombreUsuario}}</button>
             <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
@@ -49,7 +50,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="descripcion">Fundamento</label>
+                    <label for="descripcion">Describe el incidente: </label>
                     <textarea rows="5" name="descripcion" [(ngModel)]="reclamo.descripcion" required="true"
                         maxlength="255" #asDescripcion="ngModel" class="form-control"></textarea>
                     <div *ngIf="asDescripcion.invalid && (asDescripcion.touched || asDescripcion.dirty)">
@@ -66,9 +67,12 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="">Adjuntar Evidencia</label>
+                    <label for="">Adjuntar Evidencia:</label>
+                    <div class="form-group">
                     <input type="checkbox" style="width: 15px; height: 15px;" (change)="capturarEstado($event)">
+                  
                     <span>Activar o desactivar</span>
+                    </div>
                 </div>
                 <div class="form-group" *ngIf="isCheket">
                     <label for="evidencia">Evidencia(Imagen)</label>

@@ -153,8 +153,8 @@ export class ReclamoComponent implements OnInit {
   }
 
   capturarImagen(event:any) : void {
-    const imagen = event.target.files[0];
-    if(imagen.indexOf('image') < 0){
+    const imagen:File = event.target.files[0];
+    if(imagen.type.indexOf('image') < 0){
       this.mensajeImagen = "No es una imagen";
       this.esImagen = false;
     }

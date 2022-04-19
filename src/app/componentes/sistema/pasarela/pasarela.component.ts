@@ -245,8 +245,8 @@ export class PasarelaComponent implements OnInit {
     if (this.culqi.card != null) {
       this.mensajencard = "";
       this.get_token_culqi();
-      console.log('************CULQI',this.culqi);
-      console.log('********PAGO',this.pago);
+      //console.log('************CULQI',this.culqi);
+      //console.log('********PAGO',this.pago);
     }
     else {
       this.mensajencard = "Número de tarjeta no válido";

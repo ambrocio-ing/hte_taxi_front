@@ -30,7 +30,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
         return next.handle(authReq).pipe(catchError((err: HttpErrorResponse) => {
 
-            console.log('*********REFRESCANDO EN INTERCEPTOR', err);
+            
             if (err.status === 401) {
                 let jwtDto: JwtDto = new JwtDto();
                 jwtDto.token = this.loginService.token;
