@@ -22,7 +22,7 @@ export class ChangePasswordComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       const tokenPassword = params.get('tokenPassword');
-      console.log('TOKEN PASSWORD',tokenPassword)
+      //console.log('TOKEN PASSWORD',tokenPassword)
       if(tokenPassword != null){
         this.cpdto.tokenPassword = tokenPassword;
       }

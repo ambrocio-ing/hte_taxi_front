@@ -5,11 +5,12 @@
 }
 
 .cabecera{
-    display: -ms-grid;
+    
     display: grid;
-    -ms-grid-columns: (minmax(1rem, 1fr))[auto-fit];
-    grid-template-columns: repeat(auto-fit, minmax(1rem, 1fr));
-    gap: 1rem;
+    
+    grid-template-columns: repeat(auto-fit, minmax(2rem, 3fr));
+    gap: 2rem;
+   
     width: 100%;
     background: rgb(248, 117, 117);
     color: white;

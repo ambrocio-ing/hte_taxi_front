@@ -15,9 +15,10 @@
                 </div>
                 <div *ngIf="taxista" class="card-body">
                     <div>
-                        <h6><span style="color: blue;">DNI : </span> {{taxista.dni}}</h6>
+                        
                         <h6><span style="color: blue;">Nombre : </span> {{taxista.nombre}}, {{taxista.apellidos}}</h6>
                         <h6><span style="color: blue;">Placa de vehículo : </span> {{taxista.vehiculo.placa}} </h6>
+                        <h6><span style="color: blue;">Numero Policial : </span> {{taxista.vehiculo. numeroPolicial}} </h6>
                         <h6><span style="color: blue;">Detalle del vehículo:</span> {{taxista.vehiculo.descripcion}}
                         </h6>
                         <div *ngIf="taxista.vehiculo?.fotoVehiculo">

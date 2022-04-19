@@ -89,6 +89,7 @@ export class ListaTaxiComponent implements OnInit {
       cancelButtonText:'No suspender'
     }).then(resp => {
       if(resp.value){
+        taxista.estado="Suspendido";
         this.taxistaService.editarEstado(taxista).subscribe(resp => {
           Swal.fire({
             icon:'success',
@@ -102,6 +103,29 @@ export class ListaTaxiComponent implements OnInit {
     
   }
 
+  activar(taxista:Taxista) : void {
+    Swal.fire({
+      icon:'question',
+      title:'Seguro que desea Activar',
+      text:'Esta intentando activar un usuario, por favor confirme su acción',
+      showCancelButton:true,
+      confirmButtonText:'Si, Activar',
+      cancelButtonText:'No Activar'
+    }).then(resp => {
+      if(resp.value){
+        taxista.estado="Activo";
+        this.taxistaService.editarEstado(taxista).subscribe(resp => {
+          Swal.fire({
+            icon:'success',
+            title:'Operación éxitosa',
+            text:resp.mensaje
+          });
+          this.ngOnInit();
+        });
+      }
+    });  
+    
+  }
   ver(taxista:Taxista) : void {
     this.estadoDetalle = true;
     this.taxistaSeleccionado = taxista;

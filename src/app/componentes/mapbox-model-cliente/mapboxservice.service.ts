@@ -158,7 +158,7 @@ export class MapboxserviceService {
   }
 
   validarDistancia(coords: number[]): Observable<number[]> {
-    //console.log('**********COORDENADAS', coords);
+    
     const url = [
       `https://api.mapbox.com/directions/v5/mapbox/driving/`,
       `${coords[0]},${coords[1]};${coords[2]},${coords[3]}`,

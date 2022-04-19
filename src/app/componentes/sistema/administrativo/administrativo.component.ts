@@ -95,7 +95,7 @@ export class AdministrativoComponent implements OnInit {
   }
 
   enviar(event:any){
-    console.log('*******',this.administrativo);
+    /*console.log('*******',this.administrativo);*/
     event.preventDefault();
     if(!this.estadoBoton){
       this.guardar();

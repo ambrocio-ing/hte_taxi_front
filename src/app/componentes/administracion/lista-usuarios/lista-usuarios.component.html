@@ -28,7 +28,8 @@
                     </tr>
                     <tr bgcolor="skyblue" class="text-center">
                         <th scope="col">Foto</th>
-                        <th scope="col">Datos</th>                                           
+                        <th scope="col">Datos</th> 
+                        <th>Estado</th>                                          
                         <th scope="col">Acción</th>
                     </tr>
                 </thead>
@@ -53,13 +54,22 @@
                                 <tr>
                                     <td> <span style="color: blue;">GENERO:</span> {{cliente.persona.genero}} 
                                     <span style="color: blue;">EDAD:</span> {{cliente.persona.edad}}</td>
-                                </tr>                                
+                                </tr>   
+                                <tr>
+                                    <td> <span style="color: blue;">Celular:</span> {{cliente.persona.telefono}} 
+                                        <span style="color: blue;">Edad:</span> {{cliente.persona.edad}} 
+                                    </td>
+                                </tr>                             
                             </table>                            
-                        </td>                        
+                        </td>  
+                        <td>{{cliente.estado}}</td>                      
                         <td>
                             <a (click)="suspender(cliente)" class="aaccion">
                                 <img class="img-accion" src="../../../../assets/img/eliminar.png" alt="">
-                            </a>                            
+                            </a>   
+                            <a (click)="activar(cliente)" class="aaccion">
+                                <img class="img-accion" src="../../../../assets/img/aceptar.png" alt="">
+                            </a>                          
                         </td>
                     </tr>
                 </tbody>

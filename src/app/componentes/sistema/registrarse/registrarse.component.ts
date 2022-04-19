@@ -470,8 +470,8 @@ export class RegistrarseComponent implements OnInit {
     this.taxista.calificacion.cinco = 0;
     this.taxista.calificacion.promedio = 0;
 
-    console.log(this.taxista);
-    console.log(this.archivos);
+    //console.log(this.taxista);
+    //console.log(this.archivos);
 
     if (this.taxista != null && this.archivos.length == 5) {
 

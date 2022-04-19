@@ -20,7 +20,9 @@ export class ListaPagosComponent implements OnInit {
   pagos:Pago[] = [];
   mensajeLista!:string;
   data:any = {};
-
+  tipo:string="pago";
+  nombreImagen!:string;
+  mostrarImagen:boolean = false;
   constructor(private pagoService:PagoService) { }
 
   ngOnInit(): void {
@@ -58,4 +60,8 @@ export class ListaPagosComponent implements OnInit {
     this.cerrarModal.emit(false);
   }
 
+  mostrarImg(nombre:string){
+    this.mostrarImagen=true;
+    this.nombreImagen=nombre;
+  }
 }

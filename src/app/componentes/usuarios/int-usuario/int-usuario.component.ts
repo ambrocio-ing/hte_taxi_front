@@ -97,6 +97,7 @@ export class IntUsuarioComponent implements OnInit {
   posicion: any = null;
 
   visibleEditarPerfil:boolean = false;
+  smservicioTaxienproceso: SMServicioTaxi = new SMServicioTaxi();
 
   constructor(private router: Router, public loginService: LoginService,
     private mapboxService: MapboxserviceService, public vigilante: Vigilante2Service,
@@ -133,7 +134,7 @@ export class IntUsuarioComponent implements OnInit {
 
     this.client.onConnect = (frame) => {
       this.conectado = true;
-      console.log("cliente conectado " + this.client.connected + " : " + frame);
+      //console.log("cliente conectado " + this.client.connected + " : " + frame);
 
       //recibe todas las ubicaciones de los coductores
       this.client.subscribe('/staxi/resp_ubicacion/' + this.idcliente, event => {
@@ -141,7 +142,7 @@ export class IntUsuarioComponent implements OnInit {
 
         if (taxisdisponibles.estado != "Sin estado") {
           //this.smtaxistas.push(taxisdisponibles);
-          console.log('RECORRIDO FINAL', taxisdisponibles);
+          //console.log('RECORRIDO FINAL', taxisdisponibles);
           this.asignarTaxistas(taxisdisponibles);
         }
 
@@ -150,7 +151,7 @@ export class IntUsuarioComponent implements OnInit {
       //estará vigilante de nuevas conexiones por parte de los taxistas
       this.client.subscribe('/staxi/taxi_nuevo', event => {
         const smservicioTaxi: SMServicioTaxi = JSON.parse(event.body) as SMServicioTaxi;
-        console.log('****SE DETECTO NUEVO ACCESO', smservicioTaxi);
+        //console.log('****SE DETECTO NUEVO ACCESO', smservicioTaxi);
 
         if (smservicioTaxi.estado != "Sin coordenadas") {
           let coords: number[] = [];
@@ -177,7 +178,7 @@ export class IntUsuarioComponent implements OnInit {
       //estará vigilante de que un taxista se desconecte de la app
       //meter dentro de un boton
       this.client.subscribe('/staxi/desconec', event => {
-        console.log('DESCONECTADO UN TAXISTA');
+        //console.log('DESCONECTADO UN TAXISTA');
         const idtax = event.body;
         if (idtax != null && +idtax > 0) {
 
@@ -216,7 +217,7 @@ export class IntUsuarioComponent implements OnInit {
       this.client.subscribe('/staxi/respuesta_pedido/' + this.idcliente, event => {
 
         const smservicioTaxi: SMServicioTaxi = JSON.parse(event.body) as SMServicioTaxi;
-        console.log('***LLEGO LA RESPUESTA CON PEDIDO****', smservicioTaxi);
+        //console.log('***LLEGO LA RESPUESTA CON PEDIDO****', smservicioTaxi);
 
         if (smservicioTaxi.estado == "Confirmado" && smservicioTaxi.precio > 0) {
 
@@ -225,8 +226,7 @@ export class IntUsuarioComponent implements OnInit {
         }
         else {
           this.notificarRechazo(smservicioTaxi);
-        }
-        
+        }       
 
       });
 
@@ -264,14 +264,17 @@ export class IntUsuarioComponent implements OnInit {
             title: 'Taxi cancelado',
             text: 'El taxista acaba de cancelar el servicio, por favor refresque y solicite otro conductor'
           });
-
+          this.smservicioTaxienproceso= new SMServicioTaxi();
+          this.smservicioTaxienproceso.cliente = new SMCliente();
+          this.smservicioTaxienproceso.taxista = new SMTaxista();
+          this.smservicioTaxienproceso.ubicacion = new Ubicacion();
           this.loginService.estado("Disponible");
 
           this.cliService.historial(this.idcliente).subscribe(datos => {
             this.smservicioTaxis = datos;
             this.mensajeServicios = "";
           }, err => {
-            this.mensajeServicios = "Sin datos que mostrar";
+            this.mensajeServicios = "Aún no hay datos que mostrar";
           });
         }
 
@@ -287,12 +290,16 @@ export class IntUsuarioComponent implements OnInit {
             title: 'Servicio de taxi finalizado',
             text: 'Esta intentado cancelar el servicio por favor confirme'
           }).then(resp => {
+            this.smservicioTaxienproceso= new SMServicioTaxi();
+            this.smservicioTaxienproceso.cliente = new SMCliente();
+            this.smservicioTaxienproceso.taxista = new SMTaxista();
+            this.smservicioTaxienproceso.ubicacion = new Ubicacion();
             this.loginService.estado("Disponible");
             this.cliService.historial(this.idcliente).subscribe(datos => {
               this.smservicioTaxis = datos;
               this.mensajeServicios = "";
             }, err => {
-              this.mensajeServicios = "Sin datos que mostrar";
+              this.mensajeServicios = "Aún no hay datos que mostrar";
             });
   
           });
@@ -307,11 +314,11 @@ export class IntUsuarioComponent implements OnInit {
 
     this.client.onDisconnect = (frame) => {
       this.conectado = false;
-      console.log("cliente desconectado " + !this.client.connected + " : " + frame);
+      //console.log("cliente desconectado " + !this.client.connected + " : " + frame);
     }
 
     this.mapboxService.cbUbicacion.subscribe(dato => {
-      console.log('******UBICACION****', dato);
+      //console.log('******UBICACION****', dato);
       this.ubicacion = dato;
       this.vigilante.establecerUbicacion(this.ubicacion);
     });
@@ -327,7 +334,7 @@ export class IntUsuarioComponent implements OnInit {
       }
     }, err => {
       this.loginService.estado("Disponible");
-      this.mensajeServicios = "Sin datos que mostrar";
+      this.mensajeServicios = "Aún no hay datos que mostrar";
     });
 
   }
@@ -364,7 +371,7 @@ export class IntUsuarioComponent implements OnInit {
         this.smservicioTaxis = datos;
         this.mensajeServicios = "";
       }, err => {
-        this.mensajeServicios = "Sin datos que mostrar";
+        this.mensajeServicios = "Aún no hay datos que mostrar";
       });
     }
 
@@ -482,6 +489,11 @@ export class IntUsuarioComponent implements OnInit {
       this.smservicioTaxis = datos;
       this.mensajeServicios = "";
       this.loginService.estado("Ocupado");
+      const indice = this.smservicioTaxis.find(x => x.estado == "Iniciado");
+      if(indice!=undefined){
+        this.smservicioTaxienproceso=indice;
+      }
+      
       this.renovar1();
       this.renovar2();
       this.renovar3();
@@ -493,7 +505,7 @@ export class IntUsuarioComponent implements OnInit {
       smservicioTaxi.estado = "Error";
       //Operacion --> 6 cancelar en caso de error
       this.client.publish({ destination: '/app/error_inicio', body: JSON.stringify(smservicioTaxi) });
-      this.mensajeServicios = "Sin datos que mostrar";
+      this.mensajeServicios = "Aún no hay datos que mostrar";
       if (smservicioTaxi.idstaxi == this.smservicioTaxiPedido1.idstaxi) {
 
         this.vigilante.guardarPedido(1, "Cancelado");
@@ -539,7 +551,7 @@ export class IntUsuarioComponent implements OnInit {
       this.smservicioTaxiPedido1.precio = 0;
       this.smservicioTaxiPedido1.ubicacion = this.ubicacion;
 
-      console.log('LISTO PARA SER ENVIADO', this.smservicioTaxiPedido1);
+      //console.log('LISTO PARA SER ENVIADO', this.smservicioTaxiPedido1);
       this.estadoSolicitar1 = false;
       //hacer publish
       //aqui inicia el pedido(1)
@@ -573,7 +585,7 @@ export class IntUsuarioComponent implements OnInit {
         cancelButtonText: 'No, Cancelar'
       }).then((resp) => {
         if (resp.value) {
-          console.log('*****RESPUESTA AL CANCELAR', resp);
+          //console.log('*****RESPUESTA AL CANCELAR', resp);
           this.smservicioTaxiPedido1.fecha = new Date(Date.now());
           this.smservicioTaxiPedido1.estado = "Cancelado";
           this.smservicioTaxiPedido1.cliente.idcliente = this.loginService.usuario.id;
@@ -657,7 +669,7 @@ export class IntUsuarioComponent implements OnInit {
       this.smservicioTaxiPedido2.precio = 0;
       this.smservicioTaxiPedido2.ubicacion = this.ubicacion;
 
-      console.log('LISTO PARA SER ENVIADO 2', this.smservicioTaxiPedido2);
+      //console.log('LISTO PARA SER ENVIADO 2', this.smservicioTaxiPedido2);
       this.estadoSolicitar2 = false;
       //hacer publish
       //aqui inicia el pedido(1)
@@ -691,7 +703,7 @@ export class IntUsuarioComponent implements OnInit {
         cancelButtonText: 'No, Cancelar'
       }).then((resp) => {
         if (resp.value) {
-          console.log('*****RESPUESTA AL CANCELAR', resp);
+          //console.log('*****RESPUESTA AL CANCELAR', resp);
           this.smservicioTaxiPedido2.fecha = new Date(Date.now());
           this.smservicioTaxiPedido2.estado = "Cancelado";
           this.smservicioTaxiPedido2.cliente.idcliente = this.loginService.usuario.id;
@@ -770,7 +782,7 @@ export class IntUsuarioComponent implements OnInit {
       this.smservicioTaxiPedido3.precio = 0;
       this.smservicioTaxiPedido3.ubicacion = this.ubicacion;
 
-      console.log('LISTO PARA SER ENVIADO 3', this.smservicioTaxiPedido3);
+      //console.log('LISTO PARA SER ENVIADO 3', this.smservicioTaxiPedido3);
       this.estadoSolicitar3 = false;
       //hacer publish
       //aqui inicia el pedido(1)
@@ -804,7 +816,7 @@ export class IntUsuarioComponent implements OnInit {
         cancelButtonText: 'No, Cancelar'
       }).then((resp) => {
         if (resp.value) {
-          console.log('*****RESPUESTA AL CANCELAR', resp);
+          //console.log('*****RESPUESTA AL CANCELAR', resp);
           this.smservicioTaxiPedido3.fecha = new Date(Date.now());
           this.smservicioTaxiPedido3.estado = "Cancelado";
           this.smservicioTaxiPedido3.cliente.idcliente = this.loginService.usuario.id;
@@ -882,7 +894,7 @@ export class IntUsuarioComponent implements OnInit {
       this.smservicioTaxiPedido4.precio = 0;
       this.smservicioTaxiPedido4.ubicacion = this.ubicacion;
 
-      console.log('LISTO PARA SER ENVIADO 4', this.smservicioTaxiPedido4);
+      //console.log('LISTO PARA SER ENVIADO 4', this.smservicioTaxiPedido4);
       this.estadoSolicitar4 = false;
       //hacer publish
       //aqui inicia el pedido(1)
@@ -916,7 +928,7 @@ export class IntUsuarioComponent implements OnInit {
         cancelButtonText: 'No, Cancelar'
       }).then((resp) => {
         if (resp.value) {
-          console.log('*****RESPUESTA AL CANCELAR', resp);
+          //console.log('*****RESPUESTA AL CANCELAR', resp);
           this.smservicioTaxiPedido4.fecha = new Date(Date.now());
           this.smservicioTaxiPedido4.estado = "Cancelado";
           this.smservicioTaxiPedido4.cliente.idcliente = this.loginService.usuario.id;
@@ -994,7 +1006,7 @@ export class IntUsuarioComponent implements OnInit {
       this.smservicioTaxiPedido5.precio = 0;
       this.smservicioTaxiPedido5.ubicacion = this.ubicacion;
 
-      console.log('LISTO PARA SER ENVIADO5', this.smservicioTaxiPedido5);
+      //console.log('LISTO PARA SER ENVIADO5', this.smservicioTaxiPedido5);
       this.estadoSolicitar5 = false;
       //hacer publish
       //aqui inicia el pedido(1)
@@ -1028,7 +1040,7 @@ export class IntUsuarioComponent implements OnInit {
         cancelButtonText: 'No, Cancelar'
       }).then((resp) => {
         if (resp.value) {
-          console.log('*****RESPUESTA AL CANCELAR', resp);
+          //console.log('*****RESPUESTA AL CANCELAR', resp);
           this.smservicioTaxiPedido5.fecha = new Date(Date.now());
           this.smservicioTaxiPedido5.estado = "Cancelado";
           this.smservicioTaxiPedido5.cliente.idcliente = this.loginService.usuario.id;
@@ -1135,7 +1147,7 @@ export class IntUsuarioComponent implements OnInit {
       this.smubicacion.origen_lat = resp.lat;
       //console.log('COORDENADAS', this.smubicacion);
     }).catch(resp => {
-      console.log(resp);
+      //console.log(resp);
     });
 
     this.posicion = setInterval(() => {
@@ -1144,7 +1156,7 @@ export class IntUsuarioComponent implements OnInit {
         this.smubicacion.origen_lat = resp.lat;
         //console.log('COORDENADAS', this.smubicacion);
       }).catch(resp => {
-        console.log(resp);
+        //console.log(resp);
       });
     }, 10000);
 
@@ -1240,7 +1252,7 @@ export class IntUsuarioComponent implements OnInit {
 
     }
     else {
-      console.log('OTRO TAXISTA MAS PERO YA NO HAY ESPACIO', smtaxista);
+      //console.log('OTRO TAXISTA MAS PERO YA NO HAY ESPACIO', smtaxista);
     }
   }
 
@@ -1275,7 +1287,7 @@ export class IntUsuarioComponent implements OnInit {
         this.estadoTaxista1 = false;
         this.estadoSolicitar1 = true;
       }
-      console.log('interval')
+      //console.log('interval')
     }, 300000);
 
   }
@@ -1312,7 +1324,7 @@ export class IntUsuarioComponent implements OnInit {
         this.estadoSolicitar2 = true;
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 300000);
 
   }
@@ -1349,7 +1361,7 @@ export class IntUsuarioComponent implements OnInit {
         this.estadoSolicitar3 = true;
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 300000);
 
   }
@@ -1386,7 +1398,7 @@ export class IntUsuarioComponent implements OnInit {
         this.estadoSolicitar4 = true;
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 300000);
 
   }
@@ -1423,7 +1435,7 @@ export class IntUsuarioComponent implements OnInit {
         this.estadoSolicitar5 = true;
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 300000);
 
   }
@@ -1494,7 +1506,7 @@ export class IntUsuarioComponent implements OnInit {
         this.renovar1();
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 120000);
 
   }
@@ -1529,7 +1541,7 @@ export class IntUsuarioComponent implements OnInit {
         this.renovar2();
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 120000);
 
   }
@@ -1564,7 +1576,7 @@ export class IntUsuarioComponent implements OnInit {
         this.renovar3();
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 120000);
 
   }
@@ -1599,7 +1611,7 @@ export class IntUsuarioComponent implements OnInit {
         this.renovar4();
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 120000);
 
   }
@@ -1634,7 +1646,7 @@ export class IntUsuarioComponent implements OnInit {
         this.renovar5();
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 120000);
 
   }
@@ -1670,7 +1682,7 @@ export class IntUsuarioComponent implements OnInit {
         this.renovar1();
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 30000);
 
   }
@@ -1704,7 +1716,7 @@ export class IntUsuarioComponent implements OnInit {
         this.mensaje2 = "Sin respuesta, cancelando...";
         this.renovar2();
       }
-      console.log('interval')
+      //console.log('interval')
     }, 30000);
 
   }
@@ -1739,7 +1751,7 @@ export class IntUsuarioComponent implements OnInit {
         this.renovar3();
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 30000);
 
   }
@@ -1774,7 +1786,7 @@ export class IntUsuarioComponent implements OnInit {
         this.renovar4();
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 30000);
 
   }
@@ -1809,7 +1821,7 @@ export class IntUsuarioComponent implements OnInit {
         this.renovar5();
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 30000);
 
   }
@@ -1914,9 +1926,14 @@ export class IntUsuarioComponent implements OnInit {
       if (resp.value) {
         servicios.estado = "Cancelado";
         this.client.publish({ destination: '/app/cancelado_pasajero', body: JSON.stringify(servicios) });
+
         this.loginService.estado("Disponible");       
         const indice = this.smservicioTaxis.indexOf(servicios);
         if(indice != -1){
+          this.smservicioTaxienproceso=new SMServicioTaxi();
+          this.smservicioTaxienproceso.cliente= new SMCliente();
+          this.smservicioTaxienproceso.taxista= new SMTaxista();
+          this.smservicioTaxienproceso.ubicacion= new Ubicacion();
           this.smservicioTaxis[indice].estado = "Finalizado";
         }
       }
@@ -1927,6 +1944,7 @@ export class IntUsuarioComponent implements OnInit {
   verificarEstadoTaxi(): boolean {
     const indice = this.smservicioTaxis.find(x => x.estado == "Iniciado");
     if (indice != undefined) {
+      this.smservicioTaxienproceso=indice;
       return true;
     }
     else {

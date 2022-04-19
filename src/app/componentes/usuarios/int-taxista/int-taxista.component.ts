@@ -68,6 +68,12 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
   estadoAceptar: boolean = false;
 
+  mapavisto1: boolean = false;
+  mapavisto2: boolean = false;
+  mapavisto3: boolean = false;
+  mapavisto4: boolean = false;
+  mapavisto5: boolean = false;
+
   mensaje1!: string;
   mensaje2!: string;
   mensaje3!: string;
@@ -103,7 +109,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   enviar2: boolean = false;
   enviar3: boolean = false;
   enviar4: boolean = false;
-  enviar5: boolean = false;  
+  enviar5: boolean = false;
 
   smservicioTaxis: SMServicioTaxi[] = [];
   mensajeServicios!: string;
@@ -111,7 +117,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   smservicioEnCurso: SMServicioTaxi = new SMServicioTaxi();
   posicion: any = null;
 
-  visibleEditarPerfil:boolean = false;
+  visibleEditarPerfil: boolean = false;
 
   constructor(private router: Router,
     private mapboxService: MapboxserviceService, public loginService: LoginService,
@@ -148,23 +154,23 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     }
 
     this.client.onConnect = (frame) => {
-      console.log('taxista conectado ' + this.client.connected + ' : ' + frame);
+      //console.log('taxista conectado ' + this.client.connected + ' : ' + frame);
 
       //permanece a la escucha de la peticion de los clientes sobre taxistas cercanos
       this.client.subscribe('/staxi/pet_ubicacion', (event) => {
         const ubicacion: SMUbicacion = JSON.parse(event.body) as SMUbicacion;
-        console.log('****Respuesta en taxista', ubicacion);
-        console.log('****COORDENADAS DE TAXISTA', this.smsubicacion);
+        //console.log('****Respuesta en taxista', ubicacion);
+        //console.log('****COORDENADAS DE TAXISTA', this.smsubicacion);
 
         if (ubicacion.idcliente != 0 && ubicacion != null && this.loginService.isDisponible()) {
           let coords: number[] = [];
-          coords.push(-77.2059918);
-          coords.push(-11.4909882);
+          coords.push(-77.5887977);
+          coords.push(-11.0924872);
           coords.push(ubicacion.origen_lng);
-          coords.push(ubicacion.origen_lat); 
+          coords.push(ubicacion.origen_lat);
 
           this.mapboxService.validarDistancia(coords).subscribe(resp => {
-            console.log('RESPUESTA CON LA DISTANCIA', resp);
+            //console.log('RESPUESTA CON LA DISTANCIA', resp);
             if (resp[0] <= 3) {
 
               //si el taxista esta a menos de 3 km envia su ubicacion al cliente
@@ -175,7 +181,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
             }
 
           }, err => {
-            console.log(err);
+            //console.log(err);
           });
         }
 
@@ -184,7 +190,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
       //Operacion ----> 2 llega la notificacion de servicio
       this.client.subscribe('/staxi/nuevo_servicio/' + this.loginService.usuario.id, (event) => {
         const smservicioTaxi: SMServicioTaxi = JSON.parse(event.body) as SMServicioTaxi;
-        console.log('NUEVA PETICION DE SERVICIO****', smservicioTaxi);
+        //console.log('NUEVA PETICION DE SERVICIO****', smservicioTaxi);
         if (smservicioTaxi.estado == "Pedido" && this.loginService.isDisponible()) {
 
           this.asignarServicios(smservicioTaxi);
@@ -234,7 +240,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
         this.errorDeServidor(smservicioTaxi);
 
-      });    
+      });
 
       //cuando el pasajero cancela el taxi
       this.client.subscribe('/staxi/taxi_cancelado/' + this.idtaxista, (event) => {
@@ -250,7 +256,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
           this.smservicioEnCurso = new SMServicioTaxi();
           this.smservicioEnCurso.taxista = new SMTaxista();
           this.smservicioEnCurso.cliente = new SMCliente();
-          
+
           this.taxService.historial(this.idtaxista).subscribe(datos => {
             this.smservicioTaxis = datos;
             this.mensajeServicios = "";
@@ -259,14 +265,14 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
           });
         }
 
-      });  
+      });
 
       this.conectado = true;
 
       //notifica a los clientes que un taxista se acaba de conectar
       this.smsubicacion.idtaxista = this.idtaxista;
-      this.smsubicacion.origen_lng = -77.2059918;
-      this.smsubicacion.origen_lat = -11.4909882;
+      this.smsubicacion.origen_lng = -77.5887977;
+      this.smsubicacion.origen_lat = -11.0924872;
       this.client.publish({ destination: '/app/nuevo_conectado', body: JSON.stringify(this.smsubicacion) });
 
     }
@@ -499,9 +505,10 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
   //devolver el precio del taxi --Operacion --> 3
   aceptarPedido1(): void {
-    console.log('************LISTO PARA CONFIRMAR', this.smservicioTaxi1);
+    //console.log('************LISTO PARA CONFIRMAR', this.smservicioTaxi1);
 
-    this.smservicioTaxi1.estado = "Confirmado";    
+    this.smservicioTaxi1.estado = "Confirmado";
+
 
     if (this.smservicioTaxi1.precio > 0) {
       this.vigilante.guardarEstadoServicio(1, "Confirmado");
@@ -526,7 +533,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   }
 
   rechazarPedido1(): void {
-    console.log('************LISTO PARA RECHAZAR', this.smservicioTaxi1);
+    //console.log('************LISTO PARA RECHAZAR', this.smservicioTaxi1);
     Swal.fire({
       icon: 'warning',
       title: 'Seguro que desea cancelar?',
@@ -541,7 +548,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.vigilante.guardarEstadoServicio(1, "Rechazado");
         //hacer publihs
         this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi1) });
-        //console.log('************LISTO PARA RECHAZAR', this.smservicioTaxi1);
+        //console.log('************Rechazado', this.smservicioTaxi1);
         this.vaciar1();
       }
       else {
@@ -604,6 +611,8 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.smservicioTaxi1.estado = "Canccelado";
         this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi1) });
         this.vigilante.guardarEstadoServicio(1, "Rechazado");
+        this.smservicioTaxi1.estado = "Cancelado";
+        this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi1) });
         this.vaciar1();
       }
       else {
@@ -613,9 +622,9 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   }
 
   aceptarPedido2(): void {
-    console.log('************LISTO PARA CONFIRMAR 2', this.smservicioTaxi2);
+    //console.log('************LISTO PARA CONFIRMAR 2', this.smservicioTaxi2);
 
-    this.smservicioTaxi2.estado = "Confirmado";   
+    this.smservicioTaxi2.estado = "Confirmado";
 
     if (this.smservicioTaxi2.precio > 0) {
 
@@ -641,7 +650,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   }
 
   rechazarPedido2(): void {
-    console.log('************LISTO PARA RECHAZAR 2', this.smservicioTaxi2);
+    //console.log('************LISTO PARA RECHAZAR 2', this.smservicioTaxi2);
     Swal.fire({
       icon: 'warning',
       title: 'Seguro que desea cancelar?',
@@ -713,9 +722,10 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     }).then((resp) => {
       if (resp.value) {
         this.mensaje2 = "Cancelando...";
+
         this.vigilante.guardarEstadoServicio(2, "Rechazado");
-        this.smservicioTaxi2.estado = "Canccelado";
-        this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi2)});
+        this.smservicioTaxi2.estado = "Cancelado";
+        this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi2) });
         this.vaciar2();
       }
       else {
@@ -725,9 +735,10 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   }
 
   aceptarPedido3(): void {
-    console.log('************LISTO PARA CONFIRMAR 3', this.smservicioTaxi3);
+    //console.log('************LISTO PARA CONFIRMAR 3', this.smservicioTaxi3);
 
-    this.smservicioTaxi3.estado = "Confirmado";   
+    this.smservicioTaxi3.estado = "Confirmado";
+
     if (this.smservicioTaxi3.precio > 0) {
       //hacer publish
       this.vigilante.guardarEstadoServicio(3, "Confirmado");
@@ -751,7 +762,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   }
 
   rechazarPedido3(): void {
-    console.log('************LISTO PARA RECHAZAR 3', this.smservicioTaxi3);
+    //console.log('************LISTO PARA RECHAZAR 3', this.smservicioTaxi3);
     Swal.fire({
       icon: 'warning',
       title: 'Seguro que desea cancelar?',
@@ -824,7 +835,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
       if (resp.value) {
         this.mensaje3 = "Cancelando...";
         this.vigilante.guardarEstadoServicio(3, "Rechazado");
-        this.smservicioTaxi3.estado = "Canccelado";
+        this.smservicioTaxi3.estado = "Cancelado";
         this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi3) });
         this.vaciar3();
       }
@@ -835,9 +846,9 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   }
 
   aceptarPedido4(): void {
-    console.log('************LISTO PARA CONFIRMAR 4', this.smservicioTaxi4);
+    //console.log('************LISTO PARA CONFIRMAR 4', this.smservicioTaxi4);
 
-    this.smservicioTaxi4.estado = "Confirmado";    
+    this.smservicioTaxi4.estado = "Confirmado";
 
     if (this.smservicioTaxi4.precio > 0) {
       //hacer publish
@@ -862,7 +873,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   }
 
   rechazarPedido4(): void {
-    console.log('************LISTO PARA RECHAZAR 4', this.smservicioTaxi4);
+    //console.log('************LISTO PARA RECHAZAR 4', this.smservicioTaxi4);
     Swal.fire({
       icon: 'warning',
       title: 'Seguro que desea cancelar?',
@@ -936,8 +947,8 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
       if (resp.value) {
         this.mensaje4 = "Cancelando...";
         this.vigilante.guardarEstadoServicio(4, "Rechazado");
-        this.smservicioTaxi4.estado = "Canccelado";
-        this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi4)});
+        this.smservicioTaxi4.estado = "Cancelado";
+        this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi4) });
         this.vaciar4();
       }
       else {
@@ -947,9 +958,10 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   }
 
   aceptarPedido5(): void {
-    console.log('************LISTO PARA CONFIRMAR 5', this.smservicioTaxi5);
+    //console.log('************LISTO PARA CONFIRMAR 5', this.smservicioTaxi5);
 
-    this.smservicioTaxi5.estado = "Confirmado";   
+    this.smservicioTaxi5.estado = "Confirmado";
+
     if (this.smservicioTaxi5.precio > 0) {
       //hacer publish
       this.vigilante.guardarEstadoServicio(5, "Confirmado");
@@ -973,7 +985,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   }
 
   rechazarPedido5(): void {
-    console.log('************LISTO PARA RECHAZAR 5', this.smservicioTaxi5);
+    //console.log('************LISTO PARA RECHAZAR 5', this.smservicioTaxi5);
     Swal.fire({
       icon: 'warning',
       title: 'Seguro que desea cancelar?',
@@ -1047,8 +1059,8 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
       if (resp.value) {
         this.mensaje5 = "Cancelando...";
         this.vigilante.guardarEstadoServicio(5, "Rechazado");
-        this.smservicioTaxi5.estado = "Canccelado";
-        this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi5)});
+        this.smservicioTaxi5.estado = "Cancelado";
+        this.client.publish({ destination: '/app/strespuesta_pedido', body: JSON.stringify(this.smservicioTaxi5) });
         this.vaciar5();
       }
       else {
@@ -1067,30 +1079,34 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
       smservicioTaxi.ubicacion.origen_lng,
       smservicioTaxi.ubicacion.origen_lat
     ];
+    this.mapboxService.validarDistancia(coordenadas).subscribe(resp => {
 
-    this.mapboxService.validarDistancia(coordenadas).subscribe(resp => {      
-
-      if(smservicioTaxi.idstaxi == this.smservicioTaxi1.idstaxi){
+      if (smservicioTaxi.idstaxi == this.smservicioTaxi1.idstaxi) {
         this.smservicioTaxi1.ubicacion.distanciafinal = resp[0];
         this.smservicioTaxi1.ubicacion.tiempofinal = resp[1];
+        this.mapavisto1 = true;
       }
-      else if(smservicioTaxi.idstaxi == this.smservicioTaxi2.idstaxi){
+      else if (smservicioTaxi.idstaxi == this.smservicioTaxi2.idstaxi) {
         this.smservicioTaxi2.ubicacion.distanciafinal = resp[0];
         this.smservicioTaxi2.ubicacion.tiempofinal = resp[1];
+        this.mapavisto2 = true;
       }
-      else if(smservicioTaxi.idstaxi == this.smservicioTaxi3.idstaxi){
+      else if (smservicioTaxi.idstaxi == this.smservicioTaxi3.idstaxi) {
         this.smservicioTaxi3.ubicacion.distanciafinal = resp[0];
         this.smservicioTaxi3.ubicacion.tiempofinal = resp[1];
+        this.mapavisto3 = true;
       }
-      else if(smservicioTaxi.idstaxi == this.smservicioTaxi4.idstaxi){
+      else if (smservicioTaxi.idstaxi == this.smservicioTaxi4.idstaxi) {
         this.smservicioTaxi4.ubicacion.distanciafinal = resp[0];
         this.smservicioTaxi4.ubicacion.tiempofinal = resp[1];
+        this.mapavisto4 = true;
       }
-      else if(smservicioTaxi.idstaxi == this.smservicioTaxi5.idstaxi){
+      else if (smservicioTaxi.idstaxi == this.smservicioTaxi5.idstaxi) {
         this.smservicioTaxi5.ubicacion.distanciafinal = resp[0];
         this.smservicioTaxi5.ubicacion.tiempofinal = resp[1];
+        this.mapavisto5 = true;
       }
-
+      
     });
 
   }
@@ -1114,7 +1130,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
       this.smsubicacion.origen_lat = resp.lat;
 
     }).catch(e => {
-      console.log("error : ", e);
+      //console.log("error : ", e);
     });
 
     this.posicion = setInterval(() => {
@@ -1123,7 +1139,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.smsubicacion.origen_lat = resp.lat;
 
       }).catch(e => {
-        console.log("error : ", e);
+        //console.log("error : ", e);
       })
 
     }, 10000);
@@ -1219,7 +1235,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
       }
 
-      console.log('interval')
+      //console.log('interval')
     }, 300000);
 
   }
@@ -1257,7 +1273,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
       }
 
 
-      console.log('interval')
+      //console.log('interval')
     }, 300000);
 
   }
@@ -1293,7 +1309,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.vaciar4();
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 300000);
 
   }
@@ -1330,7 +1346,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
       }
 
-      console.log('interval')
+      //console.log('interval')
     }, 300000);
 
   }
@@ -1367,7 +1383,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
       this.smservicioTaxi4 = smservicioTaxi;
       this.vigilante.guardarEstadoServicio(4, "Procesando");
-      this.mensaje4 ="Enviar el precio antes de que termine el tiempo";
+      this.mensaje4 = "Enviar el precio antes de que termine el tiempo";
       this.fijarTimer4(this.smservicioTaxi4.idstaxi);
       this.enviar4 = false;
 
@@ -1376,13 +1392,13 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
       this.smservicioTaxi5 = smservicioTaxi
       this.vigilante.guardarEstadoServicio(5, "Procesando");
-      this.mensaje5 ="Enviar el precio antes de que termine el tiempo";
+      this.mensaje5 = "Enviar el precio antes de que termine el tiempo";
       this.fijarTimer5(this.smservicioTaxi5.idstaxi);
       this.enviar5 = false;
 
     }
     else {
-      console.log('NUEVA PETICION PERO NO HAY ESPACIO', smservicioTaxi);
+      //console.log('NUEVA PETICION PERO NO HAY ESPACIO', smservicioTaxi);
 
     }
   }
@@ -1425,7 +1441,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
     }
     else {
-      console.log('LLEGO LO QUE SEA', smservicioTaxi);
+      //console.log('LLEGO LO QUE SEA', smservicioTaxi);
 
     }
   }
@@ -1496,7 +1512,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
       }
 
-      console.log('interval')
+      //console.log('interval')
     }, 120000);
 
   }
@@ -1535,7 +1551,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
       }
 
 
-      console.log('interval')
+      //console.log('interval')
     }, 120000);
 
   }
@@ -1571,7 +1587,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.vaciar4();
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 120000);
 
   }
@@ -1608,7 +1624,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
 
       }
 
-      console.log('interval')
+      //console.log('interval')
     }, 120000);
 
   }
@@ -1669,7 +1685,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.vaciar1();
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 30000);
 
   }
@@ -1704,7 +1720,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.vaciar2();
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 30000);
 
   }
@@ -1739,7 +1755,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.vaciar3();
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 30000);
 
   }
@@ -1774,7 +1790,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.vaciar4();
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 30000);
 
   }
@@ -1809,7 +1825,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
         this.vaciar5();
 
       }
-      console.log('interval')
+      //console.log('interval')
     }, 30000);
 
   }
@@ -1823,6 +1839,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     this.enviar1 = false;
     this.estadoConfirmacion1 = false;
     this.estadoAceptar = false;
+    this.mapavisto1 = false;
 
   }
 
@@ -1835,6 +1852,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     this.enviar2 = false;
     this.estadoConfirmacion2 = false;
     this.estadoAceptar = false;
+    this.mapavisto2 = false;
 
   }
 
@@ -1847,6 +1865,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     this.enviar3 = false;
     this.estadoConfirmacion3 = false;
     this.estadoAceptar = false;
+    this.mapavisto3 = false;
   }
 
   vaciar4(): void {
@@ -1858,7 +1877,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     this.enviar4 = false;
     this.estadoConfirmacion4 = false;
     this.estadoAceptar = false;
-
+    this.mapavisto4 = false;
   }
 
   vaciar5(): void {
@@ -1870,11 +1889,12 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     this.enviar5 = false;
     this.estadoConfirmacion5 = false;
     this.estadoAceptar = false;
-  }  
+    this.mapavisto5 = false;
+  }
 
-  finalizar(servicios: SMServicioTaxi) : void {
+  finalizar(servicios: SMServicioTaxi): void {
     servicios.estado = "Finalizado";
-    this.client.publish({destination : '/app/finalizado_taxista', body : JSON.stringify(servicios)});
+    this.client.publish({ destination: '/app/finalizado_taxista', body: JSON.stringify(servicios) });
     Swal.fire({
       icon: 'success',
       title: 'Servicio finalizado',
@@ -1882,7 +1902,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     }).then(res => {
       this.taxService.historial(this.idtaxista).subscribe(datos => {
         this.smservicioTaxis = datos;
-        this.mensajeServicios = ""; 
+        this.mensajeServicios = "";
         this.smservicioEnCurso = new SMServicioTaxi();
         this.smservicioEnCurso.taxista = new SMTaxista();
         this.smservicioEnCurso.cliente = new SMCliente();
@@ -1929,12 +1949,19 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
   ocupado(): void {
     //this.client.deactivate();
     this.loginService.estado("Ocupado");
+    this.desconectar();
+
   }
 
   disponible(): void {
     //this.client.activate();
     if (this.verificarEstadoTaxi() == false) {
+
       this.loginService.estado("Disponible");
+      this.smsubicacion.idtaxista = this.idtaxista;
+      this.smsubicacion.origen_lng = -77.5887977;
+      this.smsubicacion.origen_lat = -11.0924872;
+      this.client.publish({ destination: '/app/nuevo_conectado', body: JSON.stringify(this.smsubicacion) });
     }
     else {
       Swal.fire({
@@ -1962,7 +1989,7 @@ export class IntTaxistaComponent implements OnInit, OnDestroy {
     }
   }
 
-  editarPerfil() : void {
+  editarPerfil(): void {
     this.visibleEditarPerfil = true;
   }
 

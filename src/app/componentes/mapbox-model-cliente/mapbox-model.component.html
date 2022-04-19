@@ -30,11 +30,11 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="origen">Ingrese su origen y alguna referencia</label>
+                    <label for="origen">Ingrese su origen y punto de referencia</label>
                     <input type="text" name="origen" [(ngModel)]="data.origen" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="destino">Ingrese su destino y alguna referencia</label>
+                    <label for="destino">Ingrese su destino y punto de referencia</label>
                     <input type="text" name="destino" [(ngModel)]="data.destino" class="form-control">
                 </div>
                 <label>Buscar su origen y destino en el mapa:</label>
@@ -47,14 +47,17 @@
                 </div>
                 <div class="form-group">
                     <span style="color: blue;">Nota : </span>
-                    <span>Marque el punto de origen y luego el punto destino(solo 2 puntos).El punto rojo es su ubicacion.
+                    <span>Marque el punto de origen y luego el punto destino(solo 2 puntos).
                     </span>
                 </div>
                 <div>
                     <button (click)="verRua()" class="btn btn-primary">Ver ruta</button>
                     <button class="btn btn-success" style="margin-left: 20px;" (click)="confirmar()">Confirmar</button>
                 </div>
-    
+                <ul class="list-group">
+                    <li class="list-group-item"  aria-current="true">  <img src="../../../../assets/img/puntorojo.png" style="height: 30px; width: 30px; object-fit: cover;">Tu ubicacion inicial</li>
+                </ul>
+               
     
                
     

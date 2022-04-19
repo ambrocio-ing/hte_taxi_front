@@ -29,8 +29,9 @@
                         <li class="list-group-item">
                             <span style="color: blue;">Nota : </span>
                             <span>
-                                <img src="../../../../assets/img/marcadorAzul.png" style="height: 30px; width: 30px; object-fit: cover;">    Marcador azul: Origen
-                    <img src="../../../../assets/img/marcadorRojo.jpg" style="height: 30px; width: 30px; object-fit: cover;">Marcador rojo: Destino
+                                <img src="../../../../assets/img/puntorojo.png" style="height: 30px; width: 30px; object-fit: cover;">    Punto rojo: Mi ubicacion
+                                <img src="../../../../assets/img/marcadorRojo.jpg" style="height: 30px; width: 30px; object-fit: cover;">    Marcador rojo: Origen
+                    <img src="../../../../assets/img/marcadorAzul.png" style="height: 30px; width: 30px; object-fit: cover;">Marcador azul: Destino
                             </span>
                         </li>
                     </ul>                  
@@ -41,14 +42,7 @@
 
                 </div>                
     
-                <div id="geocoder" #asGeocoder class="geocoder">
-    
-                </div>
-    
-                <div [ngClass]="{'active-way': modeInput === 'start'}">
-                    <div class="mock-label">Detalle</div>
-                    <div class="mock-input">{{wayPoints?.start?.place_name}}</div>
-                </div>
+               
     
             </div>
             

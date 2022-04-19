@@ -194,7 +194,7 @@ export class SuscripcionComponent implements OnInit {
         this.ngOnInit();
 
       }, err => {
-        console.log('verificar',err)
+        //console.log('verificar',err)
         if(err.status == 404 || err.status == 500){
           Swal.fire({
             icon:'error',

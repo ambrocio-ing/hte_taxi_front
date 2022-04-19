@@ -11,9 +11,9 @@
         </button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" (click)="irPerfil2()">Ver perfil</a></li>
-            <li *ngIf="!loginService.isDisponible"><a class="dropdown-item" (click)="disponible()">Marcar Disponible</a>
+            <li *ngIf="!loginService.isDisponible()"><a class="dropdown-item" (click)="disponible()">Marcar Disponible</a>
             </li>
-            <li *ngIf="loginService.isDisponible"><a class="dropdown-item" (click)="ocupado()">Marcar Ocupado</a></li>
+            <li *ngIf="loginService.isDisponible()"><a class="dropdown-item" (click)="ocupado()">Marcar Ocupado</a></li>
             <li><a class="dropdown-item" (click)="pagar()">Ver pagos</a></li>
             <li>
                 <hr class="dropdown-divider">
@@ -27,9 +27,9 @@
     (cerrarModalPerfil)="visibleEditarPerfil = $event">
 </app-cambio-foto-perfil>
 
-<div class="wrapper">
+<div class="wrapper" *ngIf="loginService.isDisponible() && !smservicioEnCurso?.idstaxi">
     <h2  style="text-transform: uppercase; font-family: Times New Roman, Times, serif;">Solicitudes pendientes</h2></div>
-    <div class="wrapper">
+    <div class="wrapper"*ngIf="loginService.isDisponible() && !smservicioEnCurso?.idstaxi">
     <span  style="text-align: center; color: red;text-transform: none; font-family: 'Times New Roman', Times, serif; ">Una solicitud pendiente solo estará disponible por 5 minutos.</span>
 </div>
 
@@ -79,7 +79,7 @@
                     <button class="btn btn-outline-primary" (click)="verDetalle(smservicioTaxi1)">Detalle</button>
                 </td>
                 <td>
-                    <button [disabled]="enviar1" class="btn btn-outline-primary"
+                    <button [disabled]="enviar1 || !mapavisto1" class="btn btn-outline-primary"
                         (click)="aceptarPedido1()">Enviar</button>
               
                     <button [disabled]="!enviar1" class="btn btn-outline-danger"
@@ -126,7 +126,7 @@
                     <button class="btn btn-outline-danger" (click)="verDetalle(smservicioTaxi2)">Detalle</button>
                 </td>
                 <td>
-                    <button [disabled]="enviar2" class="btn btn-outline-primary"
+                    <button [disabled]="enviar2 || !mapavisto2" class="btn btn-outline-primary"
                         (click)="aceptarPedido2()">Enviar</button>
               
 
@@ -173,7 +173,7 @@
                     <button class="btn btn-outline-danger" (click)="verDetalle(smservicioTaxi3)">Detalle</button>
                 </td>
                 <td>
-                    <button [disabled]="enviar3" class="btn btn-outline-primary"
+                    <button [disabled]="enviar3 || !mapavisto3" class="btn btn-outline-primary"
                         (click)="aceptarPedido3()">Enviar</button>
              
                     <button [disabled]="!enviar3" class="btn btn-outline-danger"
@@ -219,7 +219,7 @@
                     <button class="btn btn-outline-danger" (click)="verDetalle(smservicioTaxi4)">Detalle</button>
                 </td>
                 <td>
-                    <button [disabled]="enviar4" class="btn btn-outline-primary"
+                    <button [disabled]="enviar4 || !mapavisto4" class="btn btn-outline-primary"
                         (click)="aceptarPedido4()">Enviar</button>
               
                     <button [disabled]="!enviar4" class="btn btn-outline-danger"
@@ -265,7 +265,7 @@
                     <button class="btn btn-outline-danger" (click)="verDetalle(smservicioTaxi1)">Detalle</button>
                 </td>
                 <td>
-                    <button [disabled]="enviar5" class="btn btn-outline-primary"
+                    <button [disabled]="enviar5 || !mapavisto5" class="btn btn-outline-primary"
                         (click)="aceptarPedido5()">Enviar</button>
                 
                     <button [disabled]="!enviar5" class="btn btn-outline-danger"
@@ -316,7 +316,7 @@
         </div>
     </div>
 </div>
-<div class="wrapper">
+<div class="wrapper" *ngIf="!loginService.isDisponible() && smservicioEnCurso?.idstaxi">
     <span style="color: red;">Servicio en proceso (para recibir nuevas solicitudes finalice el servicio actual).</span>
     </div>
 <div class="wrapper">

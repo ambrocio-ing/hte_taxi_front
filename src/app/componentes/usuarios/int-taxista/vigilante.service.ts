@@ -55,7 +55,7 @@ export class VigilanteService {
  
   public consultarPago() : void {
     this.pagoService.verificarPagoPendiente(this.loginService.usuario.id).subscribe(resp => {
-      console.log('RESPUESTA PAGOS2',resp);
+      //console.log('RESPUESTA PAGOS2',resp);
       if(resp.ok == "ok" && resp.dias == 16){        
         Swal.fire({
           icon: 'info',
@@ -65,7 +65,7 @@ export class VigilanteService {
           confirmButtonText: 'Ir a pagar',
           cancelButtonText: 'Mas tarde'
         }).then((res) => {
-          console.log('*****RESPUESTA DEL SWAL',res);
+          //console.log('*****RESPUESTA DEL SWAL',res);
           if (res.value) {
             this.router.navigate(['suscripcion', resp.id]);
           }
@@ -103,7 +103,7 @@ export class VigilanteService {
 
   public consultar_Pago() : void {
     this.pagoService.verificarPagoPendiente(this.loginService.usuario.id).subscribe(resp => {
-      console.log('RESPUESTA PAGOS1',resp);
+      //console.log('RESPUESTA PAGOS1',resp);
       if(resp.ok == "ok" && resp.dias == 16){        
         Swal.fire({
           icon: 'info',
@@ -113,7 +113,7 @@ export class VigilanteService {
           confirmButtonText: 'Ir a pagar',
           cancelButtonText: 'Mas tarde'
         }).then((res) => {
-          console.log('*****RESPUESTA DEL SWAL',res);
+         //console.log('*****RESPUESTA DEL SWAL',res);
           if (res.value) {
             this.router.navigate(['suscripcion', resp.id]);
           }                    

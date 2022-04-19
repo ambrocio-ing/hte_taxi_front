@@ -38,19 +38,19 @@ export class MapboxModelComponent implements OnInit {
       this.coords = [resp.lng, resp.lat];
 
       this.mapboxService.construirMapa(this.coords).then(({ map, geocoder }) => {
-        //console.log('********TODO BIEN*****');
+        
 
         this.renderer2.appendChild(this.asGeocoder.nativeElement, geocoder.onAdd(map));
         this.mapboxService.agregarMarcador(this.coords);
 
       }).catch(err => {
-        console.log('********ERROR********', err);
+        
       });
 
     }).catch();
 
     this.mapboxService.cbDatos.subscribe((getPoint) => {
-      //console.log('*********** getPoint *********', getPoint);
+      
       this.modeInput = 'start'
       this.wayPoints.start = getPoint;
 
