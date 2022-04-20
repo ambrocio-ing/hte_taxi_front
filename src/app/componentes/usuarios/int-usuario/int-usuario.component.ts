@@ -96,7 +96,7 @@ export class IntUsuarioComponent implements OnInit {
   estadoRe: boolean = false;
   posicion: any = null;
 
-  visibleEditarPerfil:boolean = false;
+  visibleEditarPerfil: boolean = false;
   smservicioTaxienproceso: SMServicioTaxi = new SMServicioTaxi();
 
   constructor(private router: Router, public loginService: LoginService,
@@ -226,7 +226,7 @@ export class IntUsuarioComponent implements OnInit {
         }
         else {
           this.notificarRechazo(smservicioTaxi);
-        }       
+        }
 
       });
 
@@ -264,7 +264,7 @@ export class IntUsuarioComponent implements OnInit {
             title: 'Taxi cancelado',
             text: 'El taxista acaba de cancelar el servicio, por favor refresque y solicite otro conductor'
           });
-          this.smservicioTaxienproceso= new SMServicioTaxi();
+          this.smservicioTaxienproceso = new SMServicioTaxi();
           this.smservicioTaxienproceso.cliente = new SMCliente();
           this.smservicioTaxienproceso.taxista = new SMTaxista();
           this.smservicioTaxienproceso.ubicacion = new Ubicacion();
@@ -284,13 +284,13 @@ export class IntUsuarioComponent implements OnInit {
       this.client.subscribe('/staxi/taxi_finalizado/' + this.idcliente, (event) => {
         const id = +event.body;
         const encontrar = this.smservicioTaxis.find(x => x.idstaxi == id);
-        if( encontrar != undefined &&  id == encontrar.idstaxi){
+        if (encontrar != undefined && id == encontrar.idstaxi) {
           Swal.fire({
             icon: 'info',
             title: 'Servicio de taxi finalizado',
             text: 'Esta intentado cancelar el servicio por favor confirme'
           }).then(resp => {
-            this.smservicioTaxienproceso= new SMServicioTaxi();
+            this.smservicioTaxienproceso = new SMServicioTaxi();
             this.smservicioTaxienproceso.cliente = new SMCliente();
             this.smservicioTaxienproceso.taxista = new SMTaxista();
             this.smservicioTaxienproceso.ubicacion = new Ubicacion();
@@ -301,9 +301,9 @@ export class IntUsuarioComponent implements OnInit {
             }, err => {
               this.mensajeServicios = "Aún no hay datos que mostrar";
             });
-  
+
           });
-        }       
+        }
       });
 
       //solicita las ubicaciones de los taxistas mas cercanos
@@ -490,10 +490,10 @@ export class IntUsuarioComponent implements OnInit {
       this.mensajeServicios = "";
       this.loginService.estado("Ocupado");
       const indice = this.smservicioTaxis.find(x => x.estado == "Iniciado");
-      if(indice!=undefined){
-        this.smservicioTaxienproceso=indice;
+      if (indice != undefined) {
+        this.smservicioTaxienproceso = indice;
       }
-      
+
       this.renovar1();
       this.renovar2();
       this.renovar3();
@@ -597,7 +597,7 @@ export class IntUsuarioComponent implements OnInit {
           this.client.publish({ destination: "/app/stcrear", body: JSON.stringify(this.smservicioTaxiPedido1) });
 
           this.vigilante.guardarPedido(1, "Cancelado");
-          this.renovar1(); 
+          this.renovar1();
         }
         else {
 
@@ -1887,7 +1887,7 @@ export class IntUsuarioComponent implements OnInit {
     this.estadoRespuesta5 = false;
     this.estadoAceptar = false;
 
-  }  
+  }
 
   ver(servicios: SMServicioTaxi): void {
     this.smtaxistaSelecionado = servicios.taxista;
@@ -1927,13 +1927,13 @@ export class IntUsuarioComponent implements OnInit {
         servicios.estado = "Cancelado";
         this.client.publish({ destination: '/app/cancelado_pasajero', body: JSON.stringify(servicios) });
 
-        this.loginService.estado("Disponible");       
+        this.loginService.estado("Disponible");
         const indice = this.smservicioTaxis.indexOf(servicios);
-        if(indice != -1){
-          this.smservicioTaxienproceso=new SMServicioTaxi();
-          this.smservicioTaxienproceso.cliente= new SMCliente();
-          this.smservicioTaxienproceso.taxista= new SMTaxista();
-          this.smservicioTaxienproceso.ubicacion= new Ubicacion();
+        if (indice != -1) {
+          this.smservicioTaxienproceso = new SMServicioTaxi();
+          this.smservicioTaxienproceso.cliente = new SMCliente();
+          this.smservicioTaxienproceso.taxista = new SMTaxista();
+          this.smservicioTaxienproceso.ubicacion = new Ubicacion();
           this.smservicioTaxis[indice].estado = "Finalizado";
         }
       }
@@ -1944,7 +1944,7 @@ export class IntUsuarioComponent implements OnInit {
   verificarEstadoTaxi(): boolean {
     const indice = this.smservicioTaxis.find(x => x.estado == "Iniciado");
     if (indice != undefined) {
-      this.smservicioTaxienproceso=indice;
+      this.smservicioTaxienproceso = indice;
       return true;
     }
     else {
@@ -1952,7 +1952,7 @@ export class IntUsuarioComponent implements OnInit {
     }
   }
 
-  editarPerfil() : void {
+  editarPerfil(): void {
     this.visibleEditarPerfil = true;
   }
 

@@ -1,12 +1,13 @@
-<div class="contenedor"> 
-    <h2 style="font-family: Georgia, 'Times New Roman', Times, serif;">SERVICIO ACTUAL EN PROCESO</h2>   
+<div class="contenedor">
+    <h2 style="font-family: Georgia, 'Times New Roman', Times, serif;">SERVICIO ACTUAL EN PROCESO</h2>
     <div class="wrapper">
-        <div class="box-inputs">            
+        <div class="box-inputs">
             <div *ngIf="smservicioTaxi?.idstaxi">
                 <ul class="list-group">
-                    
+
                     <li class="list-group-item">
-                        <h2 style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif ;">Ruta del taxi</h2>                       
+                        <h2 style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif ;">Ruta del
+                            taxi</h2>
                     </li>
                     <li class="list-group-item">
                         <span style="color: blue;">Ubicación y referencia del origen</span>
@@ -16,24 +17,30 @@
                         <span style="color: blue;">Ubicación y referencia del destino</span>
                         {{smservicioTaxi.ubicacion.destino}}
                     </li>
-                    
+
                     <li class="list-group-item">
-                       <span style="color: blue;">Distancia : </span> {{smservicioTaxi.ubicacion.distanciafinal}} km
-                       <span style="color: blue;"> Tiempo : </span> {{smservicioTaxi.ubicacion.tiempofinal}} min
+                        <span style="color: blue;">Distancia : </span> {{smservicioTaxi.ubicacion.distanciafinal}} km
+                        <span style="color: blue;"> Tiempo : </span> {{smservicioTaxi.ubicacion.tiempofinal}} min
                     </li>
-                    <li class="list-group-item active" aria-current="true"> 
-                        <img src="../../../../assets/img/marcador_verde.png" style="height: 30px; width: 30px; object-fit: cover;"> Ubicacion inicial
-                        <img src="../../../../assets/img/puntonegro.png" style="height: 30px; width: 30px; object-fit: cover;"> Vehiculo
-                    <img src="../../../../assets/img/marcadorRojo.jpg" style="height: 30px; width: 30px; object-fit: cover;"> Origen del pasajero
-                    <img src="../../../../assets/img/marcadorAzul.png" style="height: 30px; width: 30px; object-fit: cover;"> Destino del pasajero
-                    
+                    <li class="list-group-item active" aria-current="true">
+                        <img src="../../../../assets/img/marcador_verde.png"
+                            style="height: 30px; width: 30px; object-fit: cover;"> Ubicacion inicial
+                        <img src="../../../../assets/img/puntonegro.png"
+                            style="height: 30px; width: 30px; object-fit: cover;"> Vehiculo
+                        <img src="../../../../assets/img/marcadorRojo.jpg"
+                            style="height: 30px; width: 30px; object-fit: cover;"> Origen del pasajero
+                        <img src="../../../../assets/img/marcadorAzul.png"
+                            style="height: 30px; width: 30px; object-fit: cover;"> Destino del pasajero
+
                     </li>
                     <li class="list-group-item">
-                        <span style="background-color: green; width: 50px; height: 1px;"> ㅤㅤ </span><span> Ruta hacia el pasajero</span>
-                        <span style="background-color: red; width: 50px; height: 1px;"> ㅤㅤ </span><span> Ruta hacia el destino pasajero</span>
+                        <span style="background-color: green; width: 50px; height: 1px;"> ㅤㅤ </span><span> Ruta hacia el
+                            pasajero</span>
+                        <span style="background-color: red; width: 50px; height: 1px;"> ㅤㅤ </span><span> Ruta hacia el
+                            destino pasajero</span>
                     </li>
-                </ul>             
-            </div>                      
+                </ul>
+            </div>
         </div>
     </div>
     <div class="wrapper">

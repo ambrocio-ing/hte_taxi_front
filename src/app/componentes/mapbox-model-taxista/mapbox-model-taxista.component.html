@@ -1,9 +1,10 @@
 <div class="stilo-modal" *ngIf="estadoMapatax">
     <div class="contenedor">
-        <div class="wrapper">        
+        <div class="wrapper">
             <div style="margin-left: 90%;">
-                <span (click)="cerrarModal()" style="font-weight: bold; font-size: 20px; color: red; cursor: pointer;">X</span>
-            </div>    
+                <span (click)="cerrarModal()"
+                    style="font-weight: bold; font-size: 20px; color: red; cursor: pointer;">X</span>
+            </div>
         </div>
         <div class="wrapper">
             <div class="box-inputs">
@@ -22,36 +23,40 @@
                             {{smservicioTaxi.ubicacion.destino}}
                         </li>
                         <li class="list-group-item">
-                            <span style="color: blue;">Distancia estimado : </span> {{smservicioTaxi.ubicacion.distanciaestimado}} km 
+                            <span style="color: blue;">Distancia estimado : </span>
+                            {{smservicioTaxi.ubicacion.distanciaestimado}} km
                             <br>
-                            <span style="color: blue;">Tiempo estimado : </span> {{smservicioTaxi.ubicacion.tiempoestimado}} min
+                            <span style="color: blue;">Tiempo estimado : </span>
+                            {{smservicioTaxi.ubicacion.tiempoestimado}} min
                         </li>
                         <li class="list-group-item">
                             <span style="color: blue;">Nota : </span>
                             <span>
-                                <img src="../../../../assets/img/puntorojo.png" style="height: 30px; width: 30px; object-fit: cover;">    Punto rojo: Mi ubicacion
-                                <img src="../../../../assets/img/marcadorRojo.jpg" style="height: 30px; width: 30px; object-fit: cover;">    Marcador rojo: Origen
-                    <img src="../../../../assets/img/marcadorAzul.png" style="height: 30px; width: 30px; object-fit: cover;">Marcador azul: Destino
+                                <img src="../../../../assets/img/puntorojo.png"
+                                    style="height: 30px; width: 30px; object-fit: cover;"> Punto rojo: Mi ubicacion
+                                <img src="../../../../assets/img/marcadorRojo.jpg"
+                                    style="height: 30px; width: 30px; object-fit: cover;"> Marcador rojo: Origen
+                                <img src="../../../../assets/img/marcadorAzul.png"
+                                    style="height: 30px; width: 30px; object-fit: cover;">Marcador azul: Destino
                             </span>
                         </li>
-                    </ul>                  
-                                        
-                    <div class="form-group">
-                        <button [disabled]="!botonReclamo" (click)="reportar()" class="btn btn-outline-danger">Informar reclamo</button>
-                    </div> 
+                    </ul>
 
-                </div>                
-    
-               
-    
+                    <div class="form-group">
+                        <button [disabled]="!botonReclamo" (click)="reportar()" class="btn btn-outline-danger">Informar
+                            reclamo</button>
+                    </div>
+
+                </div>
+
             </div>
-            
+
         </div>
         <div class="wrapper">
             <div id="map" #asMap class="map-container">
-    
+
             </div>
         </div>
     </div>
-    
+
 </div>
