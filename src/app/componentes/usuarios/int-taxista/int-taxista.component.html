@@ -1,5 +1,6 @@
 <div class="conductor">
-    <img (click)="editarPerfil()" class="img-perfil" *ngIf="!loginService.usuario?.fotoPerfil" src="../../../../assets/img/perfil.jpg" alt="">
+    <img (click)="editarPerfil()" class="img-perfil" *ngIf="!loginService.usuario?.fotoPerfil"
+        src="../../../../assets/img/perfil.jpg" alt="">
     <img (click)="editarPerfil()" class="img-perfil" *ngIf="loginService.usuario?.fotoPerfil"
         src="{{url_backend}}/obtener/imagen/{{loginService.usuario.fotoPerfil}}" alt="">
     <!--<h4 (click)="irPerfil2()">Usuario: - 28192813</h4>-->
@@ -11,7 +12,8 @@
         </button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" (click)="irPerfil2()">Ver perfil</a></li>
-            <li *ngIf="!loginService.isDisponible()"><a class="dropdown-item" (click)="disponible()">Marcar Disponible</a>
+            <li *ngIf="!loginService.isDisponible()"><a class="dropdown-item" (click)="disponible()">Marcar
+                    Disponible</a>
             </li>
             <li *ngIf="loginService.isDisponible()"><a class="dropdown-item" (click)="ocupado()">Marcar Ocupado</a></li>
             <li><a class="dropdown-item" (click)="pagar()">Ver pagos</a></li>
@@ -23,14 +25,17 @@
     </div>
 </div>
 
-<app-cambio-foto-perfil *ngIf="visibleEditarPerfil" [visible]="visibleEditarPerfil" 
+<app-cambio-foto-perfil *ngIf="visibleEditarPerfil" [visible]="visibleEditarPerfil"
     (cerrarModalPerfil)="visibleEditarPerfil = $event">
 </app-cambio-foto-perfil>
 
 <div class="wrapper" *ngIf="loginService.isDisponible() && !smservicioEnCurso?.idstaxi">
-    <h2  style="text-transform: uppercase; font-family: Times New Roman, Times, serif;">Solicitudes pendientes</h2></div>
-    <div class="wrapper"*ngIf="loginService.isDisponible() && !smservicioEnCurso?.idstaxi">
-    <span  style="text-align: center; color: red;text-transform: none; font-family: 'Times New Roman', Times, serif; ">Una solicitud pendiente solo estará disponible por 5 minutos.</span>
+    <h2 style="text-transform: uppercase; font-family: Times New Roman, Times, serif;">Solicitudes pendientes</h2>
+</div>
+<div class="wrapper" *ngIf="loginService.isDisponible() && !smservicioEnCurso?.idstaxi">
+    <span
+        style="text-align: center; color: red;text-transform: none; font-family: 'Times New Roman', Times, serif; ">Una
+        solicitud pendiente solo estará disponible por 5 minutos.</span>
 </div>
 
 <div class="wrapper">
@@ -56,15 +61,15 @@
 <div class="wrapper" *ngIf="conectado && loginService.isDisponible()">
     <div>
         <table class="table table-striped">
-        <tr style="text-align: center" >
-            
-            <th>Cliente</th>
+            <tr style="text-align: center">
 
-            <th>Ruta</th>
-            <th>Acción</th>
-        </tr>
+                <th>Cliente</th>
 
-      
+                <th>Ruta</th>
+                <th>Acción</th>
+            </tr>
+
+
             <!--Cliente 1-->
             <tr *ngIf="smservicioTaxi1?.idstaxi">
                 <td>
@@ -72,7 +77,7 @@
                         src="../../../../assets/img/perfil.jpg" alt="">
                     <img class="img-perfil" *ngIf="smservicioTaxi1.cliente?.fotoPerfil"
                         src="{{url_backend_cli}}/{{smservicioTaxi1.cliente.fotoPerfil}}" alt="">
-               
+
                     {{smservicioTaxi1.cliente.nombre}}, {{smservicioTaxi1.cliente.apellidos}}
                 </td>
                 <td>
@@ -81,7 +86,7 @@
                 <td>
                     <button [disabled]="enviar1 || !mapavisto1" class="btn btn-outline-primary"
                         (click)="aceptarPedido1()">Enviar</button>
-              
+
                     <button [disabled]="!enviar1" class="btn btn-outline-danger"
                         (click)="rechazarPedido1()">Rechazar</button>
                 </td>
@@ -119,7 +124,7 @@
                         src="../../../../assets/img/perfil.jpg" alt="">
                     <img class="img-perfil" *ngIf="smservicioTaxi2.cliente?.fotoPerfil"
                         src="{{url_backend_cli}}/{{smservicioTaxi2.cliente.fotoPerfil}}" alt="">
-                
+
                     {{smservicioTaxi2.cliente.nombre}}, {{smservicioTaxi2.cliente.apellidos}}
                 </td>
                 <td>
@@ -128,7 +133,7 @@
                 <td>
                     <button [disabled]="enviar2 || !mapavisto2" class="btn btn-outline-primary"
                         (click)="aceptarPedido2()">Enviar</button>
-              
+
 
                     <button [disabled]="!enviar2" class="btn btn-outline-danger"
                         (click)="rechazarPedido2()">Rechazar</button>
@@ -166,7 +171,7 @@
                         src="../../../../assets/img/perfil.jpg" alt="">
                     <img class="img-perfil" *ngIf="smservicioTaxi3.cliente?.fotoPerfil"
                         src="{{url_backend_cli}}/{{smservicioTaxi3.cliente.fotoPerfil}}" alt="">
-              
+
                     {{smservicioTaxi3.cliente.nombre}}, {{smservicioTaxi3.cliente.apellidos}}
                 </td>
                 <td>
@@ -175,7 +180,7 @@
                 <td>
                     <button [disabled]="enviar3 || !mapavisto3" class="btn btn-outline-primary"
                         (click)="aceptarPedido3()">Enviar</button>
-             
+
                     <button [disabled]="!enviar3" class="btn btn-outline-danger"
                         (click)="rechazarPedido3()">Rechazar</button>
                 </td>
@@ -212,7 +217,7 @@
                         src="../../../../assets/img/perfil.jpg" alt="">
                     <img class="img-perfil" *ngIf="smservicioTaxi4.cliente?.fotoPerfil"
                         src="{{url_backend_cli}}/{{smservicioTaxi4.cliente.fotoPerfil}}" alt="">
-              
+
                     {{smservicioTaxi4.cliente.nombre}}, {{smservicioTaxi4.cliente.apellidos}}
                 </td>
                 <td>
@@ -221,7 +226,7 @@
                 <td>
                     <button [disabled]="enviar4 || !mapavisto4" class="btn btn-outline-primary"
                         (click)="aceptarPedido4()">Enviar</button>
-              
+
                     <button [disabled]="!enviar4" class="btn btn-outline-danger"
                         (click)="rechazarPedido4()">Rechazar</button>
                 </td>
@@ -258,7 +263,7 @@
                         src="../../../../assets/img/perfil.jpg" alt="">
                     <img class="img-perfil" *ngIf="smservicioTaxi5.cliente?.fotoPerfil"
                         src="{{url_backend_cli}}/{{smservicioTaxi5.cliente.fotoPerfil}}" alt="">
-               
+
                     {{smservicioTaxi5.cliente.nombre}}, {{smservicioTaxi5.cliente.apellidos}}
                 </td>
                 <td>
@@ -267,7 +272,7 @@
                 <td>
                     <button [disabled]="enviar5 || !mapavisto5" class="btn btn-outline-primary"
                         (click)="aceptarPedido5()">Enviar</button>
-                
+
                     <button [disabled]="!enviar5" class="btn btn-outline-danger"
                         (click)="rechazarPedido5()">Rechazar</button>
                 </td>
@@ -295,33 +300,35 @@
                         </tr>
                     </table>
                 </td>
-                
+
             </tr>
-            
+
         </table>
-        
+
     </div>
-   
+
 </div>
 
 <div class="wrapper" *ngIf="!loginService.isDisponible() && smservicioEnCurso?.idstaxi">
     <div class="taxi-curso">
-       
+
         <div class="row">
             <app-mapbox-taxi-pendiente [smservicioTaxi]="smservicioEnCurso"></app-mapbox-taxi-pendiente>
         </div>
         <div class="row" style="display: flex; align-items: center;">
-            <button (click)="finalizar(smservicioEnCurso)" style="background-color: blue;" class="boton">Finalizar</button>
+            <button (click)="finalizar(smservicioEnCurso)" style="background-color: blue;"
+                class="boton">Finalizar</button>
             <button (click)="cancelarPendiente(smservicioEnCurso)" class="boton">Cancelar</button>
         </div>
     </div>
 </div>
 <div class="wrapper" *ngIf="!loginService.isDisponible() && smservicioEnCurso?.idstaxi">
     <span style="color: red;">Servicio en proceso (para recibir nuevas solicitudes finalice el servicio actual).</span>
-    </div>
+</div>
 <div class="wrapper">
     <div>
-        <h2 style="text-align: center; text-transform: uppercase; font-family: Times New Roman, Times, serif; ;">Historial</h2>
+        <h2 style="text-align: center; text-transform: uppercase; font-family: Times New Roman, Times, serif; ;">
+            Historial</h2>
         <table style="width: 100%;" class="table table-striped">
             <tr style="text-align: center">
                 <th>Detalle</th>
@@ -333,10 +340,12 @@
                 <td style="text-align: left" *ngIf="servicios.estado == 'Finalizado'">
                     <table>
                         <tr>
-                            <td><span style="font-weight: bold;">Origen y referencia: </span> {{servicios.ubicacion.origen}}</td>
+                            <td><span style="font-weight: bold;">Origen y referencia: </span>
+                                {{servicios.ubicacion.origen}}</td>
                         </tr>
                         <tr>
-                            <td><span style="font-weight: bold;">Destino y referencia: </span> {{servicios.ubicacion.destino}}</td>
+                            <td><span style="font-weight: bold;">Destino y referencia: </span>
+                                {{servicios.ubicacion.destino}}</td>
                         </tr>
                     </table>
                 </td>
