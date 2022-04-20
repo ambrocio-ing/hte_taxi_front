@@ -62,14 +62,10 @@
     <div>
         <table class="table table-striped">
             <tr style="text-align: center">
-
                 <th>Cliente</th>
-
                 <th>Ruta</th>
                 <th>Acción</th>
             </tr>
-
-
             <!--Cliente 1-->
             <tr *ngIf="smservicioTaxi1?.idstaxi">
                 <td>
@@ -300,13 +296,9 @@
                         </tr>
                     </table>
                 </td>
-
             </tr>
-
         </table>
-
     </div>
-
 </div>
 
 <div class="wrapper" *ngIf="!loginService.isDisponible() && smservicioEnCurso?.idstaxi">
@@ -362,9 +354,6 @@
                             <td>
                                 <button (click)="ver(servicios)" class="btn btn-outline-primary">Ver</button>
                             </td>
-                        </tr>
-                        <tr>
-
                         </tr>
                     </table>
                 </td>
